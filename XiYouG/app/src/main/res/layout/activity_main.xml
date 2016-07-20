@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/menu_background"
+    tools:context="com.example.wyz.xiyoug.MainActivity">
+    <com.example.wyz.xiyoug.view.SlideMenu
+        android:id="@+id/id_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:menu_layout="@layout/choose_menu"
+        app:content_layout="@layout/content"
+        app:right_padding="100dp"
+        app:left_slide="100dp"
+        >
+        </com.example.wyz.xiyoug.view.SlideMenu>
+</RelativeLayout>

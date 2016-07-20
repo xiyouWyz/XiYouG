@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">XiYouG</string>
+    <string name="library_name">西邮图书馆</string>
+    <string name="score_name">西邮成绩</string>
+    <string name="our_name">关于我们</string>
+    <string name="feedback_name">反馈</string>
+    <string name="Main_home">首页</string>
+    <string name="Main_my">我的</string>
+    <string name="Main_info">消息</string>
+    <string name="home_title">西邮图书馆</string>
+    <string name="slide_show_one"></string>
+    <string name="slide_show_two"></string>
+    <string name="slide_show_three"></string>
+    <string name="rank_collection">收藏排行榜</string>
+    <string name="rank_borrow">借阅排行榜</string>
+    <string name="rank_look">查看排行榜</string>
+</resources>

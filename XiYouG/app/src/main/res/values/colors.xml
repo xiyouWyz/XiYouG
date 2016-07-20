@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="whiteWords">#fff</color>
+    <color name="blackWords">#000</color>
+    <color name="pressBottom">#0c0</color>
+    <color name="normalBottom">#999</color>
+    <color name="splitLine">#0c0</color>
+    <color name="rank_text">#F64136</color>
+    <color name="rank_text_press">#0c0</color>
+</resources>
