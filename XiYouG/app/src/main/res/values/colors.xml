@@ -3,11 +3,35 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="main_theme">#36B19F</color>
+    <color name="slideMenu_theme">#1FA294</color>
     <color name="whiteWords">#fff</color>
     <color name="blackWords">#000</color>
-    <color name="pressBottom">#0c0</color>
-    <color name="normalBottom">#999</color>
-    <color name="splitLine">#0c0</color>
-    <color name="rank_text">#F64136</color>
-    <color name="rank_text_press">#0c0</color>
+    <color name="pressBottom">#229B91</color>
+    <color name="normalBottom">#fff</color>
+    <color name="splitLine">#59C4B6</color>
+    <color name="rank_text">#36B19F</color>
+    <color name="rank_text_press">#229B91</color>
+    <color name="rank_listView_back">#D6F1ED</color>
+    <color name="rank_below_divide">#229B91</color>
+    <color name="plistView_itemBackground">#EBF8F6</color>
+    <color name="plistView_itemText">#666</color>
+    <color name="plistView_divide">#D6F1ED</color>
+    <color name="info_news_word">#fff</color>
+    <color name="info_news_back">#59C4B6</color>
+    <color name="info_news_back_press">#D5EFEC</color>
+    <color name="info_notice_word">#fff</color>
+    <color name="info_notice_back">#59C4B6</color>
+    <color name="info_notice_back_press">#D5EFEC</color>
+    <color name="info_item_word">#000</color>
+    <color name="info_listView_back">#D6F1ED</color>
+    <color name="info_item_back">#EBF8F6</color>
+    <color name="info_listView_divide">#D6F1ED</color>
+    
+    <color name="my_studyNumber">#fff</color>
+    <color name="my_major">#fff</color>
+    <color name="my_col">#000</color>
+    <color name="my_col_arrow">#A0A0A0</color>
+    <color name="my_col_divide">#A0A0A0</color>
 </resources>

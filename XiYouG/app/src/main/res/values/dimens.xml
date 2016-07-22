@@ -3,7 +3,15 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="slideMenuItem">25sp</dimen>
-    <dimen name="libraryTitle">25sp</dimen>
+    <dimen name="libraryTitle">20sp</dimen>
     <dimen name="main_viewpager">14sp</dimen>
     <dimen name="rank_viewpager">12sp</dimen>
+    <dimen name="rank_listView_word">15sp</dimen>
+    <dimen name="info_news">20sp</dimen>
+    <dimen name="info_notice">20sp</dimen>
+    <dimen name="info_item">16sp</dimen>
+    <dimen name="info_item_date">13sp</dimen>
+    <dimen name="my_col">18sp</dimen>
+    <dimen name="my_col_arrow">18sp</dimen>
+    <dimen name="my_col_divide">1dp</dimen>
 </resources>

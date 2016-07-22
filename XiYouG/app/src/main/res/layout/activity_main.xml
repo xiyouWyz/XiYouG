@@ -1,19 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/menu_background"
-    tools:context="com.example.wyz.xiyoug.MainActivity">
-    <com.example.wyz.xiyoug.view.SlideMenu
-        android:id="@+id/id_menu"
+    android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:menu_layout="@layout/choose_menu"
-        app:content_layout="@layout/content"
-        app:right_padding="100dp"
-        app:left_slide="100dp"
+        android:layout_height="50dp"
+        android:background="@color/main_theme"
+
         >
-        </com.example.wyz.xiyoug.view.SlideMenu>
-</RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/home_title"
+            android:textColor="#fff"
+            android:textSize="@dimen/libraryTitle"
+
+            />
+
+
+    </android.support.v7.widget.Toolbar>
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/dl_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:id="@+id/dl_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/slideMenu_theme"
+            android:layout_gravity="start"
+            >
+            <LinearLayout
+                android:id="@+id/dl_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:orientation="vertical"
+                android:padding="5dp"
+                >
+                <RelativeLayout
+                    android:id="@+id/library"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                    <ImageView
+                        android:id="@+id/library_logo"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="20dp"
+                        android:src="@drawable/library"
+                        android:layout_centerVertical="true"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/library_name"
+                        android:layout_toRightOf="@id/library_logo"
+                        android:layout_marginLeft="20dp"
+                        android:textColor="@color/whiteWords"
+                        android:textSize="@dimen/slideMenuItem"
+                        android:layout_centerVertical="true"
+                        />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/score"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                    <ImageView
+                        android:id="@+id/score_logo"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="20dp"
+                        android:src="@drawable/score"
+                        android:layout_centerVertical="true"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/score_name"
+                        android:layout_toRightOf="@id/score_logo"
+                        android:layout_marginLeft="20dp"
+                        android:textColor="@color/whiteWords"
+                        android:textSize="@dimen/slideMenuItem"
+                        android:layout_centerVertical="true"
+                        />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/our"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                    <ImageView
+                        android:id="@+id/our_logo"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="20dp"
+                        android:src="@drawable/our"
+                        android:layout_centerVertical="true"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/our_name"
+                        android:layout_toRightOf="@id/our_logo"
+                        android:layout_marginLeft="20dp"
+                        android:textColor="@color/whiteWords"
+                        android:textSize="@dimen/slideMenuItem"
+                        android:layout_centerVertical="true"
+                        />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/feedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                    <ImageView
+                        android:id="@+id/feedback_logo"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="20dp"
+                        android:src="@drawable/feedback"
+                        android:layout_centerVertical="true"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/feedback_name"
+                        android:layout_toRightOf="@id/feedback_logo"
+                        android:layout_marginLeft="20dp"
+                        android:textColor="@color/whiteWords"
+                        android:textSize="@dimen/slideMenuItem"
+                        android:layout_centerVertical="true"
+                        />
+                </RelativeLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </android.support.v4.widget.DrawerLayout>
+
+
+
+</LinearLayout>
+

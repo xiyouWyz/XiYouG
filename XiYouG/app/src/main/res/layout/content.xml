@@ -18,6 +18,7 @@
                 android:orientation="vertical"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:background="@color/main_theme"
                 android:clickable="true"
                 >
                 <ImageView
@@ -41,6 +42,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:clickable="true"
+                android:background="@color/main_theme"
                 >
                 <ImageView
                     android:layout_width="20dp"
@@ -61,6 +63,7 @@
                 android:orientation="vertical"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:background="@color/main_theme"
                 android:clickable="true"
                 >
                 <ImageView

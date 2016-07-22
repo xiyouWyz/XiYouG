@@ -14,4 +14,13 @@
     <string name="rank_collection">收藏排行榜</string>
     <string name="rank_borrow">借阅排行榜</string>
     <string name="rank_look">查看排行榜</string>
+    <string name="rank_item_leftBrackets">《</string>
+    <string name="rank_item_rightBrackets">》</string>
+    <string name="info_news">新闻</string>
+    <string name="info_notice">公告</string>
+    <string name="my_no_login">点击登录</string>
+    <string name="my_col">我的收藏</string>
+    <string name="my_history">我的足迹</string>
+    <string name="my_bor">我的借阅</string>
+
 </resources>

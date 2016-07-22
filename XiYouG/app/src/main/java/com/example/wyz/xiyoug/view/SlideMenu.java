@@ -1,24 +1,15 @@
-package com.example.wyz.xiyoug.view;
+package com.example.wyz.xiyoug.View;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.TypedArray;
-import android.net.Uri;
-import android.support.v4.app.NotificationCompatSideChannelService;
-import android.transition.Slide;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.wyz.xiyoug.R;
 import com.nineoldandroids.view.ViewHelper;
@@ -156,12 +147,13 @@ public class SlideMenu extends HorizontalScrollView {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        super.onLayout(changed, l, t, r, b);
+
         if(changed){
             //将ScrollView滚动到mMenuWidth的位置，也就是滚动到跟内容View的左侧对其，让菜单栏刚好完全隐藏在屏幕左侧
             //注意滚动的时机，当view有新的布局和尺寸时调用,也就是在初始化的时候去滚动。这个时候滚动才不会在打开页面时有滚动的效果
             scrollTo(mMenuWidth, 0);
         }
+        super.onLayout(changed, l, t, r, b);
     }
 
     private long mDownTime;
@@ -307,8 +299,8 @@ public boolean onTouchEvent(MotionEvent ev) {
     }
 
     private boolean isClick(float upX, float upY) {
-        return mAcceptClick && System.currentTimeMillis() - mDownTime < 1000 && Math.pow((mDownX - upX), 2) + Math.pow((mDownY - upY), 2) < 200;
-
+       // return mAcceptClick && System.currentTimeMillis() - mDownTime < 1000 && Math.pow((mDownX - upX), 2) + Math.pow((mDownY - upY), 2) < 200;
+        return  mAcceptClick;
     }
     /**
      * 打开菜单
@@ -347,11 +339,12 @@ public boolean onTouchEvent(MotionEvent ev) {
     /**
      * 弹出或隐藏
      */
+
     public  void toggle(){
-        if (getScrollX()==mMenuWidth){
-            smoothScrollTo(0,0);
+        if (isOpen){
+            closeMenu();
         }else{
-            smoothScrollTo(mMenuWidth,0);
+            openMenu();
         }
     }
 

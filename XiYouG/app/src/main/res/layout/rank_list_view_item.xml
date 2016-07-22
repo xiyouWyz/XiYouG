@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout   xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="100dp"
+    android:layout_width="match_parent"
+    android:background="@drawable/rank_backshape"
+    >
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="3dp"
+            android:gravity="center"
+            >
+
+                <TextView
+                    android:id="@+id/left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:layout_marginLeft="15dp"
+                    android:layout_gravity="left"
+                    android:text="@string/rank_item_leftBrackets"
+                    android:textSize="@dimen/rank_listView_word"
+                    android:textColor="@color/plistView_itemText"/>
+                <TextView
+                    android:id="@+id/rank_item_book_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="高等数学"
+                    android:maxEms="10"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:textSize="@dimen/rank_listView_word"
+                    android:textColor="@color/plistView_itemText"
+                    android:layout_toRightOf="@id/left"
+                    />
+                <TextView
+                    android:id="@+id/right"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+
+                    android:text="@string/rank_item_rightBrackets"
+                    android:layout_toRightOf="@id/rank_item_book_name"
+                    android:textSize="@dimen/rank_listView_word"
+                    android:textColor="@color/plistView_itemText"/>
+                <ImageView
+                    android:id="@+id/rank_item_count_img"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_below="@id/rank_item_book_name"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/rank_count"
+
+                    />
+                <TextView
+                    android:id="@+id/rank_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="查询次数:"
+                    android:textSize="@dimen/rank_listView_word"
+                    android:layout_alignTop="@id/rank_item_count_img"
+                    android:layout_alignBottom="@id/rank_item_count_img"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/plistView_itemText"
+                    android:layout_toRightOf="@id/rank_item_count_img"
+                    android:layout_below="@id/rank_item_book_name"
+                    />
+                <TextView
+                    android:id="@+id/rank_item_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="44"
+                    android:layout_alignTop="@id/rank_item_count_img"
+                    android:layout_alignBottom="@id/rank_item_count_img"
+                    android:textSize="@dimen/rank_listView_word"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/plistView_itemText"
+                    android:layout_toRightOf="@id/rank_text"
+                    android:layout_below="@id/rank_item_book_name"
+                    />
+        </RelativeLayout>
+
+
+</LinearLayout>
