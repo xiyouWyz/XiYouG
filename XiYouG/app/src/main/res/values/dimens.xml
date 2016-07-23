@@ -11,7 +11,12 @@
     <dimen name="info_notice">20sp</dimen>
     <dimen name="info_item">16sp</dimen>
     <dimen name="info_item_date">13sp</dimen>
+    <dimen name="info_detail">22sp</dimen>
     <dimen name="my_col">18sp</dimen>
     <dimen name="my_col_arrow">18sp</dimen>
     <dimen name="my_col_divide">1dp</dimen>
+    <dimen name="login_title"> 20sp</dimen>
+    <dimen name="login_account">18sp</dimen>
+    <dimen name="login_password">18sp</dimen>
+    <dimen name="login_btn">18sp</dimen>
 </resources>

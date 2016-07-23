@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -23,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.wyz.xiyoug.InfoDetail_Activity;
 import com.example.wyz.xiyoug.Model.Book_Rank;
 import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
@@ -115,6 +117,40 @@ public class HomeFragment extends Fragment {
         rank_look_img.setOnClickListener(new MyRankOnClickListener(2));
 
         pullListView = (ListView) view.findViewById(R.id.plv_data);
+        pullListView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        pullListView.setAdapter(adapter);
+       pullListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+           @Override
+           public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+               switch (rank_index)
+               {
+                   case 0:
+                       Intent intent=new Intent();
+                       Bundle bundle=new Bundle();
+                       bundle.putString("keyword",book_col_ranks.get(i-1).getTitle());
+                       intent.putExtras(bundle);
+                       intent.setClass(getActivity(),InfoDetail_Activity.class);
+                       startActivity(intent);
+                       break;
+                   case  1:
+                       Intent intent1=new Intent();
+                       Bundle bundle1=new Bundle();
+                       bundle1.putString("keyword",book_bor_ranks.get(i-1).getTitle());
+                       intent1.putExtras(bundle1);
+                       intent1.setClass(getActivity(),InfoDetail_Activity.class);
+                       startActivity(intent1);
+                       break;
+                   case  2:
+                       Intent intent2=new Intent();
+                       Bundle bundle2=new Bundle();
+                       bundle2.putString("keyword",book_look_ranks.get(i-1).getTitle());
+                       intent2.putExtras(bundle2);
+                       intent2.setClass(getActivity(),InfoDetail_Activity.class);
+                       startActivity(intent2);
+                       break;
+               }
+           }
+       });
 
         swipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.refresh_layout);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
@@ -137,7 +173,7 @@ public class HomeFragment extends Fragment {
     {
         adapter=new MyAdapter(getContext(),ranks);
         pullListView.setAdapter(adapter);
-        pullListView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+
     }
     private void getData() {
         if(adapter!=null)

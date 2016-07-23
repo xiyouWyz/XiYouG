@@ -11,6 +11,7 @@
         android:layout_weight="2"
         >
         <LinearLayout
+            android:id="@+id/login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -22,46 +23,51 @@
                 android:background="@drawable/user_logo"
                 android:layout_gravity="center_horizontal"
                 />
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                >
-                <TextView
-                    android:id="@+id/major"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="软件1403"
-                    android:textColor="@color/my_major"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
-                    android:textSize="@dimen/my_col"
-                    />
-                <TextView
-                    android:id="@+id/name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="王勇智"
-                    android:textColor="@color/my_major"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
-                    android:textSize="@dimen/my_col"
-                    android:layout_marginStart="7dp"
-                    />
-            </LinearLayout>
-
             <TextView
                 android:id="@+id/studyNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="S1434746"
+                android:text="@string/my_no_login"
                 android:textColor="@color/my_studyNumber"
                 android:layout_gravity="center"
-                android:layout_marginTop="3dp"
+
+                android:layout_marginTop="10dp"
                 android:textSize="@dimen/my_col"
                 />
 
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/login"
+            android:gravity="center"
+            >
+            <TextView
+                android:id="@+id/major"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:textColor="@color/my_major"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:textSize="@dimen/my_col"
+                />
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:textColor="@color/my_major"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:textSize="@dimen/my_col"
+                android:layout_marginStart="7dp"
+                />
         </LinearLayout>
     </RelativeLayout>
     <LinearLayout
@@ -78,11 +84,13 @@
         <LinearLayout
             android:id="@+id/my_bor"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@drawable/my_col_shape"
+            >
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="25dp"
+                android:layout_margin="20dp"
                 >
                 <TextView
                     android:layout_width="wrap_content"
@@ -111,11 +119,13 @@
         <LinearLayout
             android:id="@+id/my_col"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@drawable/my_col_shape"
+            >
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="25dp"
+                android:layout_margin="20dp"
                 >
                 <TextView
                     android:layout_width="wrap_content"
@@ -144,11 +154,13 @@
         <LinearLayout
             android:id="@+id/my_history"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@drawable/my_col_shape"
+            >
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="25dp"
+                android:layout_margin="20dp"
                 >
                 <TextView
                     android:layout_width="wrap_content"

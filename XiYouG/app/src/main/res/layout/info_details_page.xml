@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/main_theme"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="详情"
+            android:textColor="@color/main_word"
+            android:textSize="@dimen/libraryTitle"
+
+            android:gravity="center"
+            />
+    </android.support.v7.widget.Toolbar>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            >
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="二手书交换活动在图书馆大厅举行"
+                android:textSize="@dimen/info_detail"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:textColor="@color/info_detail"
+                />
+            <WebView
+                android:id="@+id/webView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                >
+
+            </WebView>
+            <LinearLayout
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="right"
+
+                >
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="发布单位:"
+                    android:layout_marginRight="10dp"
+                    android:textSize="@dimen/info_detail"
+                    android:textColor="@color/info_detail"
+                    />
+                <TextView
+                    android:id="@+id/publisher"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="图书馆"
+                    android:textSize="@dimen/info_detail"
+                    android:textColor="@color/info_detail"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="right"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="20dp"
+                >
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="发布时间:"
+                    android:layout_marginRight="10dp"
+                    android:textSize="@dimen/info_detail"
+                    android:textColor="@color/info_detail"
+                    />
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2010-4-19"
+                    android:layout_marginBottom="20dp"
+                    android:textSize="@dimen/info_detail"
+                    android:textColor="@color/info_detail"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+        </ScrollView>
+
+
+
+</LinearLayout>

@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="main_theme">#36B19F</color>
+    <color name="main_word">#fff</color>
     <color name="slideMenu_theme">#1FA294</color>
     <color name="whiteWords">#fff</color>
     <color name="blackWords">#000</color>
@@ -27,11 +28,23 @@
     <color name="info_item_word">#000</color>
     <color name="info_listView_back">#D6F1ED</color>
     <color name="info_item_back">#EBF8F6</color>
+    <color name="info_item_press">#59C4B6</color>
     <color name="info_listView_divide">#D6F1ED</color>
+    <color name="info_detail">#000</color>
     
     <color name="my_studyNumber">#fff</color>
     <color name="my_major">#fff</color>
     <color name="my_col">#000</color>
     <color name="my_col_arrow">#A0A0A0</color>
     <color name="my_col_divide">#A0A0A0</color>
+    <color name="my_col_item_back">#fff</color>
+    <color name="my_col_item_back_press">#D5EFEC</color>
+
+    <color name="login_title">#fff</color>
+    <color name="login_account">#000</color>
+    <color name="login_account_hint">#A0A0A0</color>
+    <color name="login_account_basket">#1FA394</color>
+    <color name="login_btn_word">#fff</color>
+    <color name="login_btn_back">#59C4B6</color>
+    <color name="login_btn_back_press">#36B19F</color>
 </resources>

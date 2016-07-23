@@ -1,5 +1,6 @@
 package com.example.wyz.xiyoug.View;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 import com.example.wyz.xiyoug.Model.News;
 import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
+import com.example.wyz.xiyoug.InfoDetail_Activity;
 import com.example.wyz.xiyoug.pulltorefreshlistview.PullListView;
 
 import org.json.JSONArray;
@@ -39,7 +42,7 @@ public class NoticeFragment  extends Fragment{
     //上拉加载处理
     private  Handler handler_up=new Handler();
     //新闻listview的适配器
-    private MyAdapter adapter;
+    private MyAdapter adapter=new MyAdapter();
     //新闻信息存储集合
     private List<News> notices=new ArrayList<>();
     //获取新闻的线程
@@ -48,6 +51,9 @@ public class NoticeFragment  extends Fragment{
     private Notice_Handler notice_handler;
 
     private  int notice_page=1;
+    private int total_pages;
+    private  int amount;
+    private  final  String TAG="NoticeFragment";
 
 
     @Override
@@ -92,13 +98,28 @@ public class NoticeFragment  extends Fragment{
                 },2000);
             }
         });
+        pullListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent=new Intent();
+                Bundle bundle=new Bundle();
+                bundle.putString("type","announce");
+                bundle.putString("format","html");
+                bundle.putInt("id",notices.get(i-1).getId());
+                intent.putExtras(bundle);
+                intent.setClass(getActivity(),InfoDetail_Activity.class);
+                startActivity(intent);
+
+
+            }
+        });
     }
     private  void setupListView( )
     {
         adapter=new MyAdapter();
         pullListView.setAdapter(adapter);
     }
-    private void getUpData() {
+    private void getUpData(boolean isRefresh) {
 
         initData();
         pullListView.setAdapter(new MyAdapter());
@@ -106,16 +127,35 @@ public class NoticeFragment  extends Fragment{
         adapter.notifyDataSetChanged();
         pullListView.refreshComplete();
         pullListView.getMoreComplete();
+        if(!isRefresh)
+        {
+            int count=notices.size();
+            int trader=count/20;
+            int over=count%20;
+            if(trader<total_pages)
+            {
+                if(over==0)
+                {
+                    pullListView.setSelection(trader*20+1);
+                    Log.d(TAG,"滑动到"+String.valueOf(trader*20+1));
+                }
+                else
+                {
+                    pullListView.setSelection(trader*20+over);
+                }
+            }
+        }
+
     }
     private  void getUpLoadData()
     {
         notice_page += 1;
-        getUpData();
+        getUpData(false);
 
     }
     private void getPullDownData() {
         notice_page = 1;
-        getUpData();
+        getUpData(true);
 
     }
     private class MyAdapter extends BaseAdapter {
@@ -197,6 +237,8 @@ public class NoticeFragment  extends Fragment{
 
                         JSONObject detail=(JSONObject) new JSONObject(news_info).get("Detail");
                         String type=detail.getString("Type");
+                        total_pages=detail.getInt("Pages");
+                        amount=detail.getInt("Amount");
                         JSONArray jsonArray= detail.getJSONArray("Data");
                         if(type.equals("公告"))
                         {
