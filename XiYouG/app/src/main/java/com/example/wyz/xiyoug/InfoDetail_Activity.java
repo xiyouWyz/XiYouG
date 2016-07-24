@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.Model.News;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
 import com.example.wyz.xiyoug.View.InfoFragment;
@@ -55,7 +56,14 @@ public class InfoDetail_Activity extends AppCompatActivity{
         String type= bundle.getString("type");
         String format=bundle.getString("format");
         int id=bundle.getInt("id");
-        url="https://api.xiyoumobile.com/xiyoulibv2/news/getDetail/"+type+"/"+format+"/"+id;
+        if(type.equals("news"))
+        {
+            url= HttpLinkHeader.NEWS_DETAIL+id;
+        }
+        else if(type.equals("announce"))
+        {
+            url= HttpLinkHeader.NOTICES_DETAIL+id;
+        }
         myThread=new MyThread();
         new Thread(myThread).start();
     }
@@ -65,17 +73,10 @@ public class InfoDetail_Activity extends AppCompatActivity{
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //backView=(ImageView)findViewById(R.id.back);
         title_view=(TextView) findViewById(R.id.title);
         publisher_view=(TextView) findViewById(R.id.publisher);
         date_view=(TextView) findViewById(R.id.date);
         webView=(WebView) findViewById(R.id.webView);
-       /* backView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               InfoDetail_Activity.this.finish();
-            }
-        });*/
     }
     public   class  MyThread implements  Runnable
     {

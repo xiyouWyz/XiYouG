@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/mainLayout"
     >
     <RelativeLayout
         android:layout_width="match_parent"
@@ -96,14 +97,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="@string/my_bor"
-                    style="@style/MyTheme"
+
                     android:textSize="@dimen/my_col"
                     />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text=">"
-                    style="@style/MyTheme"
+
                     android:textSize="@dimen/my_col_arrow"
                     android:textColor="@color/my_col_arrow"
                     android:gravity="right"
@@ -131,14 +132,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="@string/my_col"
-                    style="@style/MyTheme"
+
                     android:textSize="@dimen/my_col"
                     />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text=">"
-                    style="@style/MyTheme"
+
                     android:textSize="@dimen/my_col_arrow"
                     android:textColor="@color/my_col_arrow"
                     android:gravity="right"
@@ -166,14 +167,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="@string/my_history"
-                    style="@style/MyTheme"
+
                     android:textSize="@dimen/my_col"
                     />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text=">"
-                    style="@style/MyTheme"
+
                     android:textSize="@dimen/my_col_arrow"
                     android:textColor="@color/my_col_arrow"
                     android:gravity="right"

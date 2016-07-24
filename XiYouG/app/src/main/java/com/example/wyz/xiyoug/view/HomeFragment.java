@@ -4,6 +4,7 @@ package com.example.wyz.xiyoug.View;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 
 import com.example.wyz.xiyoug.InfoDetail_Activity;
 import com.example.wyz.xiyoug.Model.Book_Rank;
+import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
 
@@ -86,12 +88,13 @@ public class HomeFragment extends Fragment {
             slide_viewPager.setCurrentItem(slide_currentTab, true);
         }
     };
+    private  String TAG="HomeFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.home_page, container, false);
         InitSlideViewPager();
-        adapter=new MyAdapter(getContext(),new ArrayList<>(book_col_ranks));
+        adapter=new MyAdapter(new ArrayList<>(book_col_ranks));
         initData(0);
         setupViewCompent();
         return view;
@@ -101,6 +104,7 @@ public class HomeFragment extends Fragment {
         thread_rankInfo=new Rank_Thread(index);
         new Thread(thread_rankInfo).start();
     }
+
     private void setupViewCompent() {
         rank_collection = (LinearLayout) view.findViewById(R.id.rank_collection_btn);
         rank_borrow = (LinearLayout) view.findViewById(R.id.rank_borrow_btn);
@@ -119,6 +123,7 @@ public class HomeFragment extends Fragment {
         pullListView = (ListView) view.findViewById(R.id.plv_data);
         pullListView.setOverScrollMode(View.OVER_SCROLL_NEVER);
         pullListView.setAdapter(adapter);
+        /*
        pullListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
            @Override
            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -151,7 +156,7 @@ public class HomeFragment extends Fragment {
                }
            }
        });
-
+*/
         swipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.refresh_layout);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -171,7 +176,7 @@ public class HomeFragment extends Fragment {
     }
     private  void setupListView( List<Book_Rank> ranks)
     {
-        adapter=new MyAdapter(getContext(),ranks);
+        adapter=new MyAdapter(ranks);
         pullListView.setAdapter(adapter);
 
     }
@@ -183,17 +188,17 @@ public class HomeFragment extends Fragment {
             switch (rank_index)
             {
                 case  0:
-                    pullListView.setAdapter(new MyAdapter(getContext(),book_col_ranks));
+                    pullListView.setAdapter(new MyAdapter(book_col_ranks));
                     Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
                     swipeRefreshLayout.setRefreshing(false);
                     break;
                 case 1:
-                    pullListView.setAdapter(new MyAdapter(getContext(),book_bor_ranks));
+                    pullListView.setAdapter(new MyAdapter(book_bor_ranks));
                     Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
                     swipeRefreshLayout.setRefreshing(false);
                     break;
                 case 2:
-                    pullListView.setAdapter(new MyAdapter(getContext(),book_look_ranks));
+                    pullListView.setAdapter(new MyAdapter(book_look_ranks));
                     Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
                     swipeRefreshLayout.setRefreshing(false);
                     break;
@@ -458,14 +463,10 @@ public class HomeFragment extends Fragment {
 
 
     private class MyAdapter extends BaseAdapter {
-        private  LayoutInflater inflater;
         private  List<Book_Rank>  bRanks;
-        public MyAdapter(Context context, List<Book_Rank> objects) {
-            this.inflater=LayoutInflater.from(context);
+        public MyAdapter(List<Book_Rank> objects) {
             bRanks=objects;
         }
-
-
         @Override
         public int getCount() {
             return bRanks.size();
@@ -489,7 +490,7 @@ public class HomeFragment extends Fragment {
             {
 
                 holder=new MyViewHolder();
-                view=inflater.inflate(R.layout.rank_list_view_item,null);
+                view=LayoutInflater.from(getContext()).inflate(R.layout.rank_list_view_item,null);
 
                 holder.rank_book_name=(TextView)view.findViewById(R.id.rank_item_book_name);
                 holder.rank_count=(TextView)view.findViewById(R.id.rank_item_count);
@@ -525,13 +526,13 @@ public class HomeFragment extends Fragment {
             switch (index)
             {
                 case 0:
-                     url="https://api.xiyoumobile.com/xiyoulibv2/book/rank?type=3";
+                     url= HttpLinkHeader.Rank_COL;
                     break;
                 case 1:
-                     url="https://api.xiyoumobile.com/xiyoulibv2/book/rank?type=1";
+                     url=HttpLinkHeader.Rank_BOR;
                     break;
                 case 2:
-                    url="https://api.xiyoumobile.com/xiyoulibv2/book/rank?type=5";
+                    url=HttpLinkHeader.Rank_LOOK;
                     break;
             }
             try {

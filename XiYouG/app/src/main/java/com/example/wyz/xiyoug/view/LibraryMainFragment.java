@@ -181,25 +181,19 @@ public class LibraryMainFragment extends Fragment {
         switch (index) {
 
             case 0:
-                home_textView.setTextColor(getResources().getColor(R.color.pressBottom));
+             /*   home_textView.setTextColor(getResources().getColor(R.color.pressBottom));
                 info_textView.setTextColor(getResources().getColor(R.color.normalBottom));
-                my_textView.setTextColor(getResources().getColor(R.color.normalBottom));
+                my_textView.setTextColor(getResources().getColor(R.color.normalBottom));*/
                 home_imageView.setImageResource(R.drawable.home_press);
                 info_imageView.setImageResource(R.drawable.info);
                 my_imageView.setImageResource(R.drawable.my);
                 break;
             case 1:
-                home_textView.setTextColor(getResources().getColor(R.color.normalBottom));
-                info_textView.setTextColor(getResources().getColor(R.color.pressBottom));
-                my_textView.setTextColor(getResources().getColor(R.color.normalBottom));
                 home_imageView.setImageResource(R.drawable.home);
                 info_imageView.setImageResource(R.drawable.info_press);
                 my_imageView.setImageResource(R.drawable.my);
                 break;
             case 2:
-                home_textView.setTextColor(getResources().getColor(R.color.normalBottom));
-                info_textView.setTextColor(getResources().getColor(R.color.normalBottom));
-                my_textView.setTextColor(getResources().getColor(R.color.pressBottom));
                 home_imageView.setImageResource(R.drawable.home);
                 info_imageView.setImageResource(R.drawable.info);
                 my_imageView.setImageResource(R.drawable.my_press);

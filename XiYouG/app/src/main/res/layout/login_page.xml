@@ -1,23 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
+
     >
-    <android.support.v7.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/main_theme"
-        >
-        <TextView
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="西邮图书馆"
-            android:textSize="@dimen/login_title"
-            android:textColor="@color/login_title"
-            />
-    </android.support.v7.widget.Toolbar>
     <EditText
         android:id="@+id/account"
         android:textSize="@dimen/login_account"
@@ -43,6 +30,7 @@
         android:background="@drawable/login_account_shape"
         android:padding="10dp"
         android:textColor="@color/login_account"
+        android:inputType="numberPassword"
         />
     <CheckBox
         android:id="@+id/remember"
@@ -62,7 +50,19 @@
         android:textColor="@color/login_btn_word"
         android:layout_margin="20dp"
         />
-
+    <TextView
+        android:id="@+id/close"
+        android:layout_gravity="right"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/login_close"
+        android:textSize="@dimen/login_close"
+        android:textColor="@color/login_close"
+        />
 
 
 </LinearLayout>

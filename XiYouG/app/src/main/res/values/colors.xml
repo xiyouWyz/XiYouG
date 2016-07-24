@@ -19,6 +19,7 @@
     <color name="plistView_itemBackground">#EBF8F6</color>
     <color name="plistView_itemText">#666</color>
     <color name="plistView_divide">#D6F1ED</color>
+
     <color name="info_news_word">#fff</color>
     <color name="info_news_back">#59C4B6</color>
     <color name="info_news_back_press">#D5EFEC</color>
@@ -47,4 +48,47 @@
     <color name="login_btn_word">#fff</color>
     <color name="login_btn_back">#59C4B6</color>
     <color name="login_btn_back_press">#36B19F</color>
+    <color name="login_view_back">#fff</color>
+    <color name="login_close">#59C4B6</color>
+    
+    <color name="my_bor_title">#fff</color>
+    <color name="my_bor_title_back">#36B19F</color>
+    <color name="my_bor_listView_back">#D6F1ED</color>
+    <color name="my_bor_type">#59C4B6</color>
+    <color name="my_bor_already_number">#000</color>
+    <color name="my_bor_remain_number">#008000</color>
+    <color name="my_bor_continue_number">#0000FE</color>
+    <color name="my_bor_outTime_number">#f00</color>
+    <color name="my_bor_item_back">#EBF8F6</color>
+    <color name="my_bor_item_title">#000</color>
+    <color name="my_bor_item_departmentLabel">#808080</color>
+    <color name="my_bor_item_department">#808080</color>
+    <color name="my_bor_item_dateLabel">#000</color>
+    <color name="my_bor_item_date">#36B19F</color>
+    <color name="my_bor_item_stateLabel">#000</color>
+    <color name="my_bor_item_state">#f00</color>
+    <color name="my_bor_item_state_back">#ffebcd</color>
+    <color name="my_bor_item_state_back_press">#808080</color>
+    <color name="my_bor_item_divide">#D6F1ED</color>
+
+    <color name="my_col_title">#fff</color>
+    <color name="my_col_title_back">#36B19F</color>
+    <color name="my_col_listView_back">#D6F1ED</color>
+    <color name="my_col_listView_divide">#D6F1ED</color>
+    <color name="my_col_item_back1">#EBF8F6</color>
+    <color name="my_col_item_title">#000</color>
+    <color name="my_col_item_pub">#000</color>
+    <color name="my_col_item_sortLabel">#000</color>
+    <color name="my_col_item_sort">#f00</color>
+
+    <color name="my_his_title">#fff</color>
+    <color name="my_his_title_back">#36B19F</color>
+    <color name="my_his_listView_back">#D6F1ED</color>
+    <color name="my_his_listView_divide">#D6F1ED</color>
+    <color name="my_his_item_back">#EBF8F6</color>
+    <color name="my_his_item_title">#000</color>
+    <color name="my_his_item_typeLabel">#000</color>
+    <color name="my_his_item_type">#000</color>
+    <color name="my_his_item_dateLabel">#59C4B6</color>
+    <color name="my_his_item_date">#000</color>
 </resources>

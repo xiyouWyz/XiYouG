@@ -56,13 +56,13 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         dlMain = (DrawerLayout) findViewById(R.id.dl_main);
 
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         drawerToggle = new ActionBarDrawerToggle(this, dlMain, toolbar, 0, 0);
         drawerToggle.syncState();

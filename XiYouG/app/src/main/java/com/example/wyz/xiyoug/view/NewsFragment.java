@@ -15,6 +15,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.Model.News;
 import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
@@ -188,7 +189,7 @@ public class NewsFragment  extends Fragment{
         private  String url="";
         @Override
         public void run() {
-            url="http://api.xiyoumobile.com/xiyoulibv2/news/getList/news/"+news_page;
+            url= HttpLinkHeader.MORE_NEWS+news_page;
             try {
                 String info_result= OkHttpUtil.getStringFromServer(url);
                 Log.d("info_result",info_result);

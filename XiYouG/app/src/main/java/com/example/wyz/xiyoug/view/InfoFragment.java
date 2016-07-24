@@ -42,7 +42,7 @@ public class InfoFragment extends Fragment {
     private NoticeFragment noticeFragment;
     private FragmentManager fragmentManager;
 
-    private  boolean isFirst=false;
+    private  String TAG="InfoFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,7 +50,6 @@ public class InfoFragment extends Fragment {
         setupViewComponent();
         return  view;
     }
-
     private void setupViewComponent() {
        
         info_news=(TextView)view.findViewById(R.id.info_news);

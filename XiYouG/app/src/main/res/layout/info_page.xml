@@ -18,7 +18,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:background="@color/info_news_back_press"
-            style="@style/MyTheme"
+
             android:textStyle="bold"
             />
         <TextView
@@ -32,7 +32,7 @@
             android:textStyle="bold"
             android:gravity="center"
             android:background="@color/info_notice_back"
-            style="@style/MyTheme"
+
             />
     </LinearLayout>
     <FrameLayout

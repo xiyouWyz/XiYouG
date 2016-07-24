@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:descendantFocusability="blocksDescendants"
+        android:background="@drawable/my_bor_listview_item_shape"
+
+        >
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="60dp"
+            android:layout_height="80dp"
+            android:background="@drawable/info_logo"
+            android:layout_marginEnd="10dp"
+            />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/logo"
+            android:layout_centerInParent="true"
+            >
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:textSize="@dimen/my_col_item_title"
+                android:textColor="@color/my_col_item_title"
+                android:text="My SQL高效编程"
+
+                />
+            <TextView
+                android:id="@+id/pub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title"
+                android:textSize="@dimen/my_col_item_pub"
+                android:layout_alignLeft="@id/title"
+                android:text="人民邮电出版社"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/my_col_item_pub"
+                />
+            <TextView
+                android:id="@+id/sortLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pub"
+                android:textSize="@dimen/my_col_item_sortLabel"
+                android:layout_alignLeft="@id/title"
+                android:text="@string/my_col_item_sortLabel"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/my_col_item_sortLabel"
+                />
+            <TextView
+                android:id="@+id/sort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/sortLabel"
+                android:layout_alignTop="@id/sortLabel"
+                android:textSize="@dimen/my_col_item_sort"
+                android:text="TP311.138SQ"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/my_col_item_sort"
+                />
+        </RelativeLayout>
+
+    </RelativeLayout>
+</LinearLayout>

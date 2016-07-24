@@ -6,8 +6,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-
+        <item name="android:listDivider">@drawable/recyclerview_divide_shape</item>
         <!--<item name="android:actionOverflowButtonStyle">@style/</item>-->
     </style>
-    <style name="MyTheme" parent="@android:style/Theme.Holo"></style>
+    <style name="Login_Animation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/login_push_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/login_push_bottom_out</item>
+    </style>
 </resources>

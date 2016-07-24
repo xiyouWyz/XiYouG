@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="httpcore-4.0 (2)">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/XiYouG/app/libs/httpcore-4.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XiYouG/app/libs/httpclient-4.1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XiYouG/app/libs/nineoldandroids-2.4.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XiYouG/app/libs/okhttp-2.5.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XiYouG/app/libs/okio-1.6.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XiYouG/app/libs/RecyclerView.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
