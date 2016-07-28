@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.Model.News;
 import com.example.wyz.xiyoug.R;
+import com.example.wyz.xiyoug.Util.MyProgressDialog;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
 import com.example.wyz.xiyoug.InfoDetail_Activity;
 import com.example.wyz.xiyoug.pulltorefreshlistview.PullListView;
@@ -57,14 +58,17 @@ public class NewsFragment  extends Fragment{
     private  int amount;
 
     private final   String TAG="NewsFragment";
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.info_news_page,container,false);
         news_handler=new News_Handler();
+        Log.d(TAG,"NewsFragment碎片正在加载");
         initData();
         setupViewComponent();
         return view;
     }
+
     private  void initData()
     {
         news_thread=new News_Thread();
@@ -122,7 +126,7 @@ public class NewsFragment  extends Fragment{
 
         initData();
         //pullListView.setAdapter(new MyAdapter());
-        Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
+
         adapter.notifyDataSetChanged();
         pullListView.refreshComplete();
         pullListView.getMoreComplete();
@@ -239,6 +243,7 @@ public class NewsFragment  extends Fragment{
                                 newses.add(news);
                             }
                             adapter.notifyDataSetChanged();
+                            Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
                         }
                     }
                     else
@@ -253,4 +258,6 @@ public class NewsFragment  extends Fragment{
             }
         }
     }
+
+
 }

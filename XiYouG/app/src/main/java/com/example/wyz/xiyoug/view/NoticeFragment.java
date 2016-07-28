@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.Model.News;
 import com.example.wyz.xiyoug.R;
+import com.example.wyz.xiyoug.Util.MyProgressDialog;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
 import com.example.wyz.xiyoug.InfoDetail_Activity;
 import com.example.wyz.xiyoug.pulltorefreshlistview.PullListView;
@@ -45,26 +46,29 @@ public class NoticeFragment  extends Fragment{
     //新闻listview的适配器
     private MyAdapter adapter=new MyAdapter();
     //新闻信息存储集合
-    private List<News> notices=new ArrayList<>();
+    private List<News> newses=new ArrayList<>();
     //获取新闻的线程
     private Notice_Thread notice_thread;
     //获取新闻信息后对listview界面的更新
-    private Notice_Handler notice_handler;
+    private Notice_Handler notice_handler=new Notice_Handler();
 
     private  int notice_page=1;
+
     private int total_pages;
     private  int amount;
-    private  final  String TAG="NoticeFragment";
 
+    private final   String TAG="NewsFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view=inflater.inflate(R.layout.info_notice_page,container,false);
-        notice_handler=new Notice_Handler();
+        view=inflater.inflate(R.layout.info_news_page,container,false);
+
+        Log.d(TAG,"NewsFragment碎片正在加载");
         initData();
         setupViewComponent();
         return view;
     }
+
     private  void initData()
     {
         notice_thread=new Notice_Thread();
@@ -102,11 +106,12 @@ public class NoticeFragment  extends Fragment{
         pullListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
                 Intent intent=new Intent();
                 Bundle bundle=new Bundle();
-                bundle.putString("type","announce");
+                bundle.putString("type","news");
                 bundle.putString("format","html");
-                bundle.putInt("id",notices.get(i-1).getId());
+                bundle.putInt("id",newses.get(i-1).getId());
                 intent.putExtras(bundle);
                 intent.setClass(getActivity(),InfoDetail_Activity.class);
                 startActivity(intent);
@@ -114,39 +119,17 @@ public class NoticeFragment  extends Fragment{
 
             }
         });
-    }
-    private  void setupListView( )
-    {
         adapter=new MyAdapter();
         pullListView.setAdapter(adapter);
     }
     private void getUpData(boolean isRefresh) {
 
         initData();
-        pullListView.setAdapter(new MyAdapter());
-        Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
+        //pullListView.setAdapter(new MyAdapter());
+
         adapter.notifyDataSetChanged();
         pullListView.refreshComplete();
         pullListView.getMoreComplete();
-        if(!isRefresh)
-        {
-            int count=notices.size();
-            int trader=count/20;
-            int over=count%20;
-            if(trader<total_pages)
-            {
-                if(over==0)
-                {
-                    pullListView.setSelection(trader*20+1);
-                    Log.d(TAG,"滑动到"+String.valueOf(trader*20+1));
-                }
-                else
-                {
-                    pullListView.setSelection(trader*20+over);
-                }
-            }
-        }
-
     }
     private  void getUpLoadData()
     {
@@ -158,12 +141,13 @@ public class NoticeFragment  extends Fragment{
         notice_page = 1;
         getUpData(true);
 
+
     }
     private class MyAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
-            return notices.size();
+            return newses.size();
         }
 
         @Override
@@ -191,8 +175,8 @@ public class NoticeFragment  extends Fragment{
             {
                 myViewHolder=(MyViewHolder) view.getTag();
             }
-            myViewHolder.news_view.setText(notices.get(i).getTitle());
-            myViewHolder.date_view.setText(notices.get(i).getDate());
+            myViewHolder.news_view.setText(newses.get(i).getTitle());
+            myViewHolder.date_view.setText(newses.get(i).getDate());
             return  view;
         }
         private  class  MyViewHolder
@@ -219,7 +203,7 @@ public class NoticeFragment  extends Fragment{
                 message.setData(bundle);
                 notice_handler.sendMessage(message);
             } catch (IOException e) {
-                Log.d("False","新闻数据请求出错");
+                Log.d("False","公告数据请求出错");
             }
 
         }
@@ -229,41 +213,36 @@ public class NoticeFragment  extends Fragment{
         @Override
         public void handleMessage(Message msg) {
             String news_info=msg.getData().getString("info_result");
-            if(!news_info.equals(""))
-            {
+            if (news_info != null && !news_info.equals("")) {
                 try {
-                    boolean result=new JSONObject(news_info).getBoolean("Result");
-                    if(result==true)
-                    {
+                    boolean result = new JSONObject(news_info).getBoolean("Result");
+                    if (result) {
 
-                        JSONObject detail=(JSONObject) new JSONObject(news_info).get("Detail");
-                        String type=detail.getString("Type");
-                        total_pages=detail.getInt("Pages");
-                        amount=detail.getInt("Amount");
-                        JSONArray jsonArray= detail.getJSONArray("Data");
-                        if(type.equals("公告"))
-                        {
+                        JSONObject detail = (JSONObject) new JSONObject(news_info).get("Detail");
+                        String type = detail.getString("Type");
+                        total_pages = detail.getInt("Pages");
+                        amount = detail.getInt("Amount");
+                        JSONArray jsonArray = detail.getJSONArray("Data");
+                        if (type.equals("公告")) {
                             //下拉刷新，否则上拉加载
-                            if(notice_page==1)
-                            {
-                                notices=new ArrayList<>();
+                            if (notice_page == 1) {
+                                newses = new ArrayList<>();
                             }
-                            for(int i=0;i<jsonArray.length();i++)
-                            {
-                                JSONObject jsonObject=(JSONObject)jsonArray.get(i);
-                                News news=new News(
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                                News news = new News(
                                         jsonObject.getInt("ID"),
                                         jsonObject.getString("Title"),
                                         jsonObject.getString("Date")
                                 );
-                                notices.add(news);
+                                newses.add(news);
                             }
-                            setupListView();
+
+                            adapter.notifyDataSetChanged();
+                            Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
                         }
-                    }
-                    else
-                    {
-                        Toast.makeText(getContext(),"获取失败",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), "获取失败", Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
@@ -273,4 +252,6 @@ public class NoticeFragment  extends Fragment{
             }
         }
     }
+
+
 }

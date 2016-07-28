@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.wyz.xiyoug.Model.Book_Rank;
 import com.example.wyz.xiyoug.Model.News;
 import com.example.wyz.xiyoug.R;
+import com.example.wyz.xiyoug.Util.MyProgressDialog;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
 import com.example.wyz.xiyoug.pulltorefreshlistview.PullListView;
 
@@ -43,7 +44,6 @@ public class InfoFragment extends Fragment {
     private FragmentManager fragmentManager;
 
     private  String TAG="InfoFragment";
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.info_page,container,false);
@@ -88,7 +88,7 @@ public class InfoFragment extends Fragment {
                 }
                 break;
         }
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
     }
 
     private void hideFragments(FragmentTransaction transaction) {
@@ -122,4 +122,5 @@ public class InfoFragment extends Fragment {
 
         }
     }
+
 }

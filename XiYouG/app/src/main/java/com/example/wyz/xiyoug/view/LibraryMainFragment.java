@@ -32,7 +32,7 @@ import com.example.wyz.xiyoug.R;
  * Created by Wyz on 2016/7/20.
  */
 public class LibraryMainFragment extends Fragment {
-
+    private  View view;
     //包含三个Fragment，主界面中的首页，我的，信息
     private ViewPager viewPager;
     //存放三个页面的对应的Fragment
@@ -55,13 +55,14 @@ public class LibraryMainFragment extends Fragment {
     int currentTab = -1;
 
 
-    private  View view;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.content,container,false);
         InitViewPager();
         setUpViewComponent();
+        viewPager.setCurrentItem(0);
         return view;
     }
     private void InitViewPager() {
@@ -81,7 +82,7 @@ public class LibraryMainFragment extends Fragment {
         //viewPager.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
         viewPager.setAdapter(new MyFrageStatePagerAdapter(getChildFragmentManager()));
-        viewPager.setOnPageChangeListener(new MyOnPageChangedListener());
+        viewPager.addOnPageChangeListener(new MyOnPageChangedListener());
 
 
     }
@@ -96,13 +97,6 @@ public class LibraryMainFragment extends Fragment {
         infopage.setOnClickListener(new MyOnClickListener(1));
         mypage.setOnClickListener(new MyOnClickListener(2));
     }
-    /**
-     *   home界面的Menu按钮的点击事件
-     */
-    public static void MenuClick() {
-        //slideMenu.toggle();
-    }
-
     /**
      * 三个页面的的适配器
      */

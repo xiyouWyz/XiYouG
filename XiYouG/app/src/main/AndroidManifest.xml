@@ -19,6 +19,8 @@
         <activity android:name=".MyBorrowActivity"></activity>
         <activity android:name=".MyCollectionActivity"></activity>
         <activity android:name=".MyHistoryBorActivity"></activity>
+        <activity android:name=".BookSearchActivity"></activity>
+        <activity android:name=".BookDetailActivity"></activity>
     </application>
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 

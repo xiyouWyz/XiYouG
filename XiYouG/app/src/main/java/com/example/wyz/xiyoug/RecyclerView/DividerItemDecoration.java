@@ -5,9 +5,12 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.support.v4.app.NotificationCompatSideChannelService;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import com.example.wyz.xiyoug.R;
 
 /**
  * Created by Wyz on 2016/4/21.
@@ -15,7 +18,7 @@ import android.view.View;
 public  class DividerItemDecoration extends RecyclerView.ItemDecoration{
     private static final int[] ATTRS = new int[]{
 
-            android.R.attr.listDivider
+            android.R.attr.listDivider,
     };
 
     public static final int HORIZONTAL_LIST = LinearLayoutManager.HORIZONTAL;

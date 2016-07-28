@@ -9,8 +9,8 @@
     <dimen name="rank_viewpager">12sp</dimen>
     <dimen name="rank_listView_word">15sp</dimen
         >
-    <dimen name="info_news">20sp</dimen>
-    <dimen name="info_notice">20sp</dimen>
+    <dimen name="info_news">18sp</dimen>
+    <dimen name="info_notice">18sp</dimen>
     <dimen name="info_item">16sp</dimen>
     <dimen name="info_item_date">13sp</dimen>
     <dimen name="info_detail">22sp</dimen>
@@ -26,7 +26,7 @@
     <dimen name="login_close">17sp</dimen>
 
     <dimen name="my_bor_title">18sp</dimen>
-    <dimen name="my_bor_info">15sp</dimen>
+    <dimen name="my_bor_info">17sp</dimen>
     <dimen name="my_bor_item_title">18sp</dimen>
     <dimen name="my_bor_item_others">15sp</dimen>
     <dimen name="my_bor_item_state">13sp</dimen>
@@ -42,4 +42,22 @@
     <dimen name="my_his_item_typeLabel">15sp</dimen>
     <dimen name="my_his_item_type">15sp</dimen>
     <dimen name="my_his_item_date">15sp</dimen>
+
+    <dimen name="book_detail_page_title">18sp</dimen>
+    <dimen name="book_detail_page_fragmentTitle">16sp</dimen>
+    <dimen name="book_detail_page_content">15sp</dimen>
+
+    <dimen name="book_detail_class_title1">17sp</dimen>
+    <dimen name="book_detail_class_title2">17sp</dimen>
+    <dimen name="book_detail_class_title3">17sp</dimen>
+
+    <dimen name="book_search_content">16sp</dimen>
+    <dimen name="book_search_author">13sp</dimen>
+    <dimen name="book_search_title">18sp</dimen>
+
+    <dimen name="book_circul_word">16sp</dimen>
+    <dimen name="book_circul_status">18sp</dimen>
+
+    <dimen name="book_refer_title">18sp</dimen>
+    <dimen name="book_refer_word">16sp</dimen>
 </resources>

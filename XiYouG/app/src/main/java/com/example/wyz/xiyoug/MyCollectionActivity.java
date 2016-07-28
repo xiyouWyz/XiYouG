@@ -1,5 +1,6 @@
 package com.example.wyz.xiyoug;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,15 +14,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wyz.xiyoug.Model.Book_Collection;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
+import com.example.wyz.xiyoug.Util.MyAnimation;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
 import com.example.wyz.xiyoug.View.MyFragment;
 
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,6 +46,10 @@ public class MyCollectionActivity extends AppCompatActivity {
     private  MyThread myThread;
     private  MyHandler myHandler=new MyHandler();
     private  final  String TAG="MyCollectionActivity";
+    private RelativeLayout load_view;
+    private  LinearLayout content;
+    private  MyLoadHandler myLoadHandler=new MyLoadHandler();
+    private  String colDelUrl;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +66,9 @@ public class MyCollectionActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         listView=(ListView) findViewById(R.id.listView);
+        content=(LinearLayout)findViewById(R.id.content);
+        load_view=(RelativeLayout)findViewById(R.id.loading);
+        new MyAnimation(MyCollectionActivity.this, "胖萌正在为您努力加载....", R.drawable.loading, load_view);
 
     }
     private void getListViewData() {
@@ -67,10 +79,27 @@ public class MyCollectionActivity extends AppCompatActivity {
     private void setListViewData() {
         myAdapter=new MyAdapter();
         listView.setAdapter(myAdapter);
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+              @Override
+              public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                  List<BasicNameValuePair> basicNameValuePairs=new ArrayList<BasicNameValuePair>();
+                  basicNameValuePairs.add(new BasicNameValuePair("session",MyFragment.SESSIONID));
+                  basicNameValuePairs.add(new BasicNameValuePair("id",book_collections.get(i).getId()));
+                  colDelUrl=OkHttpUtil.attachHttpGetParams(HttpLinkHeader.BOOK_CANCEL_COLLECTION,basicNameValuePairs);
+                  return false;
+              }
+         });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d(TAG,"点击了第"+i+"个item");
+                String url=HttpLinkHeader.BOOK_DETAIL_ID+book_collections.get(i).getId();
+                Intent intent=new Intent();
+                Bundle bundle=new Bundle();
+                bundle.putString("url",url);
+                intent.putExtras(bundle);
+                intent.setClass(MyCollectionActivity.this,BookDetailActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -179,6 +208,7 @@ public class MyCollectionActivity extends AppCompatActivity {
                                         jsonObject.getString("Title"),
                                         jsonObject.getString("Pub"),
                                         jsonObject.getString("Sort"),
+                                        jsonObject.getString("ID"),
                                         imagesObject.getString("small")
                                 );
                                 book_collections.add(book_collection);
@@ -190,7 +220,11 @@ public class MyCollectionActivity extends AppCompatActivity {
                             else
                             {
                                 setListViewData();
+
                             }
+                            Message message=new Message();
+                            message.what=1;
+                            myLoadHandler.sendMessage(message);
                         }
                     }
                     else
@@ -200,6 +234,18 @@ public class MyCollectionActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+        }
+    }
+    private  class  MyLoadHandler extends  Handler
+    {
+        @Override
+        public void handleMessage(Message msg) {
+
+            if(msg.what==1)
+            {
+                load_view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
             }
         }
     }

@@ -48,4 +48,35 @@
 
     <string name="my_his_title">我的历史</string>
     <string name="my_his_item_typeLabel">操作类型 :</string>
+
+    <string name="book_detail_page_title">书籍详情</string>
+    <string name="book_detail_page_bookInfo">书籍资料</string>
+    <string name="book_detail_page_circulation">流通情况</string>
+    <string name="book_detail_page_referBooks">相关推荐</string>
+    <string name="book_detail_page_titleLabel">书名:</string>
+    <string name="book_detail_page_authorLabel">作者:</string>
+    <string name="book_detail_page_pubLabel">出版社:</string>
+    <string name="book_detail_page_sortLabel">索书号:</string>
+    <string name="book_detail_page_pagesLabel">页数:</string>
+    <string name="book_detail_page_availableLabel">可借数量:</string>
+    <string name="book_detail_page_totalLabel1">共有图书</string>
+    <string name="book_detail_page_rentTimesLabel">借阅次数:</string>
+    <string name="book_detail_page_favTimesLabel">收藏次数:</string>
+    <string name="book_detail_page_totalLabel">藏书数量:</string>
+    <string name="book_detail_page_subjectLabel">主题分类:</string>
+    <string name="book_detail_page_summaryLabel">图书简介:</string>
+    
+    <string name="book_detail_class_title1">基本资料</string>
+    <string name="book_detail_class_title2">流通情况</string>
+    <string name="book_detail_class_title3">相关推荐</string>
+
+    <string name="book_search_title">图书检索</string>
+    <string name="book_search_hint_word">请输入书名</string>
+
+
+    <string name="book_circul_sortLabel">位置:</string>
+    <string name="book_circul_barLabel">条形码:</string>
+
+    <string name="book_refer_authorLabel">作者:</string>
+    <string name="book_refer_idLabel">控制号:</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.wyz.xiyoug;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +24,7 @@ import com.example.wyz.xiyoug.Model.Book_Borrow;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.RecyclerView.DividerItemDecoration;
 import com.example.wyz.xiyoug.RecyclerView.OnItemOnClickListenerInterface;
+import com.example.wyz.xiyoug.Util.MyAnimation;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
 import com.example.wyz.xiyoug.View.MyFragment;
 
@@ -52,6 +56,9 @@ public class MyBorrowActivity  extends AppCompatActivity
     private List<Book_Borrow> book_borrows;
     private final   String TAG="MyBorrowActivity";
     private String renew_url;
+    private LinearLayout content;
+    private RelativeLayout load_view;
+    private  MyLoadHandler myLoadHandler=new MyLoadHandler();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,6 +75,7 @@ public class MyBorrowActivity  extends AppCompatActivity
         toolbar=(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         already_view=(TextView)findViewById(R.id.already_number);
         remain_view=(TextView)findViewById(R.id.remain_number);
         continue_view=(TextView)findViewById(R.id.continue_number);
@@ -78,7 +86,9 @@ public class MyBorrowActivity  extends AppCompatActivity
         recyclerView.setLayoutManager(linearLayoutManager);
         DividerItemDecoration dividerItemDecoration =new DividerItemDecoration(MyBorrowActivity.this,DividerItemDecoration.VERTICAL_LIST);
         recyclerView.addItemDecoration(dividerItemDecoration);
-
+        content=(LinearLayout)findViewById(R.id.content);
+        load_view=(RelativeLayout)findViewById(R.id.loading);
+        new MyAnimation(MyBorrowActivity.this, "胖萌正在为您努力加载....", R.drawable.loading, load_view);
     }
     private void setupRecyclerView() {
 
@@ -86,14 +96,13 @@ public class MyBorrowActivity  extends AppCompatActivity
         myAdapter.setOnItemClickListener(new OnItemOnClickListenerInterface.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
-
-                List<BasicNameValuePair> basicNameValuePairs=new ArrayList<BasicNameValuePair>();
-                basicNameValuePairs.add(new BasicNameValuePair("session",MyFragment.SESSIONID));
-                basicNameValuePairs.add(new BasicNameValuePair("barcode",book_borrows.get(position).getBarcode()));
-                basicNameValuePairs.add(new BasicNameValuePair("department_id",book_borrows.get(position).getDepartment_id()));
-                basicNameValuePairs.add(new BasicNameValuePair("library_id",book_borrows.get(position).getLibrary_id()));
-                renew_url=OkHttpUtil.attachHttpGetParams(HttpLinkHeader.BOOK_RENEW,basicNameValuePairs);
-
+                String url=HttpLinkHeader.BOOK_DETAIL_BARCODE+book_borrows.get(position).getBarcode();
+                Intent intent=new Intent();
+                Bundle  bundle=new Bundle();
+                bundle.putString("url",url);
+                intent.putExtras(bundle);
+                intent.setClass(MyBorrowActivity.this,BookDetailActivity.class);
+                startActivity(intent);
                 Log.d(TAG,"点击了第"+position+"个item");
             }
 
@@ -132,12 +141,7 @@ public class MyBorrowActivity  extends AppCompatActivity
             myViewHolder.title_view.setText(book_borrows.get(i).getTitle());
             myViewHolder.department_view.setText(book_borrows.get(i).getDepartment());
             myViewHolder.date_view.setText(book_borrows.get(i).getDate());
-            myViewHolder.state_view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d(TAG,"点击了按钮");
-                }
-            });
+            myViewHolder.state_view.setOnClickListener(new MyRenewOnClickListener(i));
             if(book_borrows.get(i).getCanRenew()==true)
             {
                 myViewHolder.state_view.setText("我要续借");
@@ -195,6 +199,23 @@ public class MyBorrowActivity  extends AppCompatActivity
 
         public void setOnItemClickListener(OnItemOnClickListenerInterface.OnItemClickListener onItemClickListener) {
             this.onItemClickListener = onItemClickListener;
+        }
+    }
+    public  class  MyRenewOnClickListener implements View.OnClickListener {
+
+        private  int index;
+        public MyRenewOnClickListener(int i) {
+            index=i;
+        }
+
+        @Override
+        public void onClick(View view) {
+            List<BasicNameValuePair> basicNameValuePairs=new ArrayList<BasicNameValuePair>();
+            basicNameValuePairs.add(new BasicNameValuePair("session",MyFragment.SESSIONID));
+            basicNameValuePairs.add(new BasicNameValuePair("barcode",book_borrows.get(index).getBarcode()));
+            basicNameValuePairs.add(new BasicNameValuePair("department_id",book_borrows.get(index).getDepartment_id()));
+            basicNameValuePairs.add(new BasicNameValuePair("library_id",book_borrows.get(index).getLibrary_id()));
+            renew_url=OkHttpUtil.attachHttpGetParams(HttpLinkHeader.BOOK_RENEW,basicNameValuePairs);
         }
     }
     public  class  MyThread implements  Runnable
@@ -256,8 +277,8 @@ public class MyBorrowActivity  extends AppCompatActivity
                                         jsonObject.getString("State"),
                                         jsonObject.getString("Date"),
                                         jsonObject.getBoolean("CanRenew"),
-                                        jsonObject.getString("Department_id "),
-                                        jsonObject.getString("Library_id ")
+                                        jsonObject.getString("Department_id"),
+                                        jsonObject.getString("Library_id")
                                 );
                                 book_borrows.add(book_borrow);
                                 if(book_borrow.getState().equals("本馆续借"))
@@ -278,6 +299,9 @@ public class MyBorrowActivity  extends AppCompatActivity
                             remain_view.setText(String.valueOf(15-bor_account));
                             continue_view.setText(String.valueOf(continue_account));
                             outTime_view.setText(String.valueOf(0));
+                            Message message=new Message();
+                            message.what=1;
+                            myLoadHandler.sendMessage(message);
 
                         }
 
@@ -329,6 +353,18 @@ public class MyBorrowActivity  extends AppCompatActivity
                 e.printStackTrace();
             }
 
+        }
+    }
+    private  class  MyLoadHandler extends  Handler
+    {
+        @Override
+        public void handleMessage(Message msg) {
+
+            if(msg.what==1)
+            {
+                load_view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
+            }
         }
     }
 }

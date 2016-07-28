@@ -1,5 +1,6 @@
 package com.example.wyz.xiyoug;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,13 +14,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wyz.xiyoug.Model.Book_Collection;
 import com.example.wyz.xiyoug.Model.Book_HistoryBor;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
+import com.example.wyz.xiyoug.Util.MyAnimation;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
 import com.example.wyz.xiyoug.View.MyFragment;
 
@@ -42,6 +46,9 @@ public class MyHistoryBorActivity extends AppCompatActivity {
     private  MyThread myThread;
     private  MyHandler myHandler=new MyHandler();
     private  final  String TAG="MyHistoryBorActivity";
+    private LinearLayout content;
+    private RelativeLayout load_view;
+    private  MyLoadHandler myLoadHandler=new MyLoadHandler();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +62,9 @@ public class MyHistoryBorActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         listView=(ListView) findViewById(R.id.listView);
+        content=(LinearLayout)findViewById(R.id.content);
+        load_view=(RelativeLayout)findViewById(R.id.loading);
+        new MyAnimation(MyHistoryBorActivity.this, "胖萌正在为您努力加载....", R.drawable.loading, load_view);
     }
     private void getListViewData() {
         myThread=new MyThread();
@@ -68,6 +78,13 @@ public class MyHistoryBorActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d(TAG,"点击了第"+i+"个item");
+                String url=HttpLinkHeader.BOOK_DETAIL_BARCODE+book_historyBors.get(i).getBarcode();
+                Intent intent=new Intent();
+                Bundle bundle=new Bundle();
+                bundle.putString("url",url);
+                intent.putExtras(bundle);
+                intent.setClass(MyHistoryBorActivity.this,BookDetailActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -172,6 +189,7 @@ public class MyHistoryBorActivity extends AppCompatActivity {
                                 JSONObject jsonObject=(JSONObject)jsonArray.get(i);
                                 Book_HistoryBor book_historyBor=new Book_HistoryBor(
                                         jsonObject.getString("Title"),
+                                        jsonObject.getString("Barcode"),
                                         jsonObject.getString("Type"),
                                         jsonObject.getString("Date")
                                 );
@@ -184,7 +202,11 @@ public class MyHistoryBorActivity extends AppCompatActivity {
                             else
                             {
                                 setListViewData();
+                                Message message=new Message();
+                                message.what=1;
+                                myLoadHandler.sendMessage(message);
                             }
+
                         }
                     }
                     else
@@ -194,6 +216,19 @@ public class MyHistoryBorActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+        }
+    }
+
+    private  class  MyLoadHandler extends  Handler
+    {
+        @Override
+        public void handleMessage(Message msg) {
+
+            if(msg.what==1)
+            {
+                load_view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
             }
         }
     }

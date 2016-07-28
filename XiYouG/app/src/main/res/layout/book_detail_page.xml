@@ -1,41 +1,446 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+
     >
     <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="50dp"
+        android:background="@color/book_detail_page_title_back"
+        >
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-             android:text=""
+             android:text="@string/book_detail_title"
+            android:textColor="@color/book_detail_page_title"
+
+            android:textSize="@dimen/book_detail_page_title"
+            android:gravity="center"
+
             />
     </android.support.v7.widget.Toolbar>
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal"
+        android:id="@+id/content"
+        android:visibility="visible"
 
+        android:layout_below="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/book_detail_page_back"
         >
-        <LinearLayout
+        <ScrollView
+            android:id="@+id/nestScrollView"
+            android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
+            >
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:orientation="horizontal"
+                    >
+                    <ImageView
+                        android:id="@+id/img"
+                        android:layout_margin="10dp"
+                        android:layout_width="80dp"
+                        android:layout_height="100dp"
+                        />
+                    <RelativeLayout
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_toRightOf="@id/img"
+                        android:layout_alignTop="@id/img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/titleLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/book_detail_page_titleLabel"
+                            android:textColor="@color/book_detail_page_word"
+                            android:textSize="@dimen/book_detail_page_content"
+                            />
+                        <TextView
+                            android:id="@+id/title"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_toRightOf="@id/titleLabel"
+                            android:layout_marginLeft="5dp"
+                            android:text="JavaScript核心概念及实sdadasda践"
+                            android:textColor="@color/book_detail_page_word"
+                            android:textSize="@dimen/book_detail_page_content"
+                            />
+                        <TextView
+                            android:layout_marginTop="5dp"
+                            android:id="@+id/authorLabel"
+                            android:layout_below="@id/title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/book_detail_page_authorLabel"
+                            android:textColor="@color/book_detail_page_word"
+                            android:textSize="@dimen/book_detail_page_content"
+                            />
+                        <TextView
+                            android:id="@+id/author"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignTop="@id/authorLabel"
+                            android:layout_toRightOf="@id/authorLabel"
+                            android:layout_marginLeft="5dp"
+                            android:text="邱俊涛 4著"
+                            android:textColor="@color/book_detail_page_word"
+                            android:textSize="@dimen/book_detail_page_content"
+                            />
+                        <TextView
+                            android:id="@+id/pubLabel"
+                            android:layout_marginTop="5dp"
+
+                            android:layout_below="@id/author"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/book_detail_page_pubLabel"
+                            android:textColor="@color/book_detail_page_word"
+                            android:textSize="@dimen/book_detail_page_content"
+                            />
+                        <TextView
+                            android:id="@+id/pub"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignTop="@id/pubLabel"
+                            android:layout_toRightOf="@id/pubLabel"
+                            android:layout_marginLeft="5dp"
+                            android:text="北京"
+                            android:textColor="@color/book_detail_page_word"
+                            android:textSize="@dimen/book_detail_page_content"
+                            />
+                    </RelativeLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    >
+
+                    <ImageView
+                        android:background="@color/book_detail_page_divide"
+                        android:layout_width="20dp"
+                        android:layout_height="1dp" />
+                    <TextView
+                        android:text="@string/book_detail_class_title1"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:textSize="@dimen/book_detail_class_title1"
+                        android:textColor="@color/book_detail_page_divide"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <ImageView
+                        android:background="@color/book_detail_page_divide"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="20dp"
+                    >
+                    <TextView
+                        android:id="@+id/sortLabel"
+                        android:text="@string/book_detail_page_sortLabel"
+                        android:textColor="@color/book_detail_page_word"
+                        android:textSize="@dimen/book_detail_page_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/sort"
+                        android:text="O1-49"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/sortLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/book_detail_page_word"
+                        android:textSize="@dimen/book_detail_page_content"
+                        />
+                    <TextView
+                        android:id="@+id/pagesLabel"
+                        android:layout_marginTop="5dp"
+                        android:layout_below="@id/sort"
+                        android:text="@string/book_detail_page_pagesLabel"
+                        android:textColor="@color/book_detail_page_word"
+                        android:textSize="@dimen/book_detail_page_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/pages"
+                        android:text="152"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/pagesLabel"
+                        android:layout_alignTop="@id/pagesLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/book_detail_page_word"
+                        android:textSize="@dimen/book_detail_page_content"
+                        />
+                    <TextView
+                        android:id="@+id/avaliableLabel"
+                        android:layout_marginTop="5dp"
+                        android:layout_below="@id/pages"
+                        android:text="@string/book_detail_page_availableLabel"
+                        android:textColor="@color/book_detail_page_word"
+                        android:textSize="@dimen/book_detail_page_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/avaliable"
+                        android:text="1"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/avaliableLabel"
+                        android:layout_alignTop="@id/avaliableLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/book_detail_page_word"
+                        android:textSize="@dimen/book_detail_page_content"
+                        />
+                    <TextView
+                        android:id="@+id/rentTimesLabel"
+                        android:layout_marginTop="5dp"
+                        android:layout_below="@id/avaliable"
+                        android:text="@string/book_detail_page_rentTimesLabel"
+                        android:textColor="@color/book_detail_page_word"
+                        android:textSize="@dimen/book_detail_page_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/rentTimes"
+                        android:text="88"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/rentTimesLabel"
+                        android:layout_alignTop="@id/rentTimesLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/book_detail_page_word"
+                        android:textSize="@dimen/book_detail_page_content"
+                        />
+                    <TextView
+                        android:layout_marginLeft="50dp"
+                        android:id="@+id/favTimesLabel"
+
+                        android:layout_toRightOf="@id/rentTimes"
+                        android:layout_alignTop="@id/rentTimesLabel"
+                        android:text="@string/book_detail_page_favTimesLabel"
+                        android:textColor="@color/book_detail_page_word"
+                        android:textSize="@dimen/book_detail_page_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/favTimes"
+                        android:text="0"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/favTimesLabel"
+                        android:layout_alignTop="@id/favTimesLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/book_detail_page_word"
+                        android:textSize="@dimen/book_detail_page_content"
+                        />
+                    <TextView
+                        android:id="@+id/totalLabel"
+                        android:layout_marginTop="5dp"
+                        android:layout_below="@id/rentTimesLabel"
+                        android:text="@string/book_detail_page_totalLabel"
+                        android:textColor="@color/book_detail_page_word"
+                        android:textSize="@dimen/book_detail_page_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/total"
+                        android:text="4"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/totalLabel"
+                        android:layout_alignTop="@id/totalLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/book_detail_page_word"
+                        android:textSize="@dimen/book_detail_page_content"
+                        />
+                    <TextView
+                        android:id="@+id/subjectLabel"
+                        android:layout_marginTop="5dp"
+                        android:layout_below="@id/totalLabel"
+                        android:text="@string/book_detail_page_subjectLabel"
+                        android:textColor="@color/book_detail_page_word"
+                        android:textSize="@dimen/book_detail_page_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/subject"
+                        android:text="JAVA语言  --程序设计  --基本知识sdadadasdasda"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/subjectLabel"
+                        android:layout_alignTop="@id/subjectLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/book_detail_page_word"
+                        android:textSize="@dimen/book_detail_page_content"
+                        />
+                    <TextView
+                        android:id="@+id/summaryLabel"
+                        android:layout_marginTop="5dp"
+                        android:layout_below="@id/subject"
+                        android:text="@string/book_detail_page_summaryLabel"
+                        android:textColor="@color/book_detail_page_word"
+                        android:textSize="@dimen/book_detail_page_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/summary"
+                        android:text= "全书共16章和两个附录，可以分为两个部分。第一部分包括第1章到第7章，侧重介绍JavaScript语言的核心概念，为读者学习后续内容打下牢固基础；这部分介绍了JavaScript的对象、函数、数组、正则表达式、闭包等主题，以及相关的重要知识点。 第二部分包括第8章到第16章， 着重讨论了JavaScript支持的编程范式、核心概念的延伸、JavaScript的前端开发框架、测试框架、JavaScript引擎、JavaScript在Java， C、C++等应用中的使用，以及服务器端的JavaScript应用。"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/summaryLabel"
+                        android:layout_alignTop="@id/summaryLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/book_detail_page_word"
+                        android:textSize="@dimen/book_detail_page_content"
+                        />
+
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    >
+
+                    <ImageView
+                        android:background="@color/book_detail_page_divide"
+                        android:layout_width="20dp"
+                        android:layout_height="1dp" />
+                    <TextView
+                        android:text="@string/book_detail_class_title2"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:textSize="@dimen/book_detail_class_title2"
+                        android:textColor="@color/book_detail_page_divide"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <ImageView
+                        android:background="@color/book_detail_page_divide"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:orientation="vertical"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_margin="5dp"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:text="@string/book_detail_page_availableLabel"
+                            android:textSize="@dimen/book_detail_page_content"
+                            android:textColor="@color/book_detail_page_word"
+                            />
+                        <TextView
+                            android:id="@+id/canBorCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="3"
+                            android:textSize="@dimen/book_detail_page_content"
+                            android:textColor="@color/book_detail_page_word"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/book_detail_page_totalLabel1"
+                            android:layout_marginLeft="25dp"
+                            android:textSize="@dimen/book_detail_page_content"
+                            android:textColor="@color/book_detail_page_word"
+                            />
+                        <TextView
+                            android:id="@+id/totalCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="9"
+                            android:layout_marginLeft="5dp"
+                            android:textSize="@dimen/book_detail_page_content"
+                            android:textColor="@color/book_detail_page_word"
+                            />
+                    </LinearLayout>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/circul_recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:fadeScrollbars="false"
+                        ></android.support.v7.widget.RecyclerView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    >
+
+                    <ImageView
+                        android:background="@color/book_detail_page_divide"
+                        android:layout_width="20dp"
+                        android:layout_height="1dp" />
+                    <TextView
+                        android:text="@string/book_detail_class_title3"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:textSize="@dimen/book_detail_class_title3"
+                        android:textColor="@color/book_detail_page_divide"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <ImageView
+                        android:background="@color/book_detail_page_divide"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent"
+                        android:layout_height="600dp"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal"
+                        >
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/refer_cyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="10dp"
+                            android:fadeScrollbars="false"
+                            ></android.support.v7.widget.RecyclerView>
+                     </LinearLayout>
+            </LinearLayout>
+
+        </ScrollView>
 
     </LinearLayout>
-    <android.support.v4.view.ViewPager
+
+    <include android:id="@+id/loading"
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v4.view.ViewPager>
-</LinearLayout>
+        android:layout_below="@id/toolbar"
+        layout="@layout/loading"></include>
+</RelativeLayout>

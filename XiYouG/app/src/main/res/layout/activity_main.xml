@@ -2,13 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
     <android.support.v7.widget.Toolbar
+
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/main_theme"
 
+
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         >
 
         <TextView
@@ -31,17 +36,64 @@
             android:id="@+id/dl_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/slideMenu_theme"
+            android:orientation="vertical"
             android:layout_gravity="start"
             >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    >
+                    <LinearLayout
+                        android:id="@+id/login"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+
+                        android:layout_centerInParent="true"
+                        >
+                        <com.example.wyz.xiyoug.Util.CircleImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:src="@drawable/logo"
+                            android:layout_gravity="center"
+                            app:civ_border_width="2dp"
+                            app:civ_border_color="#222222"
+                            />
+                        <TextView
+                            android:id="@+id/userName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/my_no_login"
+                            android:textColor="@color/my_studyNumber"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+
+                            android:textSize="@dimen/my_col"
+                            />
+
+
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </RelativeLayout>
             <LinearLayout
                 android:id="@+id/dl_menu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
                 android:orientation="vertical"
                 android:padding="5dp"
                 >
@@ -49,104 +101,135 @@
                     android:id="@+id/library"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+
                     >
-                    <ImageView
-                        android:id="@+id/library_logo"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="20dp"
-                        android:src="@drawable/library"
-                        android:layout_centerVertical="true"
-                        />
-                    <TextView
+                    <LinearLayout
+
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/library_name"
-                        android:layout_toRightOf="@id/library_logo"
-                        android:layout_marginLeft="20dp"
-                        android:textColor="@color/whiteWords"
-                        android:textSize="@dimen/slideMenuItem"
-                        android:layout_centerVertical="true"
-                        />
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        >
+                        <ImageView
+                            android:id="@+id/library_logo"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/library"
+                            android:layout_centerVertical="true"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:text="@string/library_name"
+                            android:layout_toRightOf="@id/library_logo"
+                            android:layout_marginLeft="20dp"
+                            android:textColor="@color/whiteWords"
+                            android:textSize="@dimen/slideMenuItem"
+                            android:layout_centerVertical="true"
+                            />
+                    </LinearLayout>
+
                 </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/score"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     >
-                    <ImageView
-                        android:id="@+id/score_logo"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="20dp"
-                        android:src="@drawable/score"
-                        android:layout_centerVertical="true"
-                        />
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/score_name"
-                        android:layout_toRightOf="@id/score_logo"
-                        android:layout_marginLeft="20dp"
-                        android:textColor="@color/whiteWords"
-                        android:textSize="@dimen/slideMenuItem"
-                        android:layout_centerVertical="true"
-                        />
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        >
+                        <ImageView
+                            android:id="@+id/score_logo"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/score"
+                            android:layout_centerVertical="true"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:text="@string/score_name"
+                            android:layout_toRightOf="@id/score_logo"
+                            android:layout_marginLeft="20dp"
+                            android:textColor="@color/whiteWords"
+                            android:textSize="@dimen/slideMenuItem"
+                            android:layout_centerVertical="true"
+                            />
+                    </LinearLayout>
                 </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/our"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     >
-                    <ImageView
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        >
+                        <ImageView
                         android:id="@+id/our_logo"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:src="@drawable/our"
                         android:layout_centerVertical="true"
                         />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/our_name"
-                        android:layout_toRightOf="@id/our_logo"
-                        android:layout_marginLeft="20dp"
-                        android:textColor="@color/whiteWords"
-                        android:textSize="@dimen/slideMenuItem"
-                        android:layout_centerVertical="true"
-                        />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:text="@string/our_name"
+                            android:layout_toRightOf="@id/our_logo"
+                            android:layout_marginLeft="20dp"
+                            android:textColor="@color/whiteWords"
+                            android:textSize="@dimen/slideMenuItem"
+                            android:layout_centerVertical="true"
+                            />
+                    </LinearLayout>
                 </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/feedback"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     >
-                    <ImageView
-                        android:id="@+id/feedback_logo"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="20dp"
-                        android:src="@drawable/feedback"
-                        android:layout_centerVertical="true"
-                        />
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/feedback_name"
-                        android:layout_toRightOf="@id/feedback_logo"
-                        android:layout_marginLeft="20dp"
-                        android:textColor="@color/whiteWords"
-                        android:textSize="@dimen/slideMenuItem"
-                        android:layout_centerVertical="true"
-                        />
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        >
+                        <ImageView
+                            android:id="@+id/feedback_logo"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/feedback"
+                            android:layout_centerVertical="true"
+
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:text="@string/feedback_name"
+                            android:layout_toRightOf="@id/feedback_logo"
+                            android:layout_marginLeft="20dp"
+                            android:textColor="@color/whiteWords"
+                            android:textSize="@dimen/slideMenuItem"
+                            android:layout_centerVertical="true"
+                            />
+                    </LinearLayout>
                 </RelativeLayout>
 
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></LinearLayout>
         </LinearLayout>
 
 

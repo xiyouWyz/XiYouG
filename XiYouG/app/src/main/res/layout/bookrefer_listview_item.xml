@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:descendantFocusability="blocksDescendants"
+        android:background="@drawable/listview_item_shape"
+
+        >
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+
+            >
+            <TextView
+                android:id="@+id/left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rank_item_leftBrackets"
+                android:textColor="@color/book_refer_word"
+                android:textSize="@dimen/book_refer_title"
+                android:layout_marginLeft="10dp"
+                />
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/left"
+                android:textSize="@dimen/book_refer_title"
+                android:textColor="@color/book_refer_word"
+                android:text="My SQL高效编程"
+                android:maxEms="14"
+                android:singleLine="true"
+                android:ellipsize="end"
+                />
+            <TextView
+                android:id="@+id/right"
+                android:layout_toRightOf="@id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rank_item_rightBrackets"
+                android:textColor="@color/book_refer_word"
+                android:textSize="@dimen/book_refer_title"
+                />
+            <TextView
+                android:id="@+id/authorLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/left"
+
+                android:layout_alignLeft="@id/left"
+                android:text="@string/book_refer_authorLabel"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/book_refer_word"
+                android:textSize="@dimen/book_refer_word"
+                />
+            <TextView
+                android:id="@+id/author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/left"
+
+                android:layout_toRightOf="@id/authorLabel"
+                android:text="O1-49/82"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/book_refer_word"
+                android:textSize="@dimen/book_refer_word"
+
+                />
+
+            <TextView
+                android:id="@+id/department"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/author"
+                android:layout_alignLeft="@id/authorLabel"
+                android:text="@string/book_refer_idLabel"
+                android:textColor="@color/book_refer_word"
+                android:textSize="@dimen/book_refer_word"
+                android:layout_marginTop="5dp"
+                />
+            <TextView
+                android:id="@+id/id"
+                android:textColor="@color/book_refer_word"
+                android:textSize="@dimen/book_refer_word"
+                android:layout_alignTop="@id/department"
+                android:layout_toRightOf="@id/department"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0100013266"
+                android:layout_marginLeft="5dp"
+                />
+        </RelativeLayout>
+
+    </RelativeLayout>
+</LinearLayout>

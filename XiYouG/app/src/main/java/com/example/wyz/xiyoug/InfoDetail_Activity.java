@@ -12,11 +12,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.Model.News;
+import com.example.wyz.xiyoug.Util.MyAnimation;
+import com.example.wyz.xiyoug.Util.MyProgressDialog;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
 import com.example.wyz.xiyoug.View.InfoFragment;
 
@@ -36,6 +41,8 @@ public class InfoDetail_Activity extends AppCompatActivity{
     private TextView title_view;
     private  TextView publisher_view;
     private  TextView date_view;
+    private  TextView pubLabel_view;
+    private  TextView pubDateLabel_view;
     private ImageView backView;
     private WebView webView;
     private  MyThread myThread;
@@ -43,6 +50,12 @@ public class InfoDetail_Activity extends AppCompatActivity{
     String url;
 
     private  final  String TAG="infoDetail_Activity";
+
+    private RelativeLayout view;
+    private ScrollView content;
+    private  MyLoadHandler handler =new MyLoadHandler();
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +90,11 @@ public class InfoDetail_Activity extends AppCompatActivity{
         publisher_view=(TextView) findViewById(R.id.publisher);
         date_view=(TextView) findViewById(R.id.date);
         webView=(WebView) findViewById(R.id.webView);
+        pubLabel_view=(TextView)findViewById(R.id.pubLabel);
+        pubDateLabel_view=(TextView)findViewById(R.id.pubDateLabel);
+        view=(RelativeLayout) findViewById(R.id.loading);
+        new MyAnimation(InfoDetail_Activity.this, "胖萌正在为您努力加载....", R.drawable.loading, view);
+        content=(ScrollView)findViewById(R.id.content);
     }
     public   class  MyThread implements  Runnable
     {
@@ -92,7 +110,6 @@ public class InfoDetail_Activity extends AppCompatActivity{
             } catch (IOException e) {
                 Log.d("False","新闻数据请求出错");
             }
-
         }
     }
     private  class  MyHandler extends Handler
@@ -112,10 +129,17 @@ public class InfoDetail_Activity extends AppCompatActivity{
                         String publisher=(String)jsonObject.get("Publisher");
                         String date=(String)jsonObject.get("Date");
                         String web=(String)jsonObject.get("Passage");
+
                         title_view.setText(title);
                         publisher_view.setText(publisher);
                         date_view.setText(date);
                         webView.loadData(web,"text/html","utf-8");
+                        pubLabel_view.setText("发布单位");
+                        pubDateLabel_view.setText("发布时间");
+                        Message message=new Message();
+                        message.what=1;
+                        handler.sendMessage(message);
+
                     }
                     else
                     {
@@ -134,5 +158,18 @@ public class InfoDetail_Activity extends AppCompatActivity{
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private  class  MyLoadHandler extends  Handler
+    {
+        @Override
+        public void handleMessage(Message msg) {
+
+            if(msg.what==1)
+            {
+                view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
+            }
+        }
     }
 }

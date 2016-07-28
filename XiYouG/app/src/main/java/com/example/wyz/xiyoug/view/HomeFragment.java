@@ -25,7 +25,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.wyz.xiyoug.BookDetailActivity;
 import com.example.wyz.xiyoug.InfoDetail_Activity;
+import com.example.wyz.xiyoug.MainActivity;
 import com.example.wyz.xiyoug.Model.Book_Rank;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.R;
@@ -94,7 +96,6 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.home_page, container, false);
         InitSlideViewPager();
-        adapter=new MyAdapter(new ArrayList<>(book_col_ranks));
         initData(0);
         setupViewCompent();
         return view;
@@ -123,40 +124,46 @@ public class HomeFragment extends Fragment {
         pullListView = (ListView) view.findViewById(R.id.plv_data);
         pullListView.setOverScrollMode(View.OVER_SCROLL_NEVER);
         pullListView.setAdapter(adapter);
-        /*
+
        pullListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
            @Override
            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                switch (rank_index)
                {
                    case 0:
+                       Log.d(TAG,"点击了收藏的第"+i+"个item"+book_col_ranks.get(i).getTitle());
+                       String url=HttpLinkHeader.BOOK_DETAIL_ID+book_col_ranks.get(i).getId();
                        Intent intent=new Intent();
                        Bundle bundle=new Bundle();
-                       bundle.putString("keyword",book_col_ranks.get(i-1).getTitle());
+                       bundle.putString("url",url);
                        intent.putExtras(bundle);
-                       intent.setClass(getActivity(),InfoDetail_Activity.class);
+                       intent.setClass(getActivity(),BookDetailActivity.class);
                        startActivity(intent);
                        break;
                    case  1:
+                       Log.d(TAG,"点击了借阅的第"+i+"个item"+book_bor_ranks.get(i).getTitle());
+                       String url1=HttpLinkHeader.BOOK_DETAIL_ID+book_bor_ranks.get(i).getId();
                        Intent intent1=new Intent();
                        Bundle bundle1=new Bundle();
-                       bundle1.putString("keyword",book_bor_ranks.get(i-1).getTitle());
+                       bundle1.putString("url",url1);
                        intent1.putExtras(bundle1);
-                       intent1.setClass(getActivity(),InfoDetail_Activity.class);
+                       intent1.setClass(getActivity(),BookDetailActivity.class);
                        startActivity(intent1);
                        break;
                    case  2:
+                       Log.d(TAG,"点击了查看的第"+i+"个item"+book_look_ranks.get(i).getTitle());
+                       String url2=HttpLinkHeader.BOOK_DETAIL_ID+book_look_ranks.get(i).getId();
                        Intent intent2=new Intent();
                        Bundle bundle2=new Bundle();
-                       bundle2.putString("keyword",book_look_ranks.get(i-1).getTitle());
+                       bundle2.putString("url",url2);
                        intent2.putExtras(bundle2);
-                       intent2.setClass(getActivity(),InfoDetail_Activity.class);
+                       intent2.setClass(getActivity(),BookDetailActivity.class);
                        startActivity(intent2);
                        break;
                }
            }
        });
-*/
+
         swipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.refresh_layout);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -178,19 +185,20 @@ public class HomeFragment extends Fragment {
     {
         adapter=new MyAdapter(ranks);
         pullListView.setAdapter(adapter);
+        //Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
+        swipeRefreshLayout.setRefreshing(false);
 
     }
     private void getData() {
         if(adapter!=null)
         {
-            adapter.notifyDataSetChanged();
+            //adapter.notifyDataSetChanged();
             initData(rank_index);
-            switch (rank_index)
+          /*  switch (rank_index)
             {
                 case  0:
                     pullListView.setAdapter(new MyAdapter(book_col_ranks));
-                    Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
-                    swipeRefreshLayout.setRefreshing(false);
+
                     break;
                 case 1:
                     pullListView.setAdapter(new MyAdapter(book_bor_ranks));
@@ -202,7 +210,7 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
                     swipeRefreshLayout.setRefreshing(false);
                     break;
-            }
+            }*/
         }
 
 
@@ -386,7 +394,7 @@ public class HomeFragment extends Fragment {
         rank_collection_text=(TextView)view.findViewById(R.id.rank_collection_text);
         rank_borrow_text=(TextView)view.findViewById(R.id.rank_borrow_text);
         rank_look_text=(TextView)view.findViewById(R.id.rank_look_text);
-
+        swipeRefreshLayout.setRefreshing(false);
         switch (index)
         {
             case 0:
@@ -395,12 +403,11 @@ public class HomeFragment extends Fragment {
                 rank_look_text.setTextColor(getResources().getColor(R.color.rank_text));
                 if(book_col_ranks.size()==0)
                 {
-                    adapter.notifyDataSetChanged();
+                    //adapter.notifyDataSetChanged();
                     initData(index);
                 }
                 else
                 {
-                    adapter.notifyDataSetChanged();
                     setupListView(book_col_ranks);
                 }
 
@@ -411,12 +418,12 @@ public class HomeFragment extends Fragment {
                 rank_look_text.setTextColor(getResources().getColor(R.color.rank_text));
                 if(book_bor_ranks.size()==0)
                 {
-                    adapter.notifyDataSetChanged();
+                   // adapter.notifyDataSetChanged();
                     initData(index);
                 }
                 else
                 {
-                    adapter.notifyDataSetChanged();
+                    //adapter.notifyDataSetChanged();
                     setupListView(book_bor_ranks);
                 }
                 break;
@@ -426,12 +433,12 @@ public class HomeFragment extends Fragment {
                 rank_look_text.setTextColor(getResources().getColor(R.color.rank_text_press));
                 if(book_look_ranks.size()==0)
                 {
-                    adapter.notifyDataSetChanged();
+                    //adapter.notifyDataSetChanged();
                     initData(index);
                 }
                 else
                 {
-                    adapter.notifyDataSetChanged();
+                    //adapter.notifyDataSetChanged();
                     setupListView(book_look_ranks);
                 }
                 break;
@@ -539,6 +546,7 @@ public class HomeFragment extends Fragment {
                 String rank_result=OkHttpUtil.getStringFromServer(url);
                 Log.d("rank_Result",rank_result.toString());
                 Message msg=new Message();
+                msg.what=1;
                 Bundle bundle=new Bundle();
                 bundle.putString("rank_result",rank_result);
                 bundle.putInt("rank_type",index);
@@ -546,7 +554,10 @@ public class HomeFragment extends Fragment {
                 handler_rankInfo.sendMessage(msg);
             } catch (IOException e) {
 
-                Log.d("False","排行榜数据请求出错");
+                Log.d("False","排行榜数据请求出错"+e.toString());
+                Message message=new Message();
+                message.what=0;
+                handler_rankInfo.sendMessage(message);
             }
         }
     }
@@ -555,75 +566,76 @@ public class HomeFragment extends Fragment {
 
         @Override
         public void handleMessage(Message msg){
-            String rank_info=msg.getData().getString("rank_result");
-            int rank_type=msg.getData().getInt("rank_type");
-            if(!rank_info.equals(""))
+            if(msg.what==0)
             {
-                try {
-                    boolean result=new JSONObject(rank_info).getBoolean("Result");
-                    if(result==true)
-                    {
-                        JSONArray jsonArray=new JSONObject(rank_info).getJSONArray("Detail");
-                        switch (rank_type)
-                        {
-                            case  0:
-                                book_col_ranks=new ArrayList<>();
-                                for(int i=0;i<jsonArray.length();i++)
-                                {
-                                    JSONObject jsonObject=(JSONObject)jsonArray.get(i);
-                                    Book_Rank book_rank=new Book_Rank(
-                                            jsonObject.getInt("Rank"),
-                                            jsonObject.getString("Title"),
-                                            jsonObject.getString("BorNum"),
-                                            jsonObject.getString("ID")
-                                    );
-                                    book_col_ranks.add(book_rank);
-                                }
-                                setupListView(book_col_ranks);
-                                break;
-                            case 1:
-                                book_bor_ranks=new ArrayList<>();
-                                for(int i=0;i<jsonArray.length();i++)
-                                {
-                                    JSONObject jsonObject=(JSONObject)jsonArray.get(i);
-                                    Book_Rank book_rank=new Book_Rank(
-                                            jsonObject.getInt("Rank"),
-                                            jsonObject.getString("Title"),
-                                            jsonObject.getString("BorNum"),
-                                            jsonObject.getString("ID")
-                                    );
-                                    book_bor_ranks.add(book_rank);
-                                }
-                                setupListView(book_bor_ranks);
-                                break;
-                            case 2:
-                                book_look_ranks=new ArrayList<>();
-                                for(int i=0;i<jsonArray.length();i++)
-                                {
-                                    JSONObject jsonObject=(JSONObject)jsonArray.get(i);
-                                    Book_Rank book_rank=new Book_Rank(
-                                            jsonObject.getInt("Rank"),
-                                            jsonObject.getString("Title"),
-                                            jsonObject.getString("BorNum"),
-                                            jsonObject.getString("ID")
-                                    );
-                                    book_look_ranks.add(book_rank);
-                                }
-                                setupListView(book_look_ranks);
-                                break;
+                swipeRefreshLayout.setRefreshing(false);
+                Toast.makeText(getContext(),"请检查网络连接",Toast.LENGTH_SHORT).show();
+            }
+            else if(msg.what==1)
+            {
+                String rank_info=msg.getData().getString("rank_result");
+                int rank_type=msg.getData().getInt("rank_type");
+                if (rank_info != null && !rank_info.equals("")) {
+                    try {
+                        boolean result = new JSONObject(rank_info).getBoolean("Result");
+                        if (result) {
+                            JSONArray jsonArray = new JSONObject(rank_info).getJSONArray("Detail");
+                            switch (rank_type) {
+                                case 0:
+                                    book_col_ranks = new ArrayList<>();
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                                        Book_Rank book_rank = new Book_Rank(
+                                                jsonObject.getInt("Rank"),
+                                                jsonObject.getString("Title"),
+                                                jsonObject.getString("BorNum"),
+                                                jsonObject.getString("ID")
+                                        );
+                                        book_col_ranks.add(book_rank);
+                                    }
+                                    setupListView(book_col_ranks);
+                                    break;
+                                case 1:
+                                    book_bor_ranks = new ArrayList<>();
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                                        Book_Rank book_rank = new Book_Rank(
+                                                jsonObject.getInt("Rank"),
+                                                jsonObject.getString("Title"),
+                                                jsonObject.getString("BorNum"),
+                                                jsonObject.getString("ID")
+                                        );
+                                        book_bor_ranks.add(book_rank);
+                                    }
+                                    setupListView(book_bor_ranks);
+                                    break;
+                                case 2:
+                                    book_look_ranks = new ArrayList<>();
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                                        Book_Rank book_rank = new Book_Rank(
+                                                jsonObject.getInt("Rank"),
+                                                jsonObject.getString("Title"),
+                                                jsonObject.getString("BorNum"),
+                                                jsonObject.getString("ID")
+                                        );
+                                        book_look_ranks.add(book_rank);
+                                    }
+                                    setupListView(book_look_ranks);
+                                    break;
+                            }
+
+                        } else {
+                            Toast.makeText(getContext(), "刷新失败", Toast.LENGTH_SHORT).show();
                         }
 
-                    }
-                    else
-                    {
-                        Toast.makeText(getContext(),"刷新失败",Toast.LENGTH_SHORT).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-
             }
+
 
         }
     }

@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:id="@+id/mainLayout"
-    >
+    android:id="@+id/mainLayout">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -12,64 +12,76 @@
         android:layout_weight="2"
         >
         <LinearLayout
-            android:id="@+id/login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_centerInParent="true"
-            >
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/user_logo"
-                android:layout_gravity="center_horizontal"
-                />
-            <TextView
-                android:id="@+id/studyNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/my_no_login"
-                android:textColor="@color/my_studyNumber"
-                android:layout_gravity="center"
-
-                android:layout_marginTop="10dp"
-                android:textSize="@dimen/my_col"
-                />
-
-
-
-
-        </LinearLayout>
-        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/login"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
             android:gravity="center"
             >
-            <TextView
-                android:id="@+id/major"
+            <LinearLayout
+                android:id="@+id/login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
 
-                android:textColor="@color/my_major"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                android:textSize="@dimen/my_col"
-                />
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
+                android:layout_centerInParent="true"
+                >
+                <com.example.wyz.xiyoug.Util.CircleImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/logo"
+                    android:layout_gravity="center"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="#222222"
+                    />
+                <TextView
+                    android:id="@+id/studyNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/my_no_login"
+                    android:textColor="@color/my_studyNumber"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="2dp"
+
+                    android:textSize="@dimen/my_col"
+                    />
+
+
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="2dp"
+                android:layout_below="@id/login"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                >
+                <TextView
+                    android:id="@+id/major"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-                android:textColor="@color/my_major"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                android:textSize="@dimen/my_col"
-                android:layout_marginStart="7dp"
-                />
+                    android:textColor="@color/my_major"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:textSize="@dimen/my_col"
+                    />
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:textColor="@color/my_major"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:textSize="@dimen/my_col"
+                    android:layout_marginStart="7dp"
+                    />
+            </LinearLayout>
         </LinearLayout>
+
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"

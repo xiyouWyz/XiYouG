@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#36B19F</color>
+    <color name="colorPrimaryDark">#1FA294</color>
     <color name="colorAccent">#FF4081</color>
 
     <color name="main_theme">#36B19F</color>
@@ -91,4 +91,29 @@
     <color name="my_his_item_type">#000</color>
     <color name="my_his_item_dateLabel">#59C4B6</color>
     <color name="my_his_item_date">#000</color>
+
+    <color name="book_detail_page_title">#fff</color>
+    <color name="book_detail_page_title_back">#36B19F</color>
+    <color name="book_detail_page_fragmentTitle_word">#000</color>
+    <color name="book_detail_page_fragmentTitle_back">#59C4B6</color>
+    <color name="book_detail_page_fragmentTitle_back_press">#D5EFEC</color>
+    <color name="book_detail_page_divide">#36B19F</color>
+    <color name="book_detail_page_word">#000</color>
+    <color name="book_detail_page_back">#D6F1ED</color>
+    <color name="book_detail_item_back">#EBF8F6</color>
+
+    <color name="book_search_title">#fff</color>
+    <color name="book_search_title_back">#36B19F</color>
+    <color name="book_search_back">#D6F1ED</color>
+    <color name="book_search_hint">#A0A0A0</color>
+    <color name="book_search_item_author">#36B19F</color>
+    <color name="book_search_item_title">#000</color>
+    <color name="book_search_divide">#A0A0A0</color>
+
+    <color name="book_circul_word">#000</color>
+    <color name="book_circul_status_canBor">#3ABC7C</color>
+    <color name="book_circul_status_alrBor">#A0A0A0</color>
+    <color name="book_circul_status_reBor">#000</color>
+
+    <color name="book_refer_word">#000</color>
 </resources>

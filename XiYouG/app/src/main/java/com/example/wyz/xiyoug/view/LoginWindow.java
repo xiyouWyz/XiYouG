@@ -33,17 +33,28 @@ import org.w3c.dom.Text;
 public class LoginWindow extends PopupWindow{
 
     private  View loginView;
-    private EditText account;
-    private EditText password;
+    private EditText account_view;
+    private EditText password_view;
     private CheckBox isRemember;
     private Button loginBtn;
     private TextView close_textView;
-    public LoginWindow(Context context,View.OnClickListener loginOnClick) {
+
+    public LoginWindow(Context context,View.OnClickListener loginOnClick ,String account,String password,boolean remember) {
         super(context);
         loginView=LayoutInflater.from(context).inflate(R.layout.login_page,null);
-        account=(EditText)loginView.findViewById(R.id.account);
-        password=(EditText)loginView.findViewById(R.id.password);
+        account_view=(EditText)loginView.findViewById(R.id.account);
+        password_view=(EditText)loginView.findViewById(R.id.password);
         isRemember=(CheckBox)loginView.findViewById(R.id.remember);
+        if(remember)
+        {
+            account_view.setText(account);
+            password_view.setText(password);
+            isRemember.setChecked(remember);
+        }
+        else
+        {
+            account_view.setText(account);
+        }
         loginBtn=(Button)loginView.findViewById(R.id.login_btn);
         close_textView=(TextView) loginView.findViewById(R.id.close) ;
         loginBtn.setOnClickListener(loginOnClick);
@@ -55,27 +66,23 @@ public class LoginWindow extends PopupWindow{
         this.setFocusable(true);
         this.setBackgroundDrawable(context.getDrawable(R.drawable.login_view_shape));
         this.setAnimationStyle(R.style.Login_Animation);
-        this.setOutsideTouchable(true);
+        this.setOutsideTouchable(false);
+
+
+
     }
+
     public    String getAccount()
     {
-        return  account.getText().toString();
+        return  account_view.getText().toString();
     }
     public    String getPassword()
     {
-        return  password.getText().toString();
+        return  password_view.getText().toString();
     }
     public    boolean getRemember()
     {
         return  isRemember.isChecked();
     }
-    /*
-    public   class MyOnClickListener implements View.OnClickListener {
 
-        @Override
-        public void onClick(View view) {
-
-        }
-    }
- */
 }

@@ -7,13 +7,23 @@ public class Book_Collection {
     private  String title;
     private  String pub;
     private  String sort;
+    private  String id;
     private  String images;
 
-    public Book_Collection(String title, String pub , String sort,String images) {
+    public Book_Collection(String title, String pub , String sort,String id,String images) {
         this.title = title;
         this.sort = sort;
         this.pub = pub;
         this.images=images;
+        this.id=id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getImages() {

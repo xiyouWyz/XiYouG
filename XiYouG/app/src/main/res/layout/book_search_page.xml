@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/book_search_back"
+
+    >
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/book_search_title_back"
+        >
+        <TextView
+            android:text="@string/book_search_title"
+            android:textColor="@color/book_search_title"
+            android:textSize="@dimen/book_search_title"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.v7.widget.Toolbar>
+    <SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:iconifiedByDefault="false"
+        android:imeOptions="actionSearch"
+        android:queryHint="@string/book_search_hint_word"
+        android:layout_below="@id/toolbar"
+        ></SearchView>
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        android:layout_below="@id/search_view"
+        >
+        <ListView
+
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/book_search_divide"
+            android:dividerHeight="1dp"
+
+            />
+    </LinearLayout>
+
+    <include
+
+        android:id="@+id/loading"
+        android:layout_below="@id/search_view"
+        layout="@layout/loading"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        ></include>
+</RelativeLayout>

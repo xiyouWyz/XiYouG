@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+
+    >
+    <RelativeLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:background="@drawable/listview_item_shape"
+        >
+
+        <TextView
+            android:id="@+id/barcodeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/book_circul_barLabel"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/book_circul_word"
+            android:textSize="@dimen/book_circul_word"
+            />
+        <TextView
+            android:id="@+id/barcode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/barcodeLabel"
+            android:layout_alignTop="@id/barcodeLabel"
+
+            android:text="03424031"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/book_circul_word"
+            android:textSize="@dimen/book_circul_word"
+            />
+        <TextView
+            android:id="@+id/sortLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/barcode"
+            android:layout_alignLeft="@id/barcodeLabel"
+            android:text="@string/book_circul_sortLabel"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/book_circul_word"
+            android:textSize="@dimen/book_circul_word"
+            />
+        <TextView
+            android:id="@+id/sort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/sortLabel"
+            android:layout_alignTop="@id/sortLabel"
+            android:text="TP317/237"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/book_circul_word"
+            android:textSize="@dimen/book_circul_word"
+            />
+        <TextView
+            android:id="@+id/department"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sort"
+            android:layout_alignLeft="@id/barcodeLabel"
+            android:text="数理库（长安校区）"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/book_circul_word"
+            android:textSize="@dimen/book_circul_word"
+            />
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/department"
+            android:textSize="@dimen/book_circul_status"
+            android:text="在架可借"
+
+            />
+    </RelativeLayout>
+</LinearLayout>

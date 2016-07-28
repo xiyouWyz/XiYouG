@@ -21,6 +21,9 @@ public class HttpLinkHeader {
     public final static  String MY_HISTORY_BORROW="https://api.xiyoumobile.com/xiyoulibv2/user/history";
     public final static  String MY_COLLECTION="https://api.xiyoumobile.com/xiyoulibv2/user/favoriteWithImg";
     public final static  String BOOK_RENEW="https://api.xiyoumobile.com/xiyoulibv2/user/renew";
-
-
+    public final static  String BOOK_SEARCH="https://api.xiyoumobile.com/xiyoulibv2/book/search";
+    public final static  String BOOK_DETAIL_ID="https://api.xiyoumobile.com/xiyoulibv2/book/detail/id/";
+    public final static  String BOOK_DETAIL_BARCODE="https://api.xiyoumobile.com/xiyoulibv2/book/detail/barcode/";
+    public final static  String BOOK_ADD_COLLECTION="https://api.xiyoumobile.com/xiyoulibv2/user/addFav";
+    public final static  String BOOK_CANCEL_COLLECTION="https://api.xiyoumobile.com/xiyoulibv2/user/delFav";
 }

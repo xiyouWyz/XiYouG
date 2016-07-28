@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:layout_margin="20dp"
+
+      >
+      <TextView
+          android:id="@+id/title"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="不必知道我爱你"
+          android:textSize="@dimen/book_search_content"
+          android:textColor="@color/book_search_item_title"
+
+          />
+      <TextView
+          android:id="@+id/author"
+          android:layout_marginTop="5dp"
+
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="阮小凉"
+          android:textSize="@dimen/book_search_author"
+          android:textColor="@color/book_search_item_author"
+          />
+  </LinearLayout>
+</LinearLayout>

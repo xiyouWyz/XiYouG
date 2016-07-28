@@ -10,7 +10,7 @@
         android:layout_margin="10dp"
         android:padding="10dp"
         android:descendantFocusability="blocksDescendants"
-        android:background="@drawable/my_bor_listview_item_shape"
+        android:background="@drawable/listview_item_shape"
 
         >
         <ImageView

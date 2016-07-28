@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -22,9 +22,12 @@
             />
     </android.support.v7.widget.Toolbar>
     <LinearLayout
+        android:id="@+id/content"
+        android:layout_below="@id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="20dp"
+        android:visibility="invisible"
+        android:layout_margin="10dp"
         >
         <ListView
             android:id="@+id/listView"
@@ -34,4 +37,10 @@
             android:dividerHeight="5dp"
             ></ListView>
     </LinearLayout>
-</LinearLayout>
+    <include
+        android:id="@+id/loading"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_below="@id/toolbar"
+        layout="@layout/loading"></include>
+</RelativeLayout>

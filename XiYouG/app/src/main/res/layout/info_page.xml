@@ -31,7 +31,7 @@
             android:layout_weight="1"
             android:textStyle="bold"
             android:gravity="center"
-            android:background="@color/info_notice_back"
+            android:background="@color/info_news_back"
 
             />
     </LinearLayout>

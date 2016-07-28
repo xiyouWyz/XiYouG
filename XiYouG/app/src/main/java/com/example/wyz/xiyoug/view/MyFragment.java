@@ -4,9 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -59,11 +61,15 @@ public class MyFragment extends Fragment {
 
     private  String studyNumber="点击登录",major="",name="",debt="";
     private  boolean isLogin=false;
+    private  String account="",password="";
+    private boolean isRemember;
+    private  SharedPreferences pref;
+    private  SharedPreferences.Editor editor;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         view=inflater.inflate(R.layout.my_page,container,false);
-
+        Log.d(TAG,"MyFragment碎片正在加载");
         setupViewComponent();
         return  view;
     }
@@ -121,10 +127,13 @@ public class MyFragment extends Fragment {
         my_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isLogin==false)
+                if(!isLogin)
                 {
-                    loginWindow=new LoginWindow(getContext(),new MyLoginOnClickListener());
-                    Log.d(TAG,"loginWindows建立完毕");
+                    pref= PreferenceManager.getDefaultSharedPreferences(getContext());
+                    boolean remember=pref.getBoolean("isRemember",false);
+                    String account=pref.getString("account","");
+                    String password=pref.getString("password","");
+                    loginWindow=new LoginWindow(getContext(),new MyLoginOnClickListener(),account,password,remember);
                     loginWindow.showAtLocation(view,Gravity.CENTER,0,0);
                 }
             }
@@ -138,7 +147,7 @@ public class MyFragment extends Fragment {
             switch (view.getId())
             {
                 case  R.id.my_bor:
-                    if(isLogin==true)
+                    if(isLogin)
                     {
                         Intent intent=new Intent();
                         intent.setClass(getContext(), MyBorrowActivity.class);
@@ -150,7 +159,7 @@ public class MyFragment extends Fragment {
                     }
                     break;
                 case  R.id.my_col:
-                    if(isLogin==true)
+                    if(isLogin)
                     {
                         Intent intent=new Intent();
                         intent.setClass(getContext(), MyCollectionActivity.class);
@@ -162,7 +171,7 @@ public class MyFragment extends Fragment {
                     }
                     break;
                 case  R.id.my_history:
-                    if(isLogin==true)
+                    if(isLogin)
                     {
                         Intent intent=new Intent();
                         intent.setClass(getContext(), MyHistoryBorActivity.class);
@@ -183,8 +192,9 @@ public class MyFragment extends Fragment {
             switch (view.getId())
             {
                 case R.id.login_btn:
-                    String account=loginWindow.getAccount();
-                    String password=loginWindow.getPassword();
+                    account=loginWindow.getAccount();
+                    password=loginWindow.getPassword();
+                    isRemember=loginWindow.getRemember();
                     if(account.equals(""))
                     {
                         Toast.makeText(getContext(),"用户名不能为空",Toast.LENGTH_SHORT).show();
@@ -195,6 +205,7 @@ public class MyFragment extends Fragment {
                     }
                     else
                     {
+
                         List<BasicNameValuePair> basicNameValuePairs=new ArrayList<>();
                         basicNameValuePairs.add(new BasicNameValuePair("username",account));
                         basicNameValuePairs.add(new BasicNameValuePair("password",password));
@@ -231,6 +242,7 @@ public class MyFragment extends Fragment {
                         String department=jsonObject.getString("Department");
                         String debt=jsonObject.getString("Debt");
                         Message message=new Message();
+                        message.what=1;
                         Bundle bundle=new Bundle();
                         bundle.putString("ID",id);
                         bundle.putString("Name",name);
@@ -239,15 +251,13 @@ public class MyFragment extends Fragment {
                         message.setData(bundle);
                         myHandler.sendMessage(message);
                     }
-                    else
-                    {
-                        Toast.makeText(getContext(),"获取个人信息失败",Toast.LENGTH_SHORT).show();
-                    }
-
                 }
                 else
                 {
-                    Toast.makeText(getContext(),"账号错误，密码错误或账户不存在",Toast.LENGTH_SHORT).show();
+                    Message message=Message.obtain();
+                    message.what=0;
+                    myHandler.sendMessage(message);
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -258,18 +268,34 @@ public class MyFragment extends Fragment {
     private class MyHandler  extends Handler{
         @Override
         public void handleMessage(Message msg) {
-            Bundle bundle=msg.getData();
-            studyNumber=bundle.getString("ID");
-            name=bundle.getString("Name");
-            major=bundle.getString("Department");
-            debt=bundle.getString("Debt");
-            studyNumber_view.setText(studyNumber);
-            name_view.setText(name);
-            major_view.setText(major);
+            if(msg.what==0)
+            {
+                Toast.makeText(getContext(),"账号错误，密码错误或账户不存在",Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Bundle bundle=msg.getData();
+                studyNumber=bundle.getString("ID");
+                name=bundle.getString("Name");
+                major=bundle.getString("Department");
+                debt=bundle.getString("Debt");
 
-            User.getInstance(studyNumber,name,major,debt);
-            isLogin=true;
-            loginWindow.dismiss();
+                studyNumber_view.setText(studyNumber);
+                name_view.setText(name);
+                major_view.setText(major);
+
+                editor=pref.edit();
+                editor.putString("account",account);
+                editor.putString("password",password);
+                editor.putBoolean("isRemember",isRemember);
+                editor.commit();
+
+                User.getInstance(studyNumber,name,major,debt);
+                isLogin=true;
+                loginWindow.dismiss();
+            }
+
+
 
 
         }
