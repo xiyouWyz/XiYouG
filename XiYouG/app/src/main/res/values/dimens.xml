@@ -3,7 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="slideMenuItem">25sp</dimen>
+    <dimen name="slideMenuItem">20sp</dimen>
     <dimen name="libraryTitle">20sp</dimen>
     <dimen name="main_viewpager">14sp</dimen>
     <dimen name="rank_viewpager">12sp</dimen>

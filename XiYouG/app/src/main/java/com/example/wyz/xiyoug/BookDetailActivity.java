@@ -40,6 +40,7 @@ import com.example.wyz.xiyoug.Model.Book_Detail;
 import com.example.wyz.xiyoug.Model.Book_ReferBooks;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.RecyclerView.DividerItemDecoration;
+import com.example.wyz.xiyoug.RecyclerView.FullyLinearLayoutManager;
 import com.example.wyz.xiyoug.RecyclerView.MyLinearLayoutManager;
 import com.example.wyz.xiyoug.RecyclerView.OnItemOnClickListenerInterface;
 import com.example.wyz.xiyoug.Util.ImageLoaderPicture;
@@ -102,10 +103,12 @@ public class BookDetailActivity  extends AppCompatActivity{
     DividerItemDecoration dividerItemDecoration;
     LinearLayoutManager hor_linearLayoutManager;
     DividerItemDecoration hor_dividerItemDecoration;
+   /* private  ListView refer_listView;
+    private   MyAdapter myAdapter;*/
     private RecyclerView refer_recyclerView;
     private  MyReferAdapter myReferAdapter;
     private  String addColUrl;
-    private  boolean isColl=false;
+    private  boolean isLoad=false;
     private int pressCount=0;
 
 
@@ -113,6 +116,7 @@ public class BookDetailActivity  extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         book_detail=null;
+        isLoad=false;
         getBookId();
         setContentView(R.layout.book_detail_page);
         setupViewComponent();
@@ -142,26 +146,27 @@ public class BookDetailActivity  extends AppCompatActivity{
         {
             case R.id.action_collection:
             {
-                if(isColl==false) {
-                    item.setIcon(R.drawable.book_col_press);
+                pressCount++;
+                if(MyFragment.isLogin)
+                {
+                    //item.setIcon(R.drawable.book_col_press);
                     List<BasicNameValuePair>  basicNameValuePairs=new ArrayList<>();
                     basicNameValuePairs.add(new BasicNameValuePair("session", MyFragment.SESSIONID));
-                    basicNameValuePairs.add(new BasicNameValuePair("id",book_detail.getId()));
-                    addColUrl=OkHttpUtil.attachHttpGetParams(HttpLinkHeader.BOOK_ADD_COLLECTION,basicNameValuePairs);
-                    myColAddThread=new MyColAddThread();
-                    new Thread(myColAddThread).start();
-                }
-                else
-                {
-                    if(pressCount<6)
+                    if(book_detail!=null)
                     {
-                        Toast.makeText(BookDetailActivity.this,"亲，已经收藏过了",Toast.LENGTH_SHORT).show();
-
+                        basicNameValuePairs.add(new BasicNameValuePair("id",book_detail.getId()));
+                        addColUrl=OkHttpUtil.attachHttpGetParams(HttpLinkHeader.BOOK_ADD_COLLECTION,basicNameValuePairs);
+                        myColAddThread=new MyColAddThread();
+                        new Thread(myColAddThread).start();
                     }
-                    else
+                    if(pressCount>7)
                     {
                         Toast.makeText(BookDetailActivity.this,"亲，小爪子点击太快啦",Toast.LENGTH_SHORT).show();
                     }
+                }
+                else
+                {
+                    Toast.makeText(BookDetailActivity.this,"请先登录",Toast.LENGTH_SHORT).show();
                 }
                 break;
             }
@@ -213,17 +218,22 @@ public class BookDetailActivity  extends AppCompatActivity{
         circul_recyclerView.setLayoutManager(linearLayoutManager);
         circul_recyclerView.addItemDecoration(dividerItemDecoration);
 
+        //refer_listView=(ListView)findViewById(R.id.listView);
         refer_recyclerView=(RecyclerView) findViewById(R.id.refer_cyclerView);
-        hor_linearLayoutManager=new MyLinearLayoutManager(BookDetailActivity.this,LinearLayoutManager.VERTICAL,true);
+        //不使用自己定义的MyLinearLayoutManager就无法显示，wrap_content，
+        hor_linearLayoutManager=new MyLinearLayoutManager(BookDetailActivity.this);
+        hor_linearLayoutManager.setOrientation(FullyLinearLayoutManager.VERTICAL);
+
         //hor_linearLayoutManager=new LinearLayoutManager(BookDetailActivity.this);
         //hor_linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        hor_dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST);
         refer_recyclerView.setLayoutManager(hor_linearLayoutManager);
-       // refer_recyclerView.setHasFixedSize(true);
+        //添加分割线就会出现recyclerView显示不全的问题
+      /*  hor_dividerItemDecoration = new DividerItemDecoration(BookDetailActivity.this, DividerItemDecoration.VERTICAL_LIST);
+        refer_recyclerView.addItemDecoration(hor_dividerItemDecoration);*/
 
 
 
-        refer_recyclerView.addItemDecoration(hor_dividerItemDecoration);
+
 
         load_view=(RelativeLayout)findViewById(R.id.loading);
         content=(LinearLayout) findViewById(R.id.content);
@@ -252,6 +262,11 @@ public class BookDetailActivity  extends AppCompatActivity{
         //隐藏滚动条横向的
         circul_recyclerView.setHorizontalScrollBarEnabled(false);
     }
+  /*  private  void setReferListViewData()
+    {
+        myAdapter=new MyAdapter();
+        refer_listView.setAdapter(myAdapter);
+    }*/
     private void setReferRecyclerViewData() {
         myReferAdapter = new MyReferAdapter();
         myReferAdapter.setOnItemClickListener(new OnItemOnClickListenerInterface.OnItemClickListener() {
@@ -292,8 +307,11 @@ public class BookDetailActivity  extends AppCompatActivity{
                 bundle.putString("book_result",book_result);
                 message.setData(bundle);
                 myHandler.sendMessage(message);
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                Log.d(TAG,e.toString());
+                Message message=Message.obtain();
+                message.what=2;
+                myLoadHandler.sendMessage(message);
             }
         }
     }
@@ -305,12 +323,14 @@ public class BookDetailActivity  extends AppCompatActivity{
             book_detail=null;
             try {
                 boolean result=new JSONObject(book_result).getBoolean("Result");
-                if(result==true)
+                if(result)
                 {
                     String detail=new JSONObject(book_result).getString("Detail");
                     if(detail.equals("NO_RECORD"))
                     {
-                        Toast.makeText(BookDetailActivity.this,"没有记录",Toast.LENGTH_SHORT).show();
+                        Message message=Message.obtain();
+                        message.what=0;
+                        myLoadHandler.sendMessage(message);
                     }
                     else
                     {
@@ -396,16 +416,23 @@ public class BookDetailActivity  extends AppCompatActivity{
                         {
                             ImageLoader.getInstance().displayImage(image,imageView,new ImageLoaderPicture(BookDetailActivity.this).getOptions(),new SimpleImageLoadingListener());
                         }
+                        else
+                        {
+                            imageView.setImageResource(R.drawable.book_detail_img);
+                        }
 
                         setCirculRecyclerViewData();
                         setReferRecyclerViewData();
+                        isLoad=true;
                         Message message=new Message();
                         message.what=1;
                         myLoadHandler.sendMessage(message);
                     }
                 }
             } catch (JSONException e) {
-                e.printStackTrace();
+               Message message=Message.obtain();
+                message.what=3;
+                myLoadHandler.sendMessage(message);
             }
         }
     }
@@ -421,8 +448,11 @@ public class BookDetailActivity  extends AppCompatActivity{
                 bundle.putString("addColResult",addColResult);
                 message.setData(bundle);
                 myColAddHandler.sendMessage(message);
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                Log.d(TAG,e.toString());
+                Message message=new Message();
+                message.what=2;
+                myLoadHandler.sendMessage(message);
             }
         }
     }
@@ -433,11 +463,11 @@ public class BookDetailActivity  extends AppCompatActivity{
             String addColResult=msg.getData().getString("addColResult");
             String detail="";
             try {
-                detail = (String)new JSONObject(addColResult).getString("Detail");
+                detail =new JSONObject(addColResult).getString("Detail");
                 switch (detail)
                 {
-                    case  "ADDED_SUCCED":
-                        isColl=true;
+                    case  "ADDED_SUCCEED":
+
                         Toast.makeText(BookDetailActivity.this,"亲，收藏成功",Toast.LENGTH_SHORT).show();
                         break;
                     case  "ALREADY_IN_FAVORITE":
@@ -452,21 +482,9 @@ public class BookDetailActivity  extends AppCompatActivity{
 
                 }
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.d(TAG,e.toString());
             }
 
-        }
-    }
-    private  class  MyLoadHandler extends  Handler
-    {
-        @Override
-        public void handleMessage(Message msg) {
-
-            if(msg.what==1)
-            {
-                load_view.setVisibility(View.INVISIBLE);
-                content.setVisibility(View.VISIBLE);
-            }
         }
     }
 
@@ -613,6 +631,84 @@ public class BookDetailActivity  extends AppCompatActivity{
 
         public void setOnItemClickListener(OnItemOnClickListenerInterface.OnItemClickListener onItemClickListener) {
             this.onItemClickListener = onItemClickListener;
+        }
+    }
+
+    private class  MyAdapter  extends BaseAdapter
+    {
+
+        @Override
+        public int getCount() {
+            return  book_detail.getBook_referBookses().size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            MyViewHolder myViewHolder=null;
+            if(view==null)
+            {
+                myViewHolder=new MyViewHolder();
+                view= LayoutInflater.from(BookDetailActivity.this).inflate(R.layout.bookrefer_listview_item,null);
+                myViewHolder.title_view=(TextView) view.findViewById(R.id.title);
+                myViewHolder.author_view=(TextView)view.findViewById(R.id.author);
+                myViewHolder.id_view=(TextView)view.findViewById(R.id.id);
+                view.setTag(myViewHolder);
+            }
+            else
+            {
+                myViewHolder=(MyViewHolder) view.getTag();
+            }
+            myViewHolder.title_view.setText(book_detail.getBook_referBookses().get(i).getTitle());
+            myViewHolder.author_view.setText(book_detail.getBook_referBookses().get(i).getAuthor());
+            myViewHolder.id_view.setText(book_detail.getBook_referBookses().get(i).getId());
+
+            return  view;
+        }
+        private   class MyViewHolder
+        {
+            public TextView title_view;
+            public TextView author_view;
+            public TextView id_view;
+        }
+    }
+    private  class  MyLoadHandler extends  Handler
+    {
+        @Override
+        public void handleMessage(Message msg) {
+
+            if(msg.what==0)
+            {
+                load_view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
+                Toast.makeText(BookDetailActivity.this, "没有记录", Toast.LENGTH_SHORT).show();
+                BookDetailActivity.this.finish();
+            }
+            else if(msg.what==1)
+            {
+                load_view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
+            }
+            else if(msg.what==2)
+            {
+                Toast.makeText(BookDetailActivity.this,"网络不稳定，请检查网络",Toast.LENGTH_SHORT).show();
+                BookDetailActivity.this.finish();
+            }
+            else  if(msg.what==3)
+            {
+
+                Toast.makeText(BookDetailActivity.this,"请求出错",Toast.LENGTH_SHORT).show();
+                BookDetailActivity.this.finish();
+            }
         }
     }
 }

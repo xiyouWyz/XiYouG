@@ -1,10 +1,13 @@
 package com.example.wyz.xiyoug;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -22,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.wyz.xiyoug.Model.Book_Collection;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
+import com.example.wyz.xiyoug.Model.User;
 import com.example.wyz.xiyoug.Util.MyAnimation;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
 import com.example.wyz.xiyoug.View.MyFragment;
@@ -50,7 +54,9 @@ public class MyCollectionActivity extends AppCompatActivity {
     private  LinearLayout content;
     private  MyLoadHandler myLoadHandler=new MyLoadHandler();
     private  String colDelUrl;
-
+    private  String colDelID;
+    private  MyColDelThread myColDelThread;
+    private  MyColDelHandler myColDelHandler=new MyColDelHandler();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +67,7 @@ public class MyCollectionActivity extends AppCompatActivity {
     }
 
 
+    @Nullable
     private void setupViewComponent() {
         toolbar=(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -82,10 +89,18 @@ public class MyCollectionActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
               @Override
               public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
                   List<BasicNameValuePair> basicNameValuePairs=new ArrayList<BasicNameValuePair>();
                   basicNameValuePairs.add(new BasicNameValuePair("session",MyFragment.SESSIONID));
-                  basicNameValuePairs.add(new BasicNameValuePair("id",book_collections.get(i).getId()));
+                  colDelID=book_collections.get(i).getId();
+                  basicNameValuePairs.add(new BasicNameValuePair("id",colDelID));
+                  if(User.getInstance().getId().equals(""))
+                  {
+                      basicNameValuePairs.add(new BasicNameValuePair("username", User.getInstance().getId()));
+                  }
+
                   colDelUrl=OkHttpUtil.attachHttpGetParams(HttpLinkHeader.BOOK_CANCEL_COLLECTION,basicNameValuePairs);
+                  dialog();
                   return false;
               }
          });
@@ -103,7 +118,30 @@ public class MyCollectionActivity extends AppCompatActivity {
             }
         });
     }
+    private  void  dialog()
+    {
+        DialogInterface.OnClickListener onClickListener=new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switch (i)
+                {
+                    case  AlertDialog.BUTTON_POSITIVE:
+                        myColDelThread=new MyColDelThread();
+                        new Thread(myColDelThread).start();
+                        break;
+                    case  AlertDialog.BUTTON_NEGATIVE:
 
+                        break;
+                }
+            }
+        };
+        AlertDialog.Builder builder=new AlertDialog.Builder(MyCollectionActivity.this);
+        builder.setTitle("提示");
+        builder.setMessage("是否取消收藏?");
+        builder.setPositiveButton("确定",onClickListener);
+        builder.setNegativeButton("取消",onClickListener);
+        builder.create().show();
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
        if(item.getItemId()==android.R.id.home)
@@ -175,8 +213,11 @@ public class MyCollectionActivity extends AppCompatActivity {
                 bundle.putString("col_result",col_result);
                 message.setData(bundle);
                 myHandler.sendMessage(message);
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                Log.d(TAG,e.toString());
+                Message message=Message.obtain();
+                message.what=2;
+                myLoadHandler.sendMessage(message);
             }
         }
     }
@@ -185,55 +226,132 @@ public class MyCollectionActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             String col_result=msg.getData().getString("col_result");
-            if(!col_result.equals(""))
-            {
+            if (col_result != null && !col_result.equals("")) {
                 try {
-                     boolean result= new JSONObject(col_result).getBoolean("Result");
-                    if(result==true)
-                    {
-                        String detail=new JSONObject(col_result).getString("Detail");
-                        if(detail.equals("NO_RECORD"))
-                        {
-                            Toast.makeText(MyCollectionActivity.this,"没有收藏记录",Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
-                            JSONArray jsonArray=new JSONArray(detail);
-                            book_collections=new ArrayList<>();
-                            for(int i=0;i<jsonArray.length();i++)
-                            {
-                                JSONObject jsonObject=(JSONObject)jsonArray.get(i);
-                                JSONObject imagesObject=new JSONObject(jsonObject.getString("Images"));
-                                Book_Collection book_collection=new Book_Collection(
-                                        jsonObject.getString("Title"),
-                                        jsonObject.getString("Pub"),
-                                        jsonObject.getString("Sort"),
-                                        jsonObject.getString("ID"),
-                                        imagesObject.getString("small")
-                                );
+                    boolean result = new JSONObject(col_result).getBoolean("Result");
+                    if (result) {
+                        String detail = new JSONObject(col_result).getString("Detail");
+                        if (detail.equals("NO_RECORD")) {
+                            Message message=Message.obtain();
+                            message.what=0;
+                            myLoadHandler.sendMessage(message);
+                        } else {
+                            JSONArray jsonArray = new JSONArray(detail);
+                            book_collections = new ArrayList<>();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                                JSONObject imagesObject=null;
+                                try {
+                                    imagesObject= new JSONObject(jsonObject.getString("Images"));
+                                }catch (JSONException e)
+                                {
+                                    Log.d(TAG,e.toString());
+                                }
+                                Book_Collection book_collection=null;
+                                if(imagesObject!=null)
+                                {
+                                    book_collection= new Book_Collection(
+                                            jsonObject.getString("Title"),
+                                            jsonObject.getString("Pub"),
+                                            jsonObject.getString("Sort"),
+                                            jsonObject.getString("ID"),
+                                            imagesObject.getString("medium")
+                                    );
+                                }
+                                else
+                                {
+                                     book_collection = new Book_Collection(
+                                            jsonObject.getString("Title"),
+                                            jsonObject.getString("Pub"),
+                                            jsonObject.getString("Sort"),
+                                            jsonObject.getString("ID"),
+                                            ""
+                                    );
+                                }
+
                                 book_collections.add(book_collection);
                             }
-                            if(myAdapter!=null)
-                            {
+                            if (myAdapter != null) {
                                 myAdapter.notifyDataSetChanged();
-                            }
-                            else
-                            {
+                            } else {
                                 setListViewData();
 
                             }
-                            Message message=new Message();
-                            message.what=1;
+                            Message message = Message.obtain();
+                            message.what = 1;
                             myLoadHandler.sendMessage(message);
                         }
-                    }
-                    else
-                    {
-                        Toast.makeText(MyCollectionActivity.this,"获取失败",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Message message=Message.obtain();
+                        message.what=3;
+                        myLoadHandler.sendMessage(message);
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.d(TAG,e.toString());
+                    Message message=Message.obtain();
+                    message.what=3;
+                    myLoadHandler.sendMessage(message);
                 }
+            }
+        }
+    }
+    private  class  MyColDelThread implements  Runnable
+    {
+
+        @Override
+        public void run() {
+            try {
+                String addDelResult= OkHttpUtil.getStringFromServer(colDelUrl);
+                Message message=new Message();
+                Bundle bundle=new Bundle();
+                bundle.putString("addDelResult",addDelResult);
+                message.setData(bundle);
+                myColDelHandler.sendMessage(message);
+            } catch (Exception e) {
+                Log.d(TAG,e.toString());
+                Message message=new Message();
+                message.what=2;
+                myLoadHandler.sendMessage(message);
+            }
+        }
+    }
+    private  class MyColDelHandler extends  Handler
+    {
+        @Override
+        public void handleMessage(Message msg) {
+            String addDelResult=msg.getData().getString("addDelResult");
+            String detail="";
+            try {
+                detail =new JSONObject(addDelResult).getString("Detail");
+                switch (detail)
+                {
+                    case  "DELETED_SUCCEED":
+                        Toast.makeText(MyCollectionActivity.this,"亲，删除成功",Toast.LENGTH_SHORT).show();
+                        DeleteColId();
+                        myAdapter.notifyDataSetChanged();
+
+                        break;
+                    case "USER_NOT_LOGIN":
+                        Toast.makeText(MyCollectionActivity.this,"亲，请先登录",Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        Toast.makeText(MyCollectionActivity.this,"sorry,删除出错啦",Toast.LENGTH_SHORT).show();
+                        break;
+
+                }
+            } catch (JSONException e) {
+                Log.d(TAG,e.toString());
+            }
+
+        }
+    }
+    private  void DeleteColId()
+    {
+        for(int i=0;i<book_collections.size();i++){
+            if(book_collections.get(i).getId().equals(colDelID))
+            {
+                book_collections.remove(i);
+                break;
             }
         }
     }
@@ -242,10 +360,27 @@ public class MyCollectionActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
 
-            if(msg.what==1)
+            if(msg.what==0)
             {
                 load_view.setVisibility(View.INVISIBLE);
                 content.setVisibility(View.VISIBLE);
+                Toast.makeText(MyCollectionActivity.this, "没有收藏记录", Toast.LENGTH_SHORT).show();
+            }
+            else if(msg.what==1)
+            {
+                load_view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
+            }
+            else if(msg.what==2)
+            {
+                Toast.makeText(MyCollectionActivity.this,"请检查网络连接",Toast.LENGTH_SHORT).show();
+                MyCollectionActivity.this.finish();
+            }
+            else  if(msg.what==3)
+            {
+
+                Toast.makeText(MyCollectionActivity.this,"请求出错",Toast.LENGTH_SHORT).show();
+                MyCollectionActivity.this.finish();
             }
         }
     }

@@ -32,6 +32,8 @@ import com.example.wyz.xiyoug.Model.Book_Rank;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
+import com.example.wyz.xiyoug.Util.ReadFile;
+import com.example.wyz.xiyoug.Util.SaveFile;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,30 +59,30 @@ public class HomeFragment extends Fragment {
     int slide_currentTab = 0;
 
     //排行榜下标
-    private  int rank_index;
+    private int rank_index;
     //三个排行榜
     private LinearLayout rank_collection, rank_borrow, rank_look;
-   //三个排行榜圆形视图
-    private  RelativeLayout rank_collection_img,rank_borrow_img,rank_look_img;
+    //三个排行榜圆形视图
+    private RelativeLayout rank_collection_img, rank_borrow_img, rank_look_img;
 
     //排行榜数据显示listview
     private ListView pullListView;
     //收藏排行榜信息存储
-    private List<Book_Rank> book_col_ranks=new ArrayList<>();
+    private List<Book_Rank> book_col_ranks = new ArrayList<>();
     //借阅排行榜信息存储
-    private List<Book_Rank> book_bor_ranks=new ArrayList<>();
+    private List<Book_Rank> book_bor_ranks = new ArrayList<>();
     //查看排行榜信息存储
-    private  List<Book_Rank> book_look_ranks=new ArrayList<>();
+    private List<Book_Rank> book_look_ranks = new ArrayList<>();
     //排行榜listview的适配器
     private MyAdapter adapter;
     //下拉刷新控件
     private SwipeRefreshLayout swipeRefreshLayout;
     //下拉刷新处理
-    private Handler handler_pull=new Handler();
+    private Handler handler_pull = new Handler();
     //排行榜信息获取线程
     private Rank_Thread thread_rankInfo;
     //排行榜信息获取后更新界面处理
-    private Rank_Handler handler_rankInfo=new Rank_Handler();
+    private Rank_Handler handler_rankInfo = new Rank_Handler();
     //轮播图界面更新处理
     private Handler myhandler = new Handler() {
         @Override
@@ -90,19 +92,43 @@ public class HomeFragment extends Fragment {
             slide_viewPager.setCurrentItem(slide_currentTab, true);
         }
     };
-    private  String TAG="HomeFragment";
+    private String TAG = "HomeFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.home_page, container, false);
         InitSlideViewPager();
-        initData(0);
+
+        //initData(0);
         setupViewCompent();
+        getDataFromFile(0);
         return view;
     }
-    private  void initData(int index)
-    {
-        thread_rankInfo=new Rank_Thread(index);
+
+    private void getDataFromFile(int i) {
+        String colRankInfo = ReadFile.readColRank(getContext());
+        if (colRankInfo != null) {
+            JSONArray jsonArray = null;
+            try {
+                jsonArray = new JSONObject(colRankInfo).getJSONArray("Detail");
+                book_col_ranks=jsonArrayToList(jsonArray,book_col_ranks);
+                setupListView(book_col_ranks);
+                Log.d(TAG,"从文件中加载数据");
+            } catch (JSONException e) {
+                Log.d(TAG, e.toString());
+                initData(i);
+            }
+
+        }
+        else
+        {
+            //adapter.notifyDataSetChanged();
+            initData(i);
+        }
+    }
+
+    private void initData(int index) {
+        thread_rankInfo = new Rank_Thread(index);
         new Thread(thread_rankInfo).start();
     }
 
@@ -110,9 +136,9 @@ public class HomeFragment extends Fragment {
         rank_collection = (LinearLayout) view.findViewById(R.id.rank_collection_btn);
         rank_borrow = (LinearLayout) view.findViewById(R.id.rank_borrow_btn);
         rank_look = (LinearLayout) view.findViewById(R.id.rank_look_btn);
-        rank_collection_img=(RelativeLayout)view.findViewById(R.id.rank_collection_img);
-        rank_borrow_img=(RelativeLayout)view.findViewById(R.id.rank_borrow_img);
-        rank_look_img=(RelativeLayout)view.findViewById(R.id.rank_look_img);
+        rank_collection_img = (RelativeLayout) view.findViewById(R.id.rank_collection_img);
+        rank_borrow_img = (RelativeLayout) view.findViewById(R.id.rank_borrow_img);
+        rank_look_img = (RelativeLayout) view.findViewById(R.id.rank_look_img);
 
         rank_collection.setOnClickListener(new MyRankOnClickListener(0));
         rank_borrow.setOnClickListener(new MyRankOnClickListener(1));
@@ -125,46 +151,45 @@ public class HomeFragment extends Fragment {
         pullListView.setOverScrollMode(View.OVER_SCROLL_NEVER);
         pullListView.setAdapter(adapter);
 
-       pullListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-           @Override
-           public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-               switch (rank_index)
-               {
-                   case 0:
-                       Log.d(TAG,"点击了收藏的第"+i+"个item"+book_col_ranks.get(i).getTitle());
-                       String url=HttpLinkHeader.BOOK_DETAIL_ID+book_col_ranks.get(i).getId();
-                       Intent intent=new Intent();
-                       Bundle bundle=new Bundle();
-                       bundle.putString("url",url);
-                       intent.putExtras(bundle);
-                       intent.setClass(getActivity(),BookDetailActivity.class);
-                       startActivity(intent);
-                       break;
-                   case  1:
-                       Log.d(TAG,"点击了借阅的第"+i+"个item"+book_bor_ranks.get(i).getTitle());
-                       String url1=HttpLinkHeader.BOOK_DETAIL_ID+book_bor_ranks.get(i).getId();
-                       Intent intent1=new Intent();
-                       Bundle bundle1=new Bundle();
-                       bundle1.putString("url",url1);
-                       intent1.putExtras(bundle1);
-                       intent1.setClass(getActivity(),BookDetailActivity.class);
-                       startActivity(intent1);
-                       break;
-                   case  2:
-                       Log.d(TAG,"点击了查看的第"+i+"个item"+book_look_ranks.get(i).getTitle());
-                       String url2=HttpLinkHeader.BOOK_DETAIL_ID+book_look_ranks.get(i).getId();
-                       Intent intent2=new Intent();
-                       Bundle bundle2=new Bundle();
-                       bundle2.putString("url",url2);
-                       intent2.putExtras(bundle2);
-                       intent2.setClass(getActivity(),BookDetailActivity.class);
-                       startActivity(intent2);
-                       break;
-               }
-           }
-       });
+        pullListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                switch (rank_index) {
+                    case 0:
+                        Log.d(TAG, "点击了收藏的第" + i + "个item" + book_col_ranks.get(i).getTitle());
+                        String url = HttpLinkHeader.BOOK_DETAIL_ID + book_col_ranks.get(i).getId();
+                        Intent intent = new Intent();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("url", url);
+                        intent.putExtras(bundle);
+                        intent.setClass(getActivity(), BookDetailActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 1:
+                        Log.d(TAG, "点击了借阅的第" + i + "个item" + book_bor_ranks.get(i).getTitle());
+                        String url1 = HttpLinkHeader.BOOK_DETAIL_ID + book_bor_ranks.get(i).getId();
+                        Intent intent1 = new Intent();
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putString("url", url1);
+                        intent1.putExtras(bundle1);
+                        intent1.setClass(getActivity(), BookDetailActivity.class);
+                        startActivity(intent1);
+                        break;
+                    case 2:
+                        Log.d(TAG, "点击了查看的第" + i + "个item" + book_look_ranks.get(i).getTitle());
+                        String url2 = HttpLinkHeader.BOOK_DETAIL_ID + book_look_ranks.get(i).getId();
+                        Intent intent2 = new Intent();
+                        Bundle bundle2 = new Bundle();
+                        bundle2.putString("url", url2);
+                        intent2.putExtras(bundle2);
+                        intent2.setClass(getActivity(), BookDetailActivity.class);
+                        startActivity(intent2);
+                        break;
+                }
+            }
+        });
 
-        swipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.refresh_layout);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 
@@ -175,48 +200,29 @@ public class HomeFragment extends Fragment {
                     public void run() {
                         getData();
                     }
-                },2000);
+                }, 2000);
             }
         });
 
 
     }
-    private  void setupListView( List<Book_Rank> ranks)
-    {
-        adapter=new MyAdapter(ranks);
+
+    private void setupListView(List<Book_Rank> ranks) {
+        adapter = new MyAdapter(ranks);
         pullListView.setAdapter(adapter);
         //Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
         swipeRefreshLayout.setRefreshing(false);
-
     }
+
     private void getData() {
-        if(adapter!=null)
-        {
-            //adapter.notifyDataSetChanged();
-            initData(rank_index);
-          /*  switch (rank_index)
-            {
-                case  0:
-                    pullListView.setAdapter(new MyAdapter(book_col_ranks));
-
-                    break;
-                case 1:
-                    pullListView.setAdapter(new MyAdapter(book_bor_ranks));
-                    Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
-                    swipeRefreshLayout.setRefreshing(false);
-                    break;
-                case 2:
-                    pullListView.setAdapter(new MyAdapter(book_look_ranks));
-                    Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
-                    swipeRefreshLayout.setRefreshing(false);
-                    break;
-            }*/
-        }
-
-
+       /* if(adapter!=null)
+        {*/
+        initData(rank_index);
+       /* }*/
 
 
     }
+
     /**
      * 初始化轮播图
      */
@@ -242,7 +248,7 @@ public class HomeFragment extends Fragment {
         slide_viewList.add(slide_view2);
 
         slide_viewPager.setAdapter(new MySlideShowFrageStatePagerAdapter());
-        slide_viewPager.setCurrentItem(1, true);
+        slide_viewPager.setCurrentItem(0, true);
         slide_viewPager.setOnPageChangeListener(new MySlideShowOnPageChangedListener());
 
         MyThread th = new MyThread();
@@ -383,31 +389,46 @@ public class HomeFragment extends Fragment {
 
         }
     }
+
     /**
      * 切换排行榜页面
+     *
      * @param index 第index个界面
      */
-    private  void Rank_Click(int index)
-    {
+    private void Rank_Click(int index) {
 
-        TextView rank_collection_text,rank_borrow_text,rank_look_text;
-        rank_collection_text=(TextView)view.findViewById(R.id.rank_collection_text);
-        rank_borrow_text=(TextView)view.findViewById(R.id.rank_borrow_text);
-        rank_look_text=(TextView)view.findViewById(R.id.rank_look_text);
+        TextView rank_collection_text, rank_borrow_text, rank_look_text;
+        rank_collection_text = (TextView) view.findViewById(R.id.rank_collection_text);
+        rank_borrow_text = (TextView) view.findViewById(R.id.rank_borrow_text);
+        rank_look_text = (TextView) view.findViewById(R.id.rank_look_text);
         swipeRefreshLayout.setRefreshing(false);
-        switch (index)
-        {
+        switch (index) {
             case 0:
                 rank_collection_text.setTextColor(getResources().getColor(R.color.rank_text_press));
                 rank_borrow_text.setTextColor(getResources().getColor(R.color.rank_text));
                 rank_look_text.setTextColor(getResources().getColor(R.color.rank_text));
-                if(book_col_ranks.size()==0)
-                {
-                    //adapter.notifyDataSetChanged();
-                    initData(index);
-                }
-                else
-                {
+                if (book_col_ranks.size() == 0) {
+                    String colRankInfo = ReadFile.readColRank(getContext());
+                    if (colRankInfo != null) {
+                        JSONArray jsonArray = null;
+                        try {
+                            jsonArray = new JSONObject(colRankInfo).getJSONArray("Detail");
+                            book_col_ranks=jsonArrayToList(jsonArray,book_col_ranks);
+                            setupListView(book_col_ranks);
+                            Log.d(TAG,"从文件中加载数据");
+                        } catch (JSONException e) {
+                            Log.d(TAG, e.toString());
+                            initData(index);
+                        }
+
+                    }
+                    else
+                    {
+                        //adapter.notifyDataSetChanged();
+                        initData(index);
+                    }
+
+                } else {
                     setupListView(book_col_ranks);
                 }
 
@@ -416,64 +437,89 @@ public class HomeFragment extends Fragment {
                 rank_collection_text.setTextColor(getResources().getColor(R.color.rank_text));
                 rank_borrow_text.setTextColor(getResources().getColor(R.color.rank_text_press));
                 rank_look_text.setTextColor(getResources().getColor(R.color.rank_text));
-                if(book_bor_ranks.size()==0)
-                {
-                   // adapter.notifyDataSetChanged();
-                    initData(index);
-                }
-                else
-                {
+                if (book_bor_ranks.size() == 0) {
+                    String borRankInfo = ReadFile.readBorRank(getContext());
+                    if (borRankInfo != null) {
+                        JSONArray jsonArray = null;
+                        try {
+                            jsonArray = new JSONObject(borRankInfo).getJSONArray("Detail");
+                            book_bor_ranks=jsonArrayToList(jsonArray,book_bor_ranks);
+                            setupListView(book_bor_ranks);
+                            Log.d(TAG,"从文件中加载数据");
+                        } catch (JSONException e) {
+                            Log.d(TAG, e.toString());
+                            initData(index);
+                        }
+                    }
+                    else
+                    {
+                        // adapter.notifyDataSetChanged();
+                        initData(index);
+                    }
+
+                } else {
                     //adapter.notifyDataSetChanged();
                     setupListView(book_bor_ranks);
                 }
                 break;
-            case  2:
+            case 2:
                 rank_collection_text.setTextColor(getResources().getColor(R.color.rank_text));
                 rank_borrow_text.setTextColor(getResources().getColor(R.color.rank_text));
                 rank_look_text.setTextColor(getResources().getColor(R.color.rank_text_press));
-                if(book_look_ranks.size()==0)
-                {
-                    //adapter.notifyDataSetChanged();
-                    initData(index);
-                }
-                else
-                {
+                if (book_look_ranks.size() == 0) {
+                    String lookRankInfo = ReadFile.readLookRank(getContext());
+                    if (lookRankInfo != null) {
+                        JSONArray jsonArray = null;
+                        try {
+                            jsonArray = new JSONObject(lookRankInfo).getJSONArray("Detail");
+                            book_look_ranks=jsonArrayToList(jsonArray,book_look_ranks);
+                            setupListView(book_look_ranks);
+                            Log.d(TAG,"从文件中加载数据");
+                        } catch (JSONException e) {
+                            Log.d(TAG, e.toString());
+                            initData(index);
+                        }
+
+                    }
+                    else
+                    {
+                        // adapter.notifyDataSetChanged();
+                        initData(index);
+                    }
+                } else {
                     //adapter.notifyDataSetChanged();
                     setupListView(book_look_ranks);
                 }
                 break;
         }
-
-
-
-        //pullListView.setAdapter(new MyAdapter(getContext(),book_ranks));
-        //pullListView.refreshComplete();
-
     }
 
     /**
      * 排行榜按钮是图的点击事件，用来切换页面
      */
     private class MyRankOnClickListener implements View.OnClickListener {
-        int index=0;
+        int index = 0;
+
         public MyRankOnClickListener(int i) {
-            index=i;
+            index = i;
         }
 
         @Override
         public void onClick(View view) {
             Rank_Click(index);
-            rank_index=index;
-            Log.d("rank_click",""+rank_index);
+            rank_index = index;
+            Log.d("rank_click", "" + rank_index);
         }
     }
 
 
     private class MyAdapter extends BaseAdapter {
-        private  List<Book_Rank>  bRanks;
+        private List<Book_Rank> bRanks;
+
         public MyAdapter(List<Book_Rank> objects) {
-            bRanks=objects;
+            bRanks = objects;
         }
+
         @Override
         public int getCount() {
             return bRanks.size();
@@ -492,20 +538,17 @@ public class HomeFragment extends Fragment {
 
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
-            MyViewHolder holder=null;
-            if(view==null)
-            {
+            MyViewHolder holder = null;
+            if (view == null) {
 
-                holder=new MyViewHolder();
-                view=LayoutInflater.from(getContext()).inflate(R.layout.rank_list_view_item,null);
+                holder = new MyViewHolder();
+                view = LayoutInflater.from(getContext()).inflate(R.layout.rank_list_view_item, null);
 
-                holder.rank_book_name=(TextView)view.findViewById(R.id.rank_item_book_name);
-                holder.rank_count=(TextView)view.findViewById(R.id.rank_item_count);
+                holder.rank_book_name = (TextView) view.findViewById(R.id.rank_item_book_name);
+                holder.rank_count = (TextView) view.findViewById(R.id.rank_item_count);
                 view.setTag(holder);
-            }
-            else
-            {
-                holder=(MyViewHolder)view.getTag();
+            } else {
+                holder = (MyViewHolder) view.getTag();
             }
             holder.rank_book_name.setText(bRanks.get(i).getTitle());
             holder.rank_count.setText(bRanks.get(i).getBorNum());
@@ -519,62 +562,59 @@ public class HomeFragment extends Fragment {
     }
 
 
-    public  class Rank_Thread implements  Runnable
-    {
-        private  int index=0;
-        private  String url="";
+    public class Rank_Thread implements Runnable {
+        private int index = 0;
+        private String url = "";
+
         public Rank_Thread(int i) {
-            index=i;
+            index = i;
         }
 
         @Override
         public void run() {
 
-            switch (index)
-            {
+            switch (index) {
                 case 0:
-                     url= HttpLinkHeader.Rank_COL;
+                    url = HttpLinkHeader.Rank_COL;
                     break;
                 case 1:
-                     url=HttpLinkHeader.Rank_BOR;
+                    url = HttpLinkHeader.Rank_BOR;
                     break;
                 case 2:
-                    url=HttpLinkHeader.Rank_LOOK;
+                    url = HttpLinkHeader.Rank_LOOK;
                     break;
             }
             try {
-                String rank_result=OkHttpUtil.getStringFromServer(url);
-                Log.d("rank_Result",rank_result.toString());
-                Message msg=new Message();
-                msg.what=1;
-                Bundle bundle=new Bundle();
-                bundle.putString("rank_result",rank_result);
-                bundle.putInt("rank_type",index);
+                String rank_result = OkHttpUtil.getStringFromServer(url);
+                Log.d("rank_Result", rank_result.toString());
+                Message msg = new Message();
+                msg.what = 1;
+                Bundle bundle = new Bundle();
+                bundle.putString("rank_result", rank_result);
+                bundle.putInt("rank_type", index);
                 msg.setData(bundle);
                 handler_rankInfo.sendMessage(msg);
-            } catch (IOException e) {
+            } catch (Exception e) {
 
-                Log.d("False","排行榜数据请求出错"+e.toString());
-                Message message=new Message();
-                message.what=0;
+                Log.d(TAG, "排行榜数据请求出错" + e.toString());
+                Message message = Message.obtain();
+                message.what = 2;
                 handler_rankInfo.sendMessage(message);
             }
         }
     }
 
-    private class Rank_Handler extends  Handler {
+    private class Rank_Handler extends Handler {
 
         @Override
-        public void handleMessage(Message msg){
-            if(msg.what==0)
-            {
+        public void handleMessage(Message msg) {
+            if (msg.what == 2) {
+                Toast.makeText(getContext(), "请检查网络连接", Toast.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(false);
-                Toast.makeText(getContext(),"请检查网络连接",Toast.LENGTH_SHORT).show();
-            }
-            else if(msg.what==1)
-            {
-                String rank_info=msg.getData().getString("rank_result");
-                int rank_type=msg.getData().getInt("rank_type");
+                Log.d(TAG, "已停止刷新");
+            } else if (msg.what == 1) {
+                String rank_info = msg.getData().getString("rank_result");
+                int rank_type = msg.getData().getInt("rank_type");
                 if (rank_info != null && !rank_info.equals("")) {
                     try {
                         boolean result = new JSONObject(rank_info).getBoolean("Result");
@@ -583,63 +623,51 @@ public class HomeFragment extends Fragment {
                             switch (rank_type) {
                                 case 0:
                                     book_col_ranks = new ArrayList<>();
-                                    for (int i = 0; i < jsonArray.length(); i++) {
-                                        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-                                        Book_Rank book_rank = new Book_Rank(
-                                                jsonObject.getInt("Rank"),
-                                                jsonObject.getString("Title"),
-                                                jsonObject.getString("BorNum"),
-                                                jsonObject.getString("ID")
-                                        );
-                                        book_col_ranks.add(book_rank);
-                                    }
+                                    book_col_ranks=jsonArrayToList(jsonArray,book_col_ranks);
                                     setupListView(book_col_ranks);
+                                    SaveFile.saveColRank(getContext(), rank_info);
                                     break;
                                 case 1:
                                     book_bor_ranks = new ArrayList<>();
-                                    for (int i = 0; i < jsonArray.length(); i++) {
-                                        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-                                        Book_Rank book_rank = new Book_Rank(
-                                                jsonObject.getInt("Rank"),
-                                                jsonObject.getString("Title"),
-                                                jsonObject.getString("BorNum"),
-                                                jsonObject.getString("ID")
-                                        );
-                                        book_bor_ranks.add(book_rank);
-                                    }
+                                    book_bor_ranks=jsonArrayToList(jsonArray,book_bor_ranks);
                                     setupListView(book_bor_ranks);
+                                    SaveFile.saveBorRank(getContext(), rank_info);
                                     break;
                                 case 2:
                                     book_look_ranks = new ArrayList<>();
-                                    for (int i = 0; i < jsonArray.length(); i++) {
-                                        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-                                        Book_Rank book_rank = new Book_Rank(
-                                                jsonObject.getInt("Rank"),
-                                                jsonObject.getString("Title"),
-                                                jsonObject.getString("BorNum"),
-                                                jsonObject.getString("ID")
-                                        );
-                                        book_look_ranks.add(book_rank);
-                                    }
+                                    book_look_ranks=jsonArrayToList(jsonArray,book_look_ranks);
                                     setupListView(book_look_ranks);
+                                    SaveFile.saveLookRank(getContext(), rank_info);
                                     break;
                             }
-
+                            Log.d(TAG,"从网络中加载数据");
+                            //Toast.makeText(getContext(), "刷新成功", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(getContext(), "刷新失败", Toast.LENGTH_SHORT).show();
                         }
 
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        Log.d(TAG, e.toString());
                     }
 
                 }
             }
-
-
         }
     }
-
+    private  List<Book_Rank> jsonArrayToList(JSONArray jsonArray,List<Book_Rank> book_ranks) throws JSONException {
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+            Book_Rank book_rank = new Book_Rank(
+                    jsonObject.getInt("Rank"),
+                    jsonObject.getString("Title"),
+                    jsonObject.getString("BorNum"),
+                    jsonObject.getString("ID")
+            );
+            book_ranks.add(book_rank);
+        }
+        return  book_ranks;
+    }
+}
     /**
      * 排行榜三个页面的的适配器
      */
@@ -683,4 +711,4 @@ public class HomeFragment extends Fragment {
         }
     }
 */
-}
+

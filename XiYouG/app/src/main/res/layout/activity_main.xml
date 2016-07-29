@@ -38,6 +38,7 @@
             android:layout_height="match_parent" />
 
         <LinearLayout
+            android:id="@+id/menuLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/slideMenu_theme"
@@ -45,6 +46,7 @@
             android:layout_gravity="start"
             >
             <RelativeLayout
+                android:id="@+id/loginLayout"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
 
@@ -90,7 +92,7 @@
                 </LinearLayout>
 
             </RelativeLayout>
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/dl_menu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -99,137 +101,158 @@
                 >
                 <RelativeLayout
                     android:id="@+id/library"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/library_logo"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/library"
+                        android:layout_centerVertical="true"
 
-                    >
-                    <LinearLayout
-
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center"
-                        android:padding="10dp"
-                        >
-                        <ImageView
-                            android:id="@+id/library_logo"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:src="@drawable/library"
-                            android:layout_centerVertical="true"
-                            />
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:text="@string/library_name"
-                            android:layout_toRightOf="@id/library_logo"
-                            android:layout_marginLeft="20dp"
-                            android:textColor="@color/whiteWords"
-                            android:textSize="@dimen/slideMenuItem"
-                            android:layout_centerVertical="true"
-                            />
-                    </LinearLayout>
-
+                        />
+                    <TextView
+                        android:layout_alignTop="@id/library_logo"
+                        android:layout_alignBottom="@id/library_logo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:text="@string/library_name"
+                        android:layout_toRightOf="@id/library_logo"
+                        android:layout_marginLeft="20dp"
+                        android:textColor="@color/whiteWords"
+                        android:textSize="@dimen/slideMenuItem"
+                        android:layout_centerVertical="true"
+                        />
                 </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/score"
-                    android:layout_width="match_parent"
+                    android:layout_alignLeft="@id/library"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/library"
+                    android:layout_marginTop="10dp"
                     >
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center"
-                        android:padding="10dp"
-                        >
-                        <ImageView
-                            android:id="@+id/score_logo"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:src="@drawable/score"
-                            android:layout_centerVertical="true"
-                            />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
-                            android:text="@string/score_name"
-                            android:layout_toRightOf="@id/score_logo"
-                            android:layout_marginLeft="20dp"
-                            android:textColor="@color/whiteWords"
-                            android:textSize="@dimen/slideMenuItem"
-                            android:layout_centerVertical="true"
-                            />
-                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/score_logo"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/score"
+                        android:layout_centerVertical="true"
+
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:text="@string/score_name"
+                        android:layout_toRightOf="@id/score_logo"
+                        android:layout_marginLeft="20dp"
+                        android:textColor="@color/whiteWords"
+                        android:textSize="@dimen/slideMenuItem"
+                        android:layout_centerVertical="true"
+                        android:layout_alignTop="@id/score_logo"
+                        android:layout_alignBottom="@id/score_logo"
+                        />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/schedule"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/score"
+                    android:layout_alignLeft="@id/library"
+                    android:layout_marginTop="10dp"
+                    >
+                    <ImageView
+                        android:id="@+id/schedule_logo"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/schedule"
+                        android:layout_centerVertical="true"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:text="@string/schedule_name"
+                        android:layout_toRightOf="@id/schedule_logo"
+                        android:layout_marginLeft="20dp"
+                        android:textColor="@color/whiteWords"
+                        android:textSize="@dimen/slideMenuItem"
+                        android:layout_centerVertical="true"
+                        android:layout_alignTop="@id/schedule_logo"
+                        android:layout_alignBottom="@id/schedule_logo"
+                        />
                 </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/our"
-                    android:layout_width="match_parent"
+                    android:layout_below="@id/schedule"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/library"
+                    android:layout_marginTop="10dp"
                     >
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center"
-                        android:padding="10dp"
-                        >
-                        <ImageView
-                        android:id="@+id/our_logo"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/our"
+                    <ImageView
+                    android:id="@+id/our_logo"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/our"
+                    android:layout_centerVertical="true"
+                    />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:text="@string/our_name"
+                        android:layout_toRightOf="@id/our_logo"
+                        android:layout_marginLeft="20dp"
+                        android:textColor="@color/whiteWords"
+                        android:textSize="@dimen/slideMenuItem"
                         android:layout_centerVertical="true"
+                        android:layout_alignTop="@id/our_logo"
+                        android:layout_alignBottom="@id/our_logo"
                         />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
-                            android:text="@string/our_name"
-                            android:layout_toRightOf="@id/our_logo"
-                            android:layout_marginLeft="20dp"
-                            android:textColor="@color/whiteWords"
-                            android:textSize="@dimen/slideMenuItem"
-                            android:layout_centerVertical="true"
-                            />
-                    </LinearLayout>
-                </RelativeLayout>
+                    </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/feedback"
-                    android:layout_width="match_parent"
+                    android:layout_below="@id/our"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/library"
+                    android:layout_marginTop="10dp"
                     >
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center"
-                        android:padding="10dp"
-                        >
-                        <ImageView
-                            android:id="@+id/feedback_logo"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:src="@drawable/feedback"
-                            android:layout_centerVertical="true"
+                    <ImageView
+                        android:id="@+id/feedback_logo"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/feedback"
+                        android:layout_centerVertical="true"
 
-                            />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
-                            android:text="@string/feedback_name"
-                            android:layout_toRightOf="@id/feedback_logo"
-                            android:layout_marginLeft="20dp"
-                            android:textColor="@color/whiteWords"
-                            android:textSize="@dimen/slideMenuItem"
-                            android:layout_centerVertical="true"
-                            />
-                    </LinearLayout>
-                </RelativeLayout>
+
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:text="@string/feedback_name"
+                        android:layout_toRightOf="@id/feedback_logo"
+                        android:layout_marginLeft="20dp"
+                        android:textColor="@color/whiteWords"
+                        android:textSize="@dimen/slideMenuItem"
+                        android:layout_alignTop="@id/feedback_logo"
+                        android:layout_alignBottom="@id/feedback_logo"
+                        android:layout_centerVertical="true"
+                        />
+                    </RelativeLayout>
+
+            </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/bottomLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_alignLeft="@id/library"
+                android:gravity="center"
+                >
+
 
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"></LinearLayout>
         </LinearLayout>
 
 

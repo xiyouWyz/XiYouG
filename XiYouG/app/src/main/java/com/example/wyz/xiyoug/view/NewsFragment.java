@@ -21,6 +21,8 @@ import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.Util.MyProgressDialog;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
 import com.example.wyz.xiyoug.InfoDetail_Activity;
+import com.example.wyz.xiyoug.Util.ReadFile;
+import com.example.wyz.xiyoug.Util.SaveFile;
 import com.example.wyz.xiyoug.pulltorefreshlistview.PullListView;
 
 import org.json.JSONArray;
@@ -50,10 +52,11 @@ public class NewsFragment  extends Fragment{
     //获取新闻的线程
     private News_Thread news_thread;
     //获取新闻信息后对listview界面的更新
-    private News_Handler news_handler;
+    private News_Handler news_handler=new News_Handler();
 
+    private  MyExceptionHandler myExceptionHandler=new  MyExceptionHandler();
     private  int news_page=1;
-
+    private  boolean isRefresh=false;
     private int total_pages;
     private  int amount;
 
@@ -62,13 +65,54 @@ public class NewsFragment  extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.info_news_page,container,false);
-        news_handler=new News_Handler();
-        Log.d(TAG,"NewsFragment碎片正在加载");
-        initData();
+
         setupViewComponent();
+        getDataFromFile();
+
         return view;
     }
+    private  void getDataFromFile()
+    {
+        String newsInfo= ReadFile.readNews(getContext());
+        if(newsInfo!=null)
+        {
+            boolean result= false;
+            try {
+                result = new JSONObject(newsInfo).getBoolean("Result");
+                if(result) {
 
+                    JSONObject detail = (JSONObject) new JSONObject(newsInfo).get("Detail");
+                    String type = detail.getString("Type");
+                    total_pages = detail.getInt("Pages");
+                    amount = detail.getInt("Amount");
+                    JSONArray jsonArray = detail.getJSONArray("Data");
+                    if (type.equals("新闻")) {
+                        newses=new ArrayList<>();
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                            News news = new News(
+                                    jsonObject.getInt("ID"),
+                                    jsonObject.getString("Title"),
+                                    jsonObject.getString("Date")
+                            );
+                            newses.add(news);
+                        }
+                        adapter.notifyDataSetChanged();
+                        Log.d(TAG,"从文件中加载数据");
+                    }
+                    else
+                    {
+                        initData();
+                        Log.d(TAG,"从网络中加载数据");
+                    }
+                }
+            } catch (JSONException e) {
+                Log.d(TAG,e.toString());
+                initData();
+                Log.d(TAG,"从网络中加载数据");
+            }
+        }
+    }
     private  void initData()
     {
         news_thread=new News_Thread();
@@ -125,8 +169,6 @@ public class NewsFragment  extends Fragment{
     private void getUpData(boolean isRefresh) {
 
         initData();
-        //pullListView.setAdapter(new MyAdapter());
-
         adapter.notifyDataSetChanged();
         pullListView.refreshComplete();
         pullListView.getMoreComplete();
@@ -203,7 +245,10 @@ public class NewsFragment  extends Fragment{
                 message.setData(bundle);
                 news_handler.sendMessage(message);
             } catch (IOException e) {
-                Log.d("False","新闻数据请求出错");
+                Log.d(TAG,"新闻数据请求出错");
+                Message message=Message.obtain();
+                message.what=2;
+                myExceptionHandler.sendMessage(message);
             }
 
         }
@@ -217,7 +262,7 @@ public class NewsFragment  extends Fragment{
             {
                 try {
                     boolean result=new JSONObject(news_info).getBoolean("Result");
-                    if(result==true)
+                    if(result)
                     {
 
                         JSONObject detail=(JSONObject) new JSONObject(news_info).get("Detail");
@@ -243,7 +288,13 @@ public class NewsFragment  extends Fragment{
                                 newses.add(news);
                             }
                             adapter.notifyDataSetChanged();
-                            Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
+                            Log.d(TAG,"从网络中加载数据");
+                            if(news_page==1)
+                            {
+                                SaveFile.saveNews(getContext(),news_info);
+                            }
+
+                            //Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
                         }
                     }
                     else
@@ -252,10 +303,20 @@ public class NewsFragment  extends Fragment{
                     }
 
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.d(TAG,e.toString());
                 }
 
             }
+        }
+    }
+    private  class  MyExceptionHandler extends  Handler
+    {
+        @Override
+        public void handleMessage(Message msg) {
+          if(msg.what==2)
+          {
+              Toast.makeText(getContext(),"请检查网络连接",Toast.LENGTH_SHORT).show();
+          }
         }
     }
 

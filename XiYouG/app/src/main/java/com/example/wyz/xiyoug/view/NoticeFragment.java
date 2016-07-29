@@ -21,6 +21,8 @@ import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.Util.MyProgressDialog;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
 import com.example.wyz.xiyoug.InfoDetail_Activity;
+import com.example.wyz.xiyoug.Util.ReadFile;
+import com.example.wyz.xiyoug.Util.SaveFile;
 import com.example.wyz.xiyoug.pulltorefreshlistview.PullListView;
 
 import org.json.JSONArray;
@@ -52,23 +54,63 @@ public class NoticeFragment  extends Fragment{
     //获取新闻信息后对listview界面的更新
     private Notice_Handler notice_handler=new Notice_Handler();
 
+    private  MyExceptionHandler myExceptionHandler=new MyExceptionHandler();
+
     private  int notice_page=1;
 
     private int total_pages;
     private  int amount;
 
-    private final   String TAG="NewsFragment";
+    private final   String TAG="NoticeFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.info_news_page,container,false);
-
-        Log.d(TAG,"NewsFragment碎片正在加载");
-        initData();
+        //initData();
         setupViewComponent();
+        getDataFromFile();
         return view;
     }
+    private  void getDataFromFile()
+    {
+        String noticeInfo= ReadFile.readNotice(getContext());
+        if(noticeInfo!=null)
+        {
+            boolean result= false;
+            try {
+                result = new JSONObject(noticeInfo).getBoolean("Result");
+                if(result) {
 
+                    JSONObject detail = (JSONObject) new JSONObject(noticeInfo).get("Detail");
+                    String type = detail.getString("Type");
+                    total_pages = detail.getInt("Pages");
+                    amount = detail.getInt("Amount");
+                    JSONArray jsonArray = detail.getJSONArray("Data");
+                    if (type.equals("公告")) {
+                        newses=new ArrayList<>();
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                            News news = new News(
+                                    jsonObject.getInt("ID"),
+                                    jsonObject.getString("Title"),
+                                    jsonObject.getString("Date")
+                            );
+                            newses.add(news);
+                        }
+                        adapter.notifyDataSetChanged();
+                        Log.d(TAG,"从文件中加载数据");
+                    }
+                    else
+                    {
+                        initData();
+                    }
+                }
+            } catch (JSONException e) {
+                Log.d(TAG,e.toString());
+                initData();
+            }
+        }
+    }
     private  void initData()
     {
         notice_thread=new Notice_Thread();
@@ -109,7 +151,7 @@ public class NoticeFragment  extends Fragment{
 
                 Intent intent=new Intent();
                 Bundle bundle=new Bundle();
-                bundle.putString("type","news");
+                bundle.putString("type","announce");
                 bundle.putString("format","html");
                 bundle.putInt("id",newses.get(i-1).getId());
                 intent.putExtras(bundle);
@@ -125,8 +167,6 @@ public class NoticeFragment  extends Fragment{
     private void getUpData(boolean isRefresh) {
 
         initData();
-        //pullListView.setAdapter(new MyAdapter());
-
         adapter.notifyDataSetChanged();
         pullListView.refreshComplete();
         pullListView.getMoreComplete();
@@ -203,7 +243,10 @@ public class NoticeFragment  extends Fragment{
                 message.setData(bundle);
                 notice_handler.sendMessage(message);
             } catch (IOException e) {
-                Log.d("False","公告数据请求出错");
+                Log.d(TAG,"公告数据请求出错");
+                Message message=Message.obtain();
+                message.what=2;
+                myExceptionHandler.sendMessage(message);
             }
 
         }
@@ -239,16 +282,28 @@ public class NoticeFragment  extends Fragment{
                             }
 
                             adapter.notifyDataSetChanged();
-                            Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
+                            Log.d(TAG,"从网络中加载数据");
+                            SaveFile.saveNotice(getContext(),news_info);
+                            //Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Toast.makeText(getContext(), "获取失败", Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                   Log.d(TAG,e.toString());
                 }
 
+            }
+        }
+    }
+    private  class  MyExceptionHandler extends  Handler
+    {
+        @Override
+        public void handleMessage(Message msg) {
+            if(msg.what==2)
+            {
+                Toast.makeText(getContext(),"请检查网络连接",Toast.LENGTH_SHORT).show();
             }
         }
     }

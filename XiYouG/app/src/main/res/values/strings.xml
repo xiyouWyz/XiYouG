@@ -2,8 +2,10 @@
     <string name="app_name">XiYouG</string>
     <string name="library_name">西邮图书馆</string>
     <string name="score_name">西邮成绩</string>
+    <string name="schedule_name">西邮课程表</string>
     <string name="our_name">关于我们</string>
     <string name="feedback_name">反馈</string>
+    <string name="exit">退出登录</string>
     <string name="Main_home">首页</string>
     <string name="Main_my">我的</string>
     <string name="Main_info">消息</string>
@@ -22,6 +24,7 @@
     <string name="my_col">我的收藏</string>
     <string name="my_history">我的足迹</string>
     <string name="my_bor">我的借阅</string>
+    <string name="my_debt">欠费情况:</string>
 
     <string name="book_detail_title">书籍详情</string>
     <string name="book_detail_info">书籍资料</string>

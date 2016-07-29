@@ -193,8 +193,10 @@ public class BookSearchActivity extends AppCompatActivity  implements SearchView
                 bundle.putString("sea_result",sea_result);
                 message.setData(bundle);
                 myHandler.sendMessage(message);
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+               Message message=Message.obtain();
+                message.what=2;
+                myLoadHandler.sendMessage(message);
             }
 
         }
@@ -213,14 +215,9 @@ public class BookSearchActivity extends AppCompatActivity  implements SearchView
                     if (result) {
                         String detail = new JSONObject(sea_result).getString("Detail");
                         if (detail.equals("NO_RECORD")) {
-                            Toast.makeText(BookSearchActivity.this, "没有找到此书", Toast.LENGTH_SHORT).show();
-                            load_view.setVisibility(View.INVISIBLE);
-                            content.setVisibility(View.VISIBLE);
-                            if(book_searches!=null)
-                            {
-                                book_searches.clear();
-                                myAdapter.notifyDataSetChanged();
-                            }
+                            Message message=Message.obtain();
+                            message.what=0;
+                            myLoadHandler.sendMessage(message);
 
                         } else
                         {
@@ -246,24 +243,50 @@ public class BookSearchActivity extends AppCompatActivity  implements SearchView
                             myLoadHandler.sendMessage(message);
                         }
                     } else {
-                        Toast.makeText(BookSearchActivity.this, "请求失败", Toast.LENGTH_SHORT).show();
+                       Message message=Message.obtain();
+                        message.what=3;
+                        myLoadHandler.sendMessage(message);
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Message message=Message.obtain();
+                    message.what=3;
+                    myLoadHandler.sendMessage(message);
                 }
 
             }
         }
     }
+
     private  class  MyLoadHandler extends  Handler
     {
         @Override
         public void handleMessage(Message msg) {
 
+            if(msg.what==0)
+            {
+                //Toast.makeText(BookSearchActivity.this, "没有找到此书", Toast.LENGTH_SHORT).show();
+                load_view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
+                if(book_searches!=null)
+                {
+                    book_searches.clear();
+                    myAdapter.notifyDataSetChanged();
+                }
+            }
             if(msg.what==1)
             {
                 load_view.setVisibility(View.INVISIBLE);
                 content.setVisibility(View.VISIBLE);
+            }
+            else if(msg.what==2)
+            {
+                Toast.makeText(BookSearchActivity.this,"请检查网络连接",Toast.LENGTH_SHORT).show();
+                //BookSearchActivity.this.finish();
+            }
+            else if(msg.what==3)
+            {
+                Toast.makeText(BookSearchActivity.this,"请求出错",Toast.LENGTH_SHORT).show();
+                //BookSearchActivity.this.finish();
             }
         }
     }

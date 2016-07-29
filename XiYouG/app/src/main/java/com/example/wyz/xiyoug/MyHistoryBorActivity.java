@@ -159,8 +159,11 @@ public class MyHistoryBorActivity extends AppCompatActivity {
                 bundle.putString("his_result",his_result);
                 message.setData(bundle);
                 myHandler.sendMessage(message);
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                Log.d(TAG,e.toString());
+                Message message=Message.obtain();
+                message.what=2;
+                myLoadHandler.sendMessage(message);
             }
         }
     }
@@ -169,16 +172,18 @@ public class MyHistoryBorActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             String his_result=msg.getData().getString("his_result");
-            if(!his_result.equals(""))
+            if(his_result!=null&!his_result.equals(""))
             {
                 try {
                     boolean result= new JSONObject(his_result).getBoolean("Result");
-                    if(result==true)
+                    if(result)
                     {
                         String detail=new JSONObject(his_result).getString("Detail");
                         if(detail.equals("NO_RECORD"))
                         {
-                            Toast.makeText(MyHistoryBorActivity.this,"没有历史记录",Toast.LENGTH_SHORT).show();
+                            Message message=Message.obtain();
+                            message.what=0;
+                            myLoadHandler.sendMessage(message);
                         }
                         else
                         {
@@ -202,19 +207,22 @@ public class MyHistoryBorActivity extends AppCompatActivity {
                             else
                             {
                                 setListViewData();
-                                Message message=new Message();
-                                message.what=1;
-                                myLoadHandler.sendMessage(message);
                             }
-
+                            Message message=Message.obtain();
+                            message.what=1;
+                            myLoadHandler.sendMessage(message);
                         }
                     }
                     else
                     {
-                        Toast.makeText(MyHistoryBorActivity.this,"获取失败",Toast.LENGTH_SHORT).show();
+                        Message message=Message.obtain();
+                        message.what=3;
+                        myLoadHandler.sendMessage(message);
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Message message=Message.obtain();
+                    message.what=3;
+                    myLoadHandler.sendMessage(message);
                 }
             }
         }
@@ -225,10 +233,28 @@ public class MyHistoryBorActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
 
+            //没有记录处理
+            if(msg.what==0)
+            {
+                load_view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
+                Toast.makeText(MyHistoryBorActivity.this,"没有历史记录",Toast.LENGTH_SHORT).show();
+            }
+            //请求成功处理
             if(msg.what==1)
             {
                 load_view.setVisibility(View.INVISIBLE);
                 content.setVisibility(View.VISIBLE);
+            }
+            //没有网络连接处理
+            if(msg.what==2)
+            {
+                Toast.makeText(MyHistoryBorActivity.this,"请检查网络连接",Toast.LENGTH_SHORT).show();
+            }
+            if(msg.what==3)
+            {
+                Toast.makeText(MyHistoryBorActivity.this,"请求出错",Toast.LENGTH_SHORT).show();
+                MyHistoryBorActivity.this.finish();
             }
         }
     }

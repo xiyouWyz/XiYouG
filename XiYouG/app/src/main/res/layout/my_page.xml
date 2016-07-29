@@ -40,7 +40,7 @@
                     android:text="@string/my_no_login"
                     android:textColor="@color/my_studyNumber"
                     android:layout_gravity="center"
-                    android:layout_marginTop="2dp"
+
 
                     android:textSize="@dimen/my_col"
                     />
@@ -53,9 +53,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="2dp"
-                android:layout_below="@id/login"
-                android:layout_marginBottom="5dp"
                 android:gravity="center"
                 >
                 <TextView
@@ -76,6 +73,30 @@
                     android:textColor="@color/my_major"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="5dp"
+                    android:textSize="@dimen/my_col"
+                    android:layout_marginStart="7dp"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                >
+                <TextView
+                    android:id="@+id/debtLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/my_major"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="@dimen/my_col"
+                    />
+                <TextView
+                    android:id="@+id/debt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/my_major"
+                    android:layout_gravity="center_horizontal"
                     android:textSize="@dimen/my_col"
                     android:layout_marginStart="7dp"
                     />
@@ -195,6 +216,42 @@
             </LinearLayout>
         </LinearLayout>
         <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/my_col_divide"
+            android:background="@color/my_col_divide"
+            />
+        <LinearLayout
+            android:id="@+id/my_exit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/my_col_shape"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/exit"
+
+                    android:textSize="@dimen/my_col"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text=">"
+
+                    android:textSize="@dimen/my_col_arrow"
+                    android:textColor="@color/my_col_arrow"
+                    android:gravity="right"
+                    android:layout_marginEnd="10dp"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/my_exit_underline"
             android:layout_width="match_parent"
             android:layout_height="@dimen/my_col_divide"
             android:background="@color/my_col_divide"

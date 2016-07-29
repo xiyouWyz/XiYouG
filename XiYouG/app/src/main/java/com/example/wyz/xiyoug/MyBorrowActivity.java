@@ -220,7 +220,6 @@ public class MyBorrowActivity  extends AppCompatActivity
     }
     public  class  MyThread implements  Runnable
     {
-
         @Override
         public void run() {
             String url= OkHttpUtil.attachHttpGetParam(HttpLinkHeader.MY_BORROW,"session", MyFragment.SESSIONID);
@@ -232,8 +231,11 @@ public class MyBorrowActivity  extends AppCompatActivity
                 bundle.putString("bor_result",bor_result);
                 message.setData(bundle);
                 myhandler.sendMessage(message);
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                Log.d(TAG,e.toString());
+                Message message=Message.obtain();
+                message.what=2;
+                myLoadHandler.sendMessage(message);
             }
 
         }
@@ -244,33 +246,28 @@ public class MyBorrowActivity  extends AppCompatActivity
         public void handleMessage(Message msg) {
             String bor_result=msg.getData().getString("bor_result");
             Log.d(TAG,bor_result);
-            if(!bor_result.equals(""))
-            {
+            if (bor_result != null && !bor_result.equals("")) {
 
                 try {
-                    boolean  result = new JSONObject(bor_result).getBoolean("Result");
-                    Log.d(TAG,result+"");
-                    if(result==true)
-                    {
-                        String detail=new JSONObject(bor_result).getString("Detail");
-                        if(detail.equals("NO_RECORD"))
-                        {
+                    boolean result = new JSONObject(bor_result).getBoolean("Result");
+                    if (result) {
+                        String detail = new JSONObject(bor_result).getString("Detail");
+                        if (detail.equals("NO_RECORD")) {
                             already_view.setText(String.valueOf(0));
                             remain_view.setText(String.valueOf(15));
                             continue_view.setText(String.valueOf(0));
                             outTime_view.setText(String.valueOf(0));
-                            Toast.makeText(MyBorrowActivity.this,"没有借阅记录",Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
-                            JSONArray jsonArray=new JSONArray(detail);
-                            book_borrows=new ArrayList<>();
-                            int outTime_account=0;
-                            int continue_account=0;
-                            for(int i=0;i<jsonArray.length();i++)
-                            {
-                                JSONObject jsonObject=(JSONObject)jsonArray.get(i);
-                                Book_Borrow book_borrow=new Book_Borrow(
+                            Message message=Message.obtain();
+                            message.what=0;
+                            myLoadHandler.sendMessage(message);
+                        } else {
+                            JSONArray jsonArray = new JSONArray(detail);
+                            book_borrows = new ArrayList<>();
+                            int outTime_account = 0;
+                            int continue_account = 0;
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                                Book_Borrow book_borrow = new Book_Borrow(
                                         jsonObject.getString("Title"),
                                         jsonObject.getString("Barcode"),
                                         jsonObject.getString("Department"),
@@ -281,36 +278,35 @@ public class MyBorrowActivity  extends AppCompatActivity
                                         jsonObject.getString("Library_id")
                                 );
                                 book_borrows.add(book_borrow);
-                                if(book_borrow.getState().equals("本馆续借"))
-                                {
+                                if (book_borrow.getState().equals("本馆续借")) {
                                     continue_account++;
                                 }
                             }
-                            if(myAdapter!=null)
-                            {
+                            if (myAdapter != null) {
                                 myAdapter.notifyDataSetChanged();
-                            }
-                            else
-                            {
+                            } else {
                                 setupRecyclerView();
                             }
-                            int bor_account=book_borrows.size();
+                            int bor_account = book_borrows.size();
                             already_view.setText(String.valueOf(bor_account));
-                            remain_view.setText(String.valueOf(15-bor_account));
+                            remain_view.setText(String.valueOf(15 - bor_account));
                             continue_view.setText(String.valueOf(continue_account));
                             outTime_view.setText(String.valueOf(0));
-                            Message message=new Message();
-                            message.what=1;
+                            Message message =Message.obtain();
+                            message.what = 1;
                             myLoadHandler.sendMessage(message);
 
                         }
 
-                    }
-                    else{
-                        Toast.makeText(MyBorrowActivity.this,"请求失败",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Message message=Message.obtain();
+                        message.what=3;
+                        myLoadHandler.sendMessage(message);
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Message message=Message.obtain();
+                    message.what=3;
+                    myLoadHandler.sendMessage(message);
                 }
 
             }
@@ -328,8 +324,11 @@ public class MyBorrowActivity  extends AppCompatActivity
                 bundle.putString("renew_result",renew_result);
                 message.setData(bundle);
                 myRenewHandler.sendMessage(message);
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                Log.d(TAG,e.toString());
+                Message message=Message.obtain();
+                message.what=2;
+                myLoadHandler.sendMessage(message);
             }
 
         }
@@ -350,7 +349,8 @@ public class MyBorrowActivity  extends AppCompatActivity
                     Toast.makeText(MyBorrowActivity.this,"续借失败",Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.d(TAG,e.toString());
+                Toast.makeText(MyBorrowActivity.this,"续借失败",Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -360,10 +360,26 @@ public class MyBorrowActivity  extends AppCompatActivity
         @Override
         public void handleMessage(Message msg) {
 
-            if(msg.what==1)
+            if(msg.what==0)
             {
                 load_view.setVisibility(View.INVISIBLE);
                 content.setVisibility(View.VISIBLE);
+                Toast.makeText(MyBorrowActivity.this, "没有借阅记录", Toast.LENGTH_SHORT).show();
+            }
+            else if(msg.what==1)
+            {
+                load_view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
+            }
+            if(msg.what==2)
+            {
+                Toast.makeText(MyBorrowActivity.this,"请检查网络连接",Toast.LENGTH_SHORT).show();
+                MyBorrowActivity.this.finish();
+            }
+            if(msg.what==3)
+            {
+                Toast.makeText(MyBorrowActivity.this,"请求出错",Toast.LENGTH_SHORT).show();
+                MyBorrowActivity.this.finish();
             }
         }
     }

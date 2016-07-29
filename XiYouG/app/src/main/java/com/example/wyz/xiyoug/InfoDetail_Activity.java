@@ -107,8 +107,11 @@ public class InfoDetail_Activity extends AppCompatActivity{
                 bundle.putString("info_result",info_result);
                 message.setData(bundle);
                 myHandler.sendMessage(message);
-            } catch (IOException e) {
-                Log.d("False","新闻数据请求出错");
+            } catch (Exception e) {
+                Log.d(TAG,e.toString());
+                Message message=Message.obtain();
+                message.what=2;
+                handler.sendMessage(message);
             }
         }
     }
@@ -122,7 +125,7 @@ public class InfoDetail_Activity extends AppCompatActivity{
             {
                 try {
                     boolean result=new JSONObject(info_detail).getBoolean("Result");
-                    if(result==true)
+                    if(result)
                     {
                         JSONObject jsonObject=new JSONObject(info_detail).getJSONObject("Detail");
                         String title=(String)jsonObject.get("Title");
@@ -143,10 +146,14 @@ public class InfoDetail_Activity extends AppCompatActivity{
                     }
                     else
                     {
-                        Toast.makeText(InfoDetail_Activity.this,"获取失败",Toast.LENGTH_SHORT).show();
+                        Message message=Message.obtain();
+                        message.what=3;
+                        handler.sendMessage(message);
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Message message=Message.obtain();
+                    message.what=3;
+                    handler.sendMessage(message);
                 }
             }
         }
@@ -169,6 +176,16 @@ public class InfoDetail_Activity extends AppCompatActivity{
             {
                 view.setVisibility(View.INVISIBLE);
                 content.setVisibility(View.VISIBLE);
+            }
+            else if(msg.what==2)
+            {
+                Toast.makeText(InfoDetail_Activity.this,"请检查网络连接",Toast.LENGTH_SHORT).show();
+                InfoDetail_Activity.this.finish();
+            }
+            else if(msg.what==3)
+            {
+                Toast.makeText(InfoDetail_Activity.this,"请求出错",Toast.LENGTH_SHORT).show();
+                InfoDetail_Activity.this.finish();
             }
         }
     }

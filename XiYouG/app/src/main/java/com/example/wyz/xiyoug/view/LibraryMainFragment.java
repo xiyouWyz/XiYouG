@@ -96,6 +96,8 @@ public class LibraryMainFragment extends Fragment {
         homepage.setOnClickListener(new MyOnClickListener(0));
         infopage.setOnClickListener(new MyOnClickListener(1));
         mypage.setOnClickListener(new MyOnClickListener(2));
+        ImageView home_imageView = (ImageView) homepage.getChildAt(0);
+        home_imageView.setImageResource(R.drawable.home_press);
     }
     /**
      * 三个页面的的适配器

@@ -9,10 +9,12 @@
 
 
         <item name="android:listDivider">@drawable/recyclerview_divide_shape</item>
-        <!--<item name="android:actionOverflowButtonStyle">@style/</item>-->
+
+       <!-- <item name="android:listDivider">@drawable/divider_bg</item>-->
     </style>
     <style name="Login_Animation" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/login_push_bottom_in</item>
         <item name="android:windowExitAnimation">@anim/login_push_bottom_out</item>
     </style>
+
 </resources>

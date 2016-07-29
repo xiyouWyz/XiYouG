@@ -19,6 +19,14 @@ public class User {
     public  static  User getInstance()
     {
         return user;
+
+    }
+    public static void Clear()
+    {
+        user.setId("");
+        user.setName("");
+        user.setDepartment("");
+        user.setDebt("");
     }
     private  String id;
     private  String name;
@@ -56,4 +64,6 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
+
+
 }
