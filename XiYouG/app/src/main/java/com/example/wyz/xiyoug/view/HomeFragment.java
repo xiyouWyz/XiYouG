@@ -1,10 +1,8 @@
 package com.example.wyz.xiyoug.View;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -25,9 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.wyz.xiyoug.BookDetailActivity;
-import com.example.wyz.xiyoug.InfoDetail_Activity;
-import com.example.wyz.xiyoug.MainActivity;
+import com.example.wyz.xiyoug.Activity.BookDetailActivity;
 import com.example.wyz.xiyoug.Model.Book_Rank;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.R;
@@ -39,7 +35,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -266,7 +261,7 @@ public class HomeFragment extends Fragment {
     /**
      * 通过线程让轮播图轮播起来
      */
-    public class MyThread implements Runnable {
+    private class MyThread implements Runnable {
         @Override
         public void run() {
             while (true) {

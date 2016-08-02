@@ -10,8 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/main_theme"
-
-
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         >

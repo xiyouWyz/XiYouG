@@ -1,11 +1,10 @@
-package com.example.wyz.xiyoug;
+package com.example.wyz.xiyoug.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompatSideChannelService;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.wyz.xiyoug.Model.Book_Borrow;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
+import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.RecyclerView.DividerItemDecoration;
 import com.example.wyz.xiyoug.RecyclerView.OnItemOnClickListenerInterface;
 import com.example.wyz.xiyoug.Util.MyAnimation;
@@ -33,7 +33,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +50,7 @@ public class MyBorrowActivity  extends AppCompatActivity
     private  MyAdapter myAdapter;
     private  MyThread myThread;
     private  MyRenewThread myRenewThread;
-    private  MyRenewHandler myRenewHandler;
+    private  MyRenewHandler myRenewHandler=new MyRenewHandler();
     private  MyHandler myhandler=new MyHandler();
     private List<Book_Borrow> book_borrows;
     private final   String TAG="MyBorrowActivity";
@@ -59,6 +58,9 @@ public class MyBorrowActivity  extends AppCompatActivity
     private LinearLayout content;
     private RelativeLayout load_view;
     private  MyLoadHandler myLoadHandler=new MyLoadHandler();
+    private  String renew_barCode;
+    private  String renew_department_id;
+    private  String renew_library_id;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -201,7 +203,7 @@ public class MyBorrowActivity  extends AppCompatActivity
             this.onItemClickListener = onItemClickListener;
         }
     }
-    public  class  MyRenewOnClickListener implements View.OnClickListener {
+    private   class  MyRenewOnClickListener implements View.OnClickListener {
 
         private  int index;
         public MyRenewOnClickListener(int i) {
@@ -211,14 +213,19 @@ public class MyBorrowActivity  extends AppCompatActivity
         @Override
         public void onClick(View view) {
             List<BasicNameValuePair> basicNameValuePairs=new ArrayList<BasicNameValuePair>();
+            renew_barCode=book_borrows.get(index).getBarcode();
+            renew_department_id=book_borrows.get(index).getDepartment_id();
+            renew_library_id=book_borrows.get(index).getLibrary_id();
             basicNameValuePairs.add(new BasicNameValuePair("session",MyFragment.SESSIONID));
-            basicNameValuePairs.add(new BasicNameValuePair("barcode",book_borrows.get(index).getBarcode()));
-            basicNameValuePairs.add(new BasicNameValuePair("department_id",book_borrows.get(index).getDepartment_id()));
-            basicNameValuePairs.add(new BasicNameValuePair("library_id",book_borrows.get(index).getLibrary_id()));
+            basicNameValuePairs.add(new BasicNameValuePair("barcode",renew_barCode));
+            basicNameValuePairs.add(new BasicNameValuePair("department_id",renew_department_id));
+            basicNameValuePairs.add(new BasicNameValuePair("library_id",renew_library_id));
             renew_url=OkHttpUtil.attachHttpGetParams(HttpLinkHeader.BOOK_RENEW,basicNameValuePairs);
+          /*  myRenewThread =new MyRenewThread();
+            new Thread(myRenewThread).start();*/
         }
     }
-    public  class  MyThread implements  Runnable
+    private   class  MyThread implements  Runnable
     {
         @Override
         public void run() {
@@ -312,7 +319,7 @@ public class MyBorrowActivity  extends AppCompatActivity
             }
         }
     }
-    public class MyRenewThread implements  Runnable
+    private class MyRenewThread implements  Runnable
     {
 
         @Override
@@ -343,6 +350,8 @@ public class MyBorrowActivity  extends AppCompatActivity
                 if(result==true)
                 {
                     Toast.makeText(MyBorrowActivity.this,"续借成功",Toast.LENGTH_SHORT).show();
+                    UpDataRenew();
+                    myAdapter.notifyDataSetChanged();
                 }
                 else
                 {
@@ -353,6 +362,19 @@ public class MyBorrowActivity  extends AppCompatActivity
                 Toast.makeText(MyBorrowActivity.this,"续借失败",Toast.LENGTH_SHORT).show();
             }
 
+        }
+    }
+    private  void UpDataRenew()
+    {
+        for(int i=0;i<book_borrows.size();i++)
+        {
+            if(book_borrows.get(i).getBarcode().equals(renew_barCode)
+                    &&book_borrows.get(i).getDepartment_id().equals(renew_department_id)
+                    &&book_borrows.get(i).getLibrary_id().equals(renew_library_id) )
+            {
+                book_borrows.get(i).setCanRenew(false);
+                break;
+            }
         }
     }
     private  class  MyLoadHandler extends  Handler

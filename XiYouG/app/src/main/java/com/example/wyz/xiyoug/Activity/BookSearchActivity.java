@@ -1,4 +1,4 @@
-package com.example.wyz.xiyoug;
+package com.example.wyz.xiyoug.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.wyz.xiyoug.Model.Book_Search;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
+import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.Util.MyAnimation;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
 
@@ -31,7 +32,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -179,7 +179,7 @@ public class BookSearchActivity extends AppCompatActivity  implements SearchView
             private  TextView author_view;
         }
     }
-    public  class  MyThread implements  Runnable
+    private   class  MyThread implements  Runnable
     {
 
         @Override

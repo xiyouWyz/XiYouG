@@ -1,36 +1,15 @@
 package com.example.wyz.xiyoug.View;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.ContentLoadingProgressBar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.wyz.xiyoug.Model.Book_Rank;
-import com.example.wyz.xiyoug.Model.News;
 import com.example.wyz.xiyoug.R;
-import com.example.wyz.xiyoug.Util.MyProgressDialog;
-import com.example.wyz.xiyoug.Util.OkHttpUtil;
-import com.example.wyz.xiyoug.pulltorefreshlistview.PullListView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Wyz on 2016/7/17.

@@ -1,6 +1,5 @@
-package com.example.wyz.xiyoug;
+package com.example.wyz.xiyoug.Activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,23 +13,16 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
-import com.example.wyz.xiyoug.Model.News;
+import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.Util.MyAnimation;
-import com.example.wyz.xiyoug.Util.MyProgressDialog;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
-import com.example.wyz.xiyoug.View.InfoFragment;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Created by Wyz on 2016/7/22.
@@ -96,7 +88,7 @@ public class InfoDetail_Activity extends AppCompatActivity{
         new MyAnimation(InfoDetail_Activity.this, "胖萌正在为您努力加载....", R.drawable.loading, view);
         content=(ScrollView)findViewById(R.id.content);
     }
-    public   class  MyThread implements  Runnable
+    private    class  MyThread implements  Runnable
     {
         @Override
         public void run() {

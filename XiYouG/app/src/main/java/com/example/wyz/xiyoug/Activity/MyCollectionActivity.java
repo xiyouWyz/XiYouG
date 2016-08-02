@@ -1,8 +1,7 @@
-package com.example.wyz.xiyoug;
+package com.example.wyz.xiyoug.Activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,6 +25,7 @@ import android.widget.Toast;
 import com.example.wyz.xiyoug.Model.Book_Collection;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.Model.User;
+import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.Util.MyAnimation;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
 import com.example.wyz.xiyoug.View.MyFragment;
@@ -35,7 +35,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

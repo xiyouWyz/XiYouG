@@ -32,6 +32,10 @@ public class ReadFile {
     {
         return  loadData(context,"noticeInfo");
     }
+    public  static  String readSchedule(Context context)
+    {
+        return loadData(context,"scheduleInfo");
+    }
     public static   String loadData(Context context,String fileName)
     {
         FileInputStream in=null;

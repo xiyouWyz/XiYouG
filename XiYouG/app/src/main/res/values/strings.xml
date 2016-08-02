@@ -9,7 +9,7 @@
     <string name="Main_home">首页</string>
     <string name="Main_my">我的</string>
     <string name="Main_info">消息</string>
-    <string name="home_title">西邮图书馆</string>
+    <string name="home_title">西邮G</string>
     <string name="slide_show_one"></string>
     <string name="slide_show_two"></string>
     <string name="slide_show_three"></string>
@@ -82,4 +82,32 @@
 
     <string name="book_refer_authorLabel">作者:</string>
     <string name="book_refer_idLabel">控制号:</string>
+    
+    <string name="schedule_day1">星期一</string>
+    <string name="schedule_day2">星期二</string>
+    <string name="schedule_day3">星期三</string>
+    <string name="schedule_day4">星期四</string>
+    <string name="schedule_day5">星期五</string>
+    <string name="schedule_time1">8.00</string>
+    <string name="schedule_time2">8.55</string>
+    <string name="schedule_time3">10.15</string>
+    <string name="schedule_time4">11.10</string>
+    <string name="schedule_time5">2.30</string>
+    <string name="schedule_time6">3.25</string>
+    <string name="schedule_time7">4.35</string>
+    <string name="schedule_time8">5.30</string>
+    <string name="schedule_import">点击导入课表</string>
+
+    <string name="schedule_login_account_hint">教务处账号</string>
+    <string name="schedule_login_password_hint">密码</string>
+    <string name="schedule_login_btn">导入</string>
+    <string name="schedule_login_close">关闭</string>
+    <string name="schedule_login_remember">记住密码</string>
+    <string name="schedule_bottom_left">课表</string>
+    <string name="schedule_bottom_right">我的</string>
+
+    <string name="schedule_my_no_login">点击登录</string>
+    <string name="schedule_my_import">导入成绩</string>
+    <string name="schedule_my_exit">退出登录</string>
+
 </resources>

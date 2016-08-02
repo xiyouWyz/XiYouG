@@ -1,31 +1,16 @@
 package com.example.wyz.xiyoug.View;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.wyz.xiyoug.InfoDetail_Activity;
 import com.example.wyz.xiyoug.R;
-import com.example.wyz.xiyoug.Util.OkHttpUtil;
-
-import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 /**
  * Created by Wyz on 2016/7/22.
@@ -39,9 +24,22 @@ public class LoginWindow extends PopupWindow{
     private Button loginBtn;
     private TextView close_textView;
 
-    public LoginWindow(Context context,View.OnClickListener loginOnClick ,String account,String password,boolean remember) {
+    public LoginWindow(Context context,View.OnClickListener loginOnClick ,String account,String password,boolean remember,int type) {
         super(context);
-        loginView=LayoutInflater.from(context).inflate(R.layout.login_page,null);
+        switch (type)
+        {
+            case 0:loginView=LayoutInflater.from(context).inflate(R.layout.login_page,null);
+                setupViewComponent(context,loginOnClick,account,password,remember);
+                break;
+            case  1:loginView=LayoutInflater.from(context).inflate(R.layout.schedule_login,null);
+                setupViewComponent(context,loginOnClick,account,password,remember);
+                break;
+        }
+
+    }
+    private  void setupViewComponent(Context context,View.OnClickListener loginOnClick ,String account,String password,boolean remember)
+    {
+
         account_view=(EditText)loginView.findViewById(R.id.account);
         password_view=(EditText)loginView.findViewById(R.id.password);
         isRemember=(CheckBox)loginView.findViewById(R.id.remember);
@@ -68,10 +66,7 @@ public class LoginWindow extends PopupWindow{
         this.setAnimationStyle(R.style.Login_Animation);
         this.setOutsideTouchable(false);
 
-
-
     }
-
     public    String getAccount()
     {
         return  account_view.getText().toString();

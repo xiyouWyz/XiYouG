@@ -1,41 +1,30 @@
 package com.example.wyz.xiyoug.View;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AlertDialog;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.SimpleCursorTreeAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.Model.User;
-import com.example.wyz.xiyoug.MyBorrowActivity;
-import com.example.wyz.xiyoug.MyCollectionActivity;
-import com.example.wyz.xiyoug.MyHistoryBorActivity;
+import com.example.wyz.xiyoug.Activity.MyBorrowActivity;
+import com.example.wyz.xiyoug.Activity.MyCollectionActivity;
+import com.example.wyz.xiyoug.Activity.MyHistoryBorActivity;
 import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
-import com.squareup.okhttp.OkHttpClient;
 
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
@@ -137,10 +126,11 @@ public class MyFragment extends Fragment {
                 if(!isLogin)
                 {
                     pref= PreferenceManager.getDefaultSharedPreferences(getContext());
+                    pref=getContext().getSharedPreferences("library_info", Context.MODE_PRIVATE);
                     boolean remember=pref.getBoolean("isRemember",false);
                     String account=pref.getString("account","");
                     String password=pref.getString("password","");
-                    loginWindow=new LoginWindow(getContext(),new MyLoginOnClickListener(),account,password,remember);
+                    loginWindow=new LoginWindow(getContext(),new MyLoginOnClickListener(),account,password,remember,0);
                     loginWindow.showAtLocation(view,Gravity.CENTER,0,0);
                 }
             }

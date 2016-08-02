@@ -1,37 +1,35 @@
-package com.example.wyz.xiyoug;
+package com.example.wyz.xiyoug.Activity;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.wyz.xiyoug.View.HomeFragment;
-import com.example.wyz.xiyoug.View.InfoFragment;
+import com.example.wyz.xiyoug.Model.HttpLinkHeader;
+import com.example.wyz.xiyoug.R;
+import com.example.wyz.xiyoug.Util.ScheduleOkHttp;
 import com.example.wyz.xiyoug.View.LibraryMainFragment;
-import com.example.wyz.xiyoug.View.MyFragment;
-import com.example.wyz.xiyoug.View.SlideMenu;
+import com.example.wyz.xiyoug.View.LoginWindow;
+import com.example.wyz.xiyoug.View.ScheduleFragment;
+import com.example.wyz.xiyoug.View.ScheduleMainFragment;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -41,8 +39,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Toolbar toolbar;
     private DrawerLayout dlMain;
     private ActionBarDrawerToggle drawerToggle;
+    private FrameLayout frameLayout;
 
-    private Fragment libraryFragment;
+    private Fragment content;
 
     private LinearLayout menuLayout;
     private LinearLayout login_view;
@@ -51,12 +50,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RelativeLayout schedule_view;
     private RelativeLayout our_view;
     private RelativeLayout feedback_view;
-    private LinearLayout exit_view;
 
-    private Fragment clickGetMoreFragment;
-    private Fragment addExtraHeaderFragment1;
-    private Fragment addExtraHeaderFragment2;
+    private Fragment scheduleFragment;
+    private Fragment libraryFragment;
     private FragmentManager fm;
+    private  Menu  menu;
     private  final String TAG="MainActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main,menu);
+        this.menu=menu;
         return true;
     }
 
@@ -124,10 +123,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         dlMain = (DrawerLayout) findViewById(R.id.dl_main);
         drawerToggle = new ActionBarDrawerToggle(this, dlMain, toolbar, 0, 0);
         drawerToggle.syncState();
         dlMain.setDrawerListener(drawerToggle);
+
 
         login_view = (LinearLayout) findViewById(R.id.login);
         library_view = (RelativeLayout) findViewById(R.id.library);
@@ -146,14 +147,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         our_view.setOnClickListener(this);
         feedback_view.setOnClickListener(this);
 
-        libraryFragment = new LibraryMainFragment();
-        //clickGetMoreFragment = new ClickGetMoreFragment();
-        //addExtraHeaderFragment1 = new AddExtraHeaderFragment1();
-        //addExtraHeaderFragment2 = new AddExtraHeaderFragment2();
-
-        fm = getSupportFragmentManager();
-        fm.beginTransaction().add(R.id.dl_container, libraryFragment).commit();
-
+        fm =getSupportFragmentManager();
+        setFragmentSelect(R.id.library);
     }
     @Override
     public void onClick(View view) {
@@ -163,34 +158,81 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.d(TAG,"点击了login");
                 break;
             case  R.id.library:
-                Log.d(TAG,"点击了library");
+                setFragmentSelect(R.id.library);
+                menu.getItem(0).setVisible(true);
+                dlMain.closeDrawers();
                 break;
+
             case  R.id.score:
                 Log.d(TAG,"点击了score");
                 break;
             case  R.id.schedule:
-                Log.d(TAG,"点击了schedule");
+                menu.getItem(0).setVisible(false);
+                setFragmentSelect(R.id.schedule);
+                dlMain.closeDrawers();
                 break;
             case  R.id.our:
                 Log.d(TAG,"点击了our");
                 break;
             case  R.id.feedback:
 
-              /*  Intent intent=new Intent(Intent.ACTION_SEND);
+                Intent intent=new Intent(Intent.ACTION_SEND);
                 intent.setType("message/rfc822");
                 String[] recipients=new String[]{"745322878@qq.com",""};
                 intent.putExtra(Intent.EXTRA_EMAIL,recipients);
                 intent.putExtra(Intent.EXTRA_SUBJECT,"Test");
                 intent.putExtra(Intent.EXTRA_TEXT, "This is email's message");
-                startActivity(Intent.createChooser(intent, "Select email application.."));*/
-                Intent data=new Intent(Intent.ACTION_SENDTO);
+                startActivity(Intent.createChooser(intent, "Select email application.."));
+               /* Intent data=new Intent(Intent.ACTION_SENDTO);
                 data.setData(Uri.parse("mailto:745322878@qq.com"));
                 data.putExtra(Intent.EXTRA_SUBJECT, "这是标题");
                 data.putExtra(Intent.EXTRA_TEXT, "这是内容");
-                startActivity(data);
+                startActivity(data);*/
                 break;
 
 
+        }
+    }
+    private  void setFragmentSelect(int i)
+    {
+        FragmentTransaction transaction=fm.beginTransaction();
+        hideFragments(transaction);
+        switch (i)
+        {
+            case R.id.library:
+                if(libraryFragment==null)
+                {
+                    libraryFragment=new LibraryMainFragment();
+                    transaction.add(R.id.dl_container,libraryFragment);
+                }
+                else
+                {
+                    transaction.show(libraryFragment);
+                }
+                break;
+            case R.id.schedule:
+                if(scheduleFragment==null)
+                {
+                    scheduleFragment=new ScheduleFragment();
+                    transaction.add(R.id.dl_container,scheduleFragment);
+                }
+                else
+                {
+                    transaction.show(scheduleFragment);
+                }
+                break;
+        }
+        transaction.commitAllowingStateLoss();
+    }
+    private  void hideFragments(FragmentTransaction transaction)
+    {
+        if(scheduleFragment!=null)
+        {
+            transaction.hide(scheduleFragment);
+        }
+        if(libraryFragment!=null)
+        {
+            transaction.hide(libraryFragment);
         }
     }
 }
@@ -204,7 +246,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 dlMain.closeDrawers();
             }
         });
-
         btnAddExtraHeader1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

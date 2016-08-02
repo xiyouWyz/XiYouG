@@ -116,4 +116,14 @@
     <color name="book_circul_status_reBor">#000</color>
 
     <color name="book_refer_word">#000</color>
+    
+    <color name="schedule_around_day">#000</color>
+    <color name="schedule_around_time">#999</color>
+    <color name="schedule_page_divide">#36B19F</color>
+    <color name="schedule_bottom">#fff</color>
+
+    <color name="schedule_my_no_login">#fff</color>
+    <color name="schedule_my_exit">#f00</color>
+    <color name="schedule_import">#59C4B6</color>
+    <color name="schedule_import_word">#fff</color>
 </resources>

@@ -8,19 +8,19 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".InfoDetail_Activity" ></activity>
-        <activity android:name=".MyBorrowActivity"></activity>
-        <activity android:name=".MyCollectionActivity"></activity>
-        <activity android:name=".MyHistoryBorActivity"></activity>
-        <activity android:name=".BookSearchActivity"></activity>
-        <activity android:name=".BookDetailActivity"></activity>
+        <activity android:name=".Activity.InfoDetail_Activity" ></activity>
+        <activity android:name=".Activity.MyBorrowActivity"></activity>
+        <activity android:name=".Activity.MyCollectionActivity"></activity>
+        <activity android:name=".Activity.MyHistoryBorActivity"></activity>
+        <activity android:name=".Activity.BookSearchActivity"></activity>
+        <activity android:name=".Activity.BookDetailActivity"></activity>
     </application>
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 

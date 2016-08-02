@@ -235,7 +235,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="@string/exit"
-
+                    android:textColor="#f00"
                     android:textSize="@dimen/my_col"
                     />
                 <TextView
@@ -244,7 +244,7 @@
                     android:text=">"
 
                     android:textSize="@dimen/my_col_arrow"
-                    android:textColor="@color/my_col_arrow"
+                    android:textColor="#f00"
                     android:gravity="right"
                     android:layout_marginEnd="10dp"
                     />

@@ -1,5 +1,6 @@
 package com.example.wyz.xiyoug.Util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -32,6 +33,11 @@ public class SaveFile {
     public static   void saveNotice(Context context,String noticeInfo)
     {
         saveData(context,"noticeInfo",noticeInfo);
+    }
+
+    public  static  void saveSchedule(Context context,String fileContent)
+    {
+        saveData(context,"scheduleInfo",fileContent);
     }
     private  static void saveData(Context context,String fileName,String fileContent)
     {

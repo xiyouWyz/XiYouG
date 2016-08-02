@@ -60,4 +60,15 @@
 
     <dimen name="book_refer_title">18sp</dimen>
     <dimen name="book_refer_word">16sp</dimen>
+
+    <dimen name="schedule_around_day">12sp</dimen>
+    <dimen name="schedule_around_time">10sp</dimen>
+    <dimen name="schedule_around_margin">0.5dp</dimen>
+    <dimen name="schedule_import">10sp</dimen>
+
+    <dimen name="schedule_my_no_login">18sp</dimen>
+    <dimen name="schedule_my_import">18sp</dimen>
+    <dimen name="schedule_my_exit">18sp</dimen>
+
+
 </resources>
