@@ -51,11 +51,9 @@ public class MyCollectionActivity extends AppCompatActivity {
     private  final  String TAG="MyCollectionActivity";
     private RelativeLayout load_view;
     private  LinearLayout content;
-    private  MyLoadHandler myLoadHandler=new MyLoadHandler();
     private  String colDelUrl;
     private  String colDelID;
     private  MyColDelThread myColDelThread;
-    private  MyColDelHandler myColDelHandler=new MyColDelHandler();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -211,12 +209,13 @@ public class MyCollectionActivity extends AppCompatActivity {
                 Bundle bundle=new Bundle();
                 bundle.putString("col_result",col_result);
                 message.setData(bundle);
+                message.what=1;
                 myHandler.sendMessage(message);
             } catch (Exception e) {
                 Log.d(TAG,e.toString());
                 Message message=Message.obtain();
-                message.what=2;
-                myLoadHandler.sendMessage(message);
+                message.what=3;
+                myHandler.sendMessage(message);
             }
         }
     }
@@ -224,73 +223,38 @@ public class MyCollectionActivity extends AppCompatActivity {
     {
         @Override
         public void handleMessage(Message msg) {
-            String col_result=msg.getData().getString("col_result");
-            if (col_result != null && !col_result.equals("")) {
-                try {
-                    boolean result = new JSONObject(col_result).getBoolean("Result");
-                    if (result) {
-                        String detail = new JSONObject(col_result).getString("Detail");
-                        if (detail.equals("NO_RECORD")) {
-                            Message message=Message.obtain();
-                            message.what=0;
-                            myLoadHandler.sendMessage(message);
-                        } else {
-                            JSONArray jsonArray = new JSONArray(detail);
-                            book_collections = new ArrayList<>();
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-                                JSONObject imagesObject=null;
-                                try {
-                                    imagesObject= new JSONObject(jsonObject.getString("Images"));
-                                }catch (JSONException e)
-                                {
-                                    Log.d(TAG,e.toString());
-                                }
-                                Book_Collection book_collection=null;
-                                if(imagesObject!=null)
-                                {
-                                    book_collection= new Book_Collection(
-                                            jsonObject.getString("Title"),
-                                            jsonObject.getString("Pub"),
-                                            jsonObject.getString("Sort"),
-                                            jsonObject.getString("ID"),
-                                            imagesObject.getString("medium")
-                                    );
-                                }
-                                else
-                                {
-                                     book_collection = new Book_Collection(
-                                            jsonObject.getString("Title"),
-                                            jsonObject.getString("Pub"),
-                                            jsonObject.getString("Sort"),
-                                            jsonObject.getString("ID"),
-                                            ""
-                                    );
-                                }
 
-                                book_collections.add(book_collection);
-                            }
-                            if (myAdapter != null) {
-                                myAdapter.notifyDataSetChanged();
-                            } else {
-                                setListViewData();
+            if(msg.what==0)
+            {
+                load_view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
+                Toast.makeText(MyCollectionActivity.this, "没有收藏记录", Toast.LENGTH_SHORT).show();
+            }
+            else if(msg.what==1)
+            {
+                String col_result=msg.getData().getString("col_result");
+                DealWithColResult(col_result);
+            }
+            else if(msg.what==2)
+            {
+                load_view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
+            }
+            else if(msg.what==3)
+            {
+                Toast.makeText(MyCollectionActivity.this,"网络超时",Toast.LENGTH_SHORT).show();
+                MyCollectionActivity.this.finish();
+            }
+            else  if(msg.what==4)
+            {
 
-                            }
-                            Message message = Message.obtain();
-                            message.what = 1;
-                            myLoadHandler.sendMessage(message);
-                        }
-                    } else {
-                        Message message=Message.obtain();
-                        message.what=3;
-                        myLoadHandler.sendMessage(message);
-                    }
-                } catch (JSONException e) {
-                    Log.d(TAG,e.toString());
-                    Message message=Message.obtain();
-                    message.what=3;
-                    myLoadHandler.sendMessage(message);
-                }
+                Toast.makeText(MyCollectionActivity.this,"请求出错",Toast.LENGTH_SHORT).show();
+                MyCollectionActivity.this.finish();
+            }
+            else if(msg.what==5)
+            {
+                String addDelResult=msg.getData().getString("addDelResult");
+                DealWithDelColResult(addDelResult);
             }
         }
     }
@@ -305,43 +269,14 @@ public class MyCollectionActivity extends AppCompatActivity {
                 Bundle bundle=new Bundle();
                 bundle.putString("addDelResult",addDelResult);
                 message.setData(bundle);
-                myColDelHandler.sendMessage(message);
+                message.what=5;
+                myHandler.sendMessage(message);
             } catch (Exception e) {
                 Log.d(TAG,e.toString());
                 Message message=new Message();
-                message.what=2;
-                myLoadHandler.sendMessage(message);
+                message.what=3;
+                myHandler.sendMessage(message);
             }
-        }
-    }
-    private  class MyColDelHandler extends  Handler
-    {
-        @Override
-        public void handleMessage(Message msg) {
-            String addDelResult=msg.getData().getString("addDelResult");
-            String detail="";
-            try {
-                detail =new JSONObject(addDelResult).getString("Detail");
-                switch (detail)
-                {
-                    case  "DELETED_SUCCEED":
-                        Toast.makeText(MyCollectionActivity.this,"亲，删除成功",Toast.LENGTH_SHORT).show();
-                        DeleteColId();
-                        myAdapter.notifyDataSetChanged();
-
-                        break;
-                    case "USER_NOT_LOGIN":
-                        Toast.makeText(MyCollectionActivity.this,"亲，请先登录",Toast.LENGTH_SHORT).show();
-                        break;
-                    default:
-                        Toast.makeText(MyCollectionActivity.this,"sorry,删除出错啦",Toast.LENGTH_SHORT).show();
-                        break;
-
-                }
-            } catch (JSONException e) {
-                Log.d(TAG,e.toString());
-            }
-
         }
     }
     private  void DeleteColId()
@@ -354,33 +289,101 @@ public class MyCollectionActivity extends AppCompatActivity {
             }
         }
     }
-    private  class  MyLoadHandler extends  Handler
+    private  void DealWithColResult(String col_result)
     {
-        @Override
-        public void handleMessage(Message msg) {
+        if (col_result != null && !col_result.equals("")) {
+            try {
+                boolean result = new JSONObject(col_result).getBoolean("Result");
+                if (result) {
+                    String detail = new JSONObject(col_result).getString("Detail");
+                    if (detail.equals("NO_RECORD")) {
+                        Message message=Message.obtain();
+                        message.what=0;
+                        myHandler.sendMessage(message);
+                    } else {
+                        JSONArray jsonArray = new JSONArray(detail);
+                        book_collections = new ArrayList<>();
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                            JSONObject imagesObject=null;
+                            try {
+                                imagesObject= new JSONObject(jsonObject.getString("Images"));
+                            }catch (JSONException e)
+                            {
+                                Log.d(TAG,e.toString());
+                            }
+                            Book_Collection book_collection=null;
+                            if(imagesObject!=null)
+                            {
+                                book_collection= new Book_Collection(
+                                        jsonObject.getString("Title"),
+                                        jsonObject.getString("Pub"),
+                                        jsonObject.getString("Sort"),
+                                        jsonObject.getString("ID"),
+                                        imagesObject.getString("medium")
+                                );
+                            }
+                            else
+                            {
+                                book_collection = new Book_Collection(
+                                        jsonObject.getString("Title"),
+                                        jsonObject.getString("Pub"),
+                                        jsonObject.getString("Sort"),
+                                        jsonObject.getString("ID"),
+                                        ""
+                                );
+                            }
 
-            if(msg.what==0)
-            {
-                load_view.setVisibility(View.INVISIBLE);
-                content.setVisibility(View.VISIBLE);
-                Toast.makeText(MyCollectionActivity.this, "没有收藏记录", Toast.LENGTH_SHORT).show();
-            }
-            else if(msg.what==1)
-            {
-                load_view.setVisibility(View.INVISIBLE);
-                content.setVisibility(View.VISIBLE);
-            }
-            else if(msg.what==2)
-            {
-                Toast.makeText(MyCollectionActivity.this,"请检查网络连接",Toast.LENGTH_SHORT).show();
-                MyCollectionActivity.this.finish();
-            }
-            else  if(msg.what==3)
-            {
+                            book_collections.add(book_collection);
+                        }
+                        if (myAdapter != null) {
+                            myAdapter.notifyDataSetChanged();
+                        } else {
+                            setListViewData();
 
-                Toast.makeText(MyCollectionActivity.this,"请求出错",Toast.LENGTH_SHORT).show();
-                MyCollectionActivity.this.finish();
+                        }
+                        Message message = Message.obtain();
+                        message.what = 2;
+                        myHandler.sendMessage(message);
+                    }
+                } else {
+                    Message message=Message.obtain();
+                    message.what=4;
+                    myHandler.sendMessage(message);
+                }
+            } catch (JSONException e) {
+                Log.d(TAG,e.toString());
+                Message message=Message.obtain();
+                message.what=4;
+                myHandler.sendMessage(message);
             }
         }
     }
+
+    private  void DealWithDelColResult(String addDelResult )
+    {
+        String detail="";
+        try {
+            detail =new JSONObject(addDelResult).getString("Detail");
+            switch (detail)
+            {
+                case  "DELETED_SUCCEED":
+                    Toast.makeText(MyCollectionActivity.this,"亲，删除成功",Toast.LENGTH_SHORT).show();
+                    DeleteColId();
+                    myAdapter.notifyDataSetChanged();
+
+                    break;
+                case "USER_NOT_LOGIN":
+                    Toast.makeText(MyCollectionActivity.this,"亲，请先登录",Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    Toast.makeText(MyCollectionActivity.this,"sorry,删除出错啦",Toast.LENGTH_SHORT).show();
+                    break;
+
+            }
+        } catch (JSONException e) {
+            Log.d(TAG,e.toString());
+        }
+    }
+
 }

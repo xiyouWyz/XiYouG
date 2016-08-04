@@ -1,3 +1,4 @@
+/*
 package com.example.wyz.xiyoug.View;
 
 import android.os.Bundle;
@@ -18,9 +19,11 @@ import com.example.wyz.xiyoug.R;
 import java.util.ArrayList;
 import java.util.List;
 
+*/
 /**
  * Created by Wyz on 2016/8/1.
- */
+ *//*
+
 public class ScheduleMainFragment extends Fragment {
     private  View view;
     private ViewPager viewPager;
@@ -146,3 +149,4 @@ public class ScheduleMainFragment extends Fragment {
         }
     }
 }
+*/

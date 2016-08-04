@@ -10,8 +10,7 @@
         <item name="android:windowNoTitle">true</item>
 
         <item name="android:listDivider">@drawable/recyclerview_divide_shape</item>
-
-       <!-- <item name="android:listDivider">@drawable/divider_bg</item>-->
+        <item name="android:childDivider">@drawable/score_recyclerview_shape</item>
     </style>
     <style name="Login_Animation" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/login_push_bottom_in</item>

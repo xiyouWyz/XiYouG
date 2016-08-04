@@ -47,7 +47,6 @@ public class MyHistoryBorActivity extends AppCompatActivity {
     private  final  String TAG="MyHistoryBorActivity";
     private LinearLayout content;
     private RelativeLayout load_view;
-    private  MyLoadHandler myLoadHandler=new MyLoadHandler();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,12 +156,13 @@ public class MyHistoryBorActivity extends AppCompatActivity {
                 Bundle bundle=new Bundle();
                 bundle.putString("his_result",his_result);
                 message.setData(bundle);
+                message.what=1;
                 myHandler.sendMessage(message);
             } catch (Exception e) {
                 Log.d(TAG,e.toString());
                 Message message=Message.obtain();
-                message.what=2;
-                myLoadHandler.sendMessage(message);
+                message.what=3;
+                myHandler.sendMessage(message);
             }
         }
     }
@@ -170,68 +170,6 @@ public class MyHistoryBorActivity extends AppCompatActivity {
     {
         @Override
         public void handleMessage(Message msg) {
-            String his_result=msg.getData().getString("his_result");
-            if(his_result!=null&!his_result.equals(""))
-            {
-                try {
-                    boolean result= new JSONObject(his_result).getBoolean("Result");
-                    if(result)
-                    {
-                        String detail=new JSONObject(his_result).getString("Detail");
-                        if(detail.equals("NO_RECORD"))
-                        {
-                            Message message=Message.obtain();
-                            message.what=0;
-                            myLoadHandler.sendMessage(message);
-                        }
-                        else
-                        {
-                            JSONArray jsonArray=new JSONArray(detail);
-                            book_historyBors=new ArrayList<>();
-                            for(int i=0;i<jsonArray.length();i++)
-                            {
-                                JSONObject jsonObject=(JSONObject)jsonArray.get(i);
-                                Book_HistoryBor book_historyBor=new Book_HistoryBor(
-                                        jsonObject.getString("Title"),
-                                        jsonObject.getString("Barcode"),
-                                        jsonObject.getString("Type"),
-                                        jsonObject.getString("Date")
-                                );
-                                book_historyBors.add(book_historyBor);
-                            }
-                            if(myAdapter!=null)
-                            {
-                                myAdapter.notifyDataSetChanged();
-                            }
-                            else
-                            {
-                                setListViewData();
-                            }
-                            Message message=Message.obtain();
-                            message.what=1;
-                            myLoadHandler.sendMessage(message);
-                        }
-                    }
-                    else
-                    {
-                        Message message=Message.obtain();
-                        message.what=3;
-                        myLoadHandler.sendMessage(message);
-                    }
-                } catch (JSONException e) {
-                    Message message=Message.obtain();
-                    message.what=3;
-                    myLoadHandler.sendMessage(message);
-                }
-            }
-        }
-    }
-
-    private  class  MyLoadHandler extends  Handler
-    {
-        @Override
-        public void handleMessage(Message msg) {
-
             //没有记录处理
             if(msg.what==0)
             {
@@ -242,18 +180,72 @@ public class MyHistoryBorActivity extends AppCompatActivity {
             //请求成功处理
             if(msg.what==1)
             {
+                String his_result=msg.getData().getString("his_result");
+                DealWithHisResult(his_result);
+            }
+            if(msg.what==2)
+            {
                 load_view.setVisibility(View.INVISIBLE);
                 content.setVisibility(View.VISIBLE);
             }
             //没有网络连接处理
-            if(msg.what==2)
-            {
-                Toast.makeText(MyHistoryBorActivity.this,"请检查网络连接",Toast.LENGTH_SHORT).show();
-            }
             if(msg.what==3)
+            {
+                Toast.makeText(MyHistoryBorActivity.this,"网络超时",Toast.LENGTH_SHORT).show();
+            }
+            if(msg.what==4)
             {
                 Toast.makeText(MyHistoryBorActivity.this,"请求出错",Toast.LENGTH_SHORT).show();
                 MyHistoryBorActivity.this.finish();
+            }
+
+
+
+            }
+
+    }
+    private  void DealWithHisResult(String his_result)
+    {
+        if(his_result!=null&!his_result.equals("")) {
+            try {
+                boolean result = new JSONObject(his_result).getBoolean("Result");
+                if (result) {
+                    String detail = new JSONObject(his_result).getString("Detail");
+                    if (detail.equals("NO_RECORD")) {
+                        Message message = Message.obtain();
+                        message.what = 0;
+                        myHandler.sendMessage(message);
+                    } else {
+                        JSONArray jsonArray = new JSONArray(detail);
+                        book_historyBors = new ArrayList<>();
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                            Book_HistoryBor book_historyBor = new Book_HistoryBor(
+                                    jsonObject.getString("Title"),
+                                    jsonObject.getString("Barcode"),
+                                    jsonObject.getString("Type"),
+                                    jsonObject.getString("Date")
+                            );
+                            book_historyBors.add(book_historyBor);
+                        }
+                        if (myAdapter != null) {
+                            myAdapter.notifyDataSetChanged();
+                        } else {
+                            setListViewData();
+                        }
+                        Message message = Message.obtain();
+                        message.what = 2;
+                        myHandler.sendMessage(message);
+                    }
+                } else {
+                    Message message = Message.obtain();
+                    message.what = 4;
+                    myHandler.sendMessage(message);
+                }
+            } catch (JSONException e) {
+                Message message = Message.obtain();
+                message.what = 4;
+                myHandler.sendMessage(message);
             }
         }
     }

@@ -84,14 +84,6 @@
                 android:gravity="center"
                 >
                 <TextView
-                    android:id="@+id/debtLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/my_major"
-                    android:layout_gravity="center_horizontal"
-                    android:textSize="@dimen/my_col"
-                    />
-                <TextView
                     android:id="@+id/debt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -45,7 +45,6 @@ public class InfoDetail_Activity extends AppCompatActivity{
 
     private RelativeLayout view;
     private ScrollView content;
-    private  MyLoadHandler handler =new MyLoadHandler();
 
 
     @Override
@@ -98,56 +97,45 @@ public class InfoDetail_Activity extends AppCompatActivity{
                 Bundle bundle=new Bundle();
                 bundle.putString("info_result",info_result);
                 message.setData(bundle);
+                message.what=1;
                 myHandler.sendMessage(message);
             } catch (Exception e) {
                 Log.d(TAG,e.toString());
                 Message message=Message.obtain();
-                message.what=2;
-                handler.sendMessage(message);
+                message.what=3;
+                myHandler.sendMessage(message);
             }
         }
     }
     private  class  MyHandler extends Handler
     {
-        private  String info_detail;
+
         @Override
         public void handleMessage(Message msg) {
-            info_detail = msg.getData().getString("info_result");
-            if(!info_detail.equals(""))
+            if(msg.what==1)
             {
-                try {
-                    boolean result=new JSONObject(info_detail).getBoolean("Result");
-                    if(result)
-                    {
-                        JSONObject jsonObject=new JSONObject(info_detail).getJSONObject("Detail");
-                        String title=(String)jsonObject.get("Title");
-                        String publisher=(String)jsonObject.get("Publisher");
-                        String date=(String)jsonObject.get("Date");
-                        String web=(String)jsonObject.get("Passage");
+                String info_detail = msg.getData().getString("info_result");
+                DealWithInfo(info_detail);
 
-                        title_view.setText(title);
-                        publisher_view.setText(publisher);
-                        date_view.setText(date);
-                        webView.loadData(web,"text/html","utf-8");
-                        pubLabel_view.setText("发布单位");
-                        pubDateLabel_view.setText("发布时间");
-                        Message message=new Message();
-                        message.what=1;
-                        handler.sendMessage(message);
-
-                    }
-                    else
-                    {
-                        Message message=Message.obtain();
-                        message.what=3;
-                        handler.sendMessage(message);
-                    }
-                } catch (JSONException e) {
-                    Message message=Message.obtain();
-                    message.what=3;
-                    handler.sendMessage(message);
-                }
             }
+            if(msg.what==2)
+            {
+
+                view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
+            }
+            else if(msg.what==3)
+            {
+                Toast.makeText(InfoDetail_Activity.this,"网络超时",Toast.LENGTH_SHORT).show();
+                InfoDetail_Activity.this.finish();
+            }
+            else if(msg.what==4)
+            {
+                Toast.makeText(InfoDetail_Activity.this,"请求出错",Toast.LENGTH_SHORT).show();
+                InfoDetail_Activity.this.finish();
+            }
+
+
         }
     }
 
@@ -159,26 +147,44 @@ public class InfoDetail_Activity extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
-    private  class  MyLoadHandler extends  Handler
+    private  void DealWithInfo(String info_detail)
     {
-        @Override
-        public void handleMessage(Message msg) {
 
-            if(msg.what==1)
-            {
-                view.setVisibility(View.INVISIBLE);
-                content.setVisibility(View.VISIBLE);
-            }
-            else if(msg.what==2)
-            {
-                Toast.makeText(InfoDetail_Activity.this,"请检查网络连接",Toast.LENGTH_SHORT).show();
-                InfoDetail_Activity.this.finish();
-            }
-            else if(msg.what==3)
-            {
-                Toast.makeText(InfoDetail_Activity.this,"请求出错",Toast.LENGTH_SHORT).show();
-                InfoDetail_Activity.this.finish();
+        if(!info_detail.equals(""))
+        {
+            try {
+                boolean result=new JSONObject(info_detail).getBoolean("Result");
+                if(result)
+                {
+                    JSONObject jsonObject=new JSONObject(info_detail).getJSONObject("Detail");
+                    String title=(String)jsonObject.get("Title");
+                    String publisher=(String)jsonObject.get("Publisher");
+                    String date=(String)jsonObject.get("Date");
+                    String web=(String)jsonObject.get("Passage");
+
+                    title_view.setText(title);
+                    publisher_view.setText(publisher);
+                    date_view.setText(date);
+                    webView.loadData(web,"text/html","utf-8");
+                    pubLabel_view.setText("发布单位");
+                    pubDateLabel_view.setText("发布时间");
+                    Message message=new Message();
+                    message.what=2;
+                    myHandler.sendMessage(message);
+
+                }
+                else
+                {
+                    Message message=Message.obtain();
+                    message.what=4;
+                    myHandler.sendMessage(message);
+                }
+            } catch (JSONException e) {
+                Message message=Message.obtain();
+                message.what=4;
+                myHandler.sendMessage(message);
             }
         }
     }
+
 }

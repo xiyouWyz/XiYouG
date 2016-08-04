@@ -69,11 +69,13 @@ public class LoginWindow extends PopupWindow{
     }
     public    String getAccount()
     {
-        return  account_view.getText().toString();
+        String account=account_view.getText().toString();
+        return  account;
     }
     public    String getPassword()
     {
-        return  password_view.getText().toString();
+        String password=password_view.getText().toString();
+        return  password;
     }
     public    boolean getRemember()
     {

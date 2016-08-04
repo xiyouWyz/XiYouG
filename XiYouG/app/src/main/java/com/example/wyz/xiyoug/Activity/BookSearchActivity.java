@@ -50,8 +50,6 @@ public class BookSearchActivity extends AppCompatActivity  implements SearchView
     private  final  String TAG="BookSearchActivity";
     private LinearLayout content;
     private RelativeLayout load_view;
-    private  MyLoadHandler myLoadHandler=new MyLoadHandler();
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -185,19 +183,20 @@ public class BookSearchActivity extends AppCompatActivity  implements SearchView
         @Override
         public void run() {
 
-
             try {
                 String sea_result = OkHttpUtil.getStringFromServer(url);
                 Message message=new Message();
                 Bundle bundle=new Bundle();
                 bundle.putString("sea_result",sea_result);
                 message.setData(bundle);
+                message.what=1;
                 myHandler.sendMessage(message);
             } catch (Exception e) {
-               Message message=Message.obtain();
-                message.what=2;
-                myLoadHandler.sendMessage(message);
+                Message message=Message.obtain();
+                message.what=3;
+                myHandler.sendMessage(message);
             }
+
 
         }
     }
@@ -205,66 +204,8 @@ public class BookSearchActivity extends AppCompatActivity  implements SearchView
     {
         @Override
         public void handleMessage(Message msg) {
-            String sea_result=msg.getData().getString("sea_result");
-            Log.d(TAG,sea_result);
-            if (sea_result != null &&!sea_result.equals("") ) {
-
-                try {
-                    boolean result = new JSONObject(sea_result).getBoolean("Result");
-                    Log.d(TAG, result + "");
-                    if (result) {
-                        String detail = new JSONObject(sea_result).getString("Detail");
-                        if (detail.equals("NO_RECORD")) {
-                            Message message=Message.obtain();
-                            message.what=0;
-                            myLoadHandler.sendMessage(message);
-
-                        } else
-                        {
-                            String bookData = new JSONObject(detail).getString("BookData");
-                            JSONArray jsonArray = new JSONArray(bookData);
-                            book_searches = new ArrayList<>();
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-                                Book_Search book_search = new Book_Search(
-                                        jsonObject.getString("ID"),
-                                        jsonObject.getString("Title"),
-                                        jsonObject.getString("Author")
-                                );
-                                book_searches.add(book_search);
-                            }
-                            if (myAdapter != null) {
-                                myAdapter.notifyDataSetChanged();
-                            } else {
-                                setupListView();
-                            }
-                            Message message = new Message();
-                            message.what = 1;
-                            myLoadHandler.sendMessage(message);
-                        }
-                    } else {
-                       Message message=Message.obtain();
-                        message.what=3;
-                        myLoadHandler.sendMessage(message);
-                    }
-                } catch (JSONException e) {
-                    Message message=Message.obtain();
-                    message.what=3;
-                    myLoadHandler.sendMessage(message);
-                }
-
-            }
-        }
-    }
-
-    private  class  MyLoadHandler extends  Handler
-    {
-        @Override
-        public void handleMessage(Message msg) {
-
             if(msg.what==0)
             {
-                //Toast.makeText(BookSearchActivity.this, "没有找到此书", Toast.LENGTH_SHORT).show();
                 load_view.setVisibility(View.INVISIBLE);
                 content.setVisibility(View.VISIBLE);
                 if(book_searches!=null)
@@ -275,19 +216,79 @@ public class BookSearchActivity extends AppCompatActivity  implements SearchView
             }
             if(msg.what==1)
             {
-                load_view.setVisibility(View.INVISIBLE);
-                content.setVisibility(View.VISIBLE);
+                String sea_result=msg.getData().getString("sea_result");
+                DealWithSeaResult(sea_result);
             }
             else if(msg.what==2)
             {
-                Toast.makeText(BookSearchActivity.this,"请检查网络连接",Toast.LENGTH_SHORT).show();
-                //BookSearchActivity.this.finish();
+                load_view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
             }
             else if(msg.what==3)
+            {
+                Toast.makeText(BookSearchActivity.this,"网络超时",Toast.LENGTH_SHORT).show();
+                load_view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
+                //BookSearchActivity.this.finish();
+            }
+            else if(msg.what==4)
             {
                 Toast.makeText(BookSearchActivity.this,"请求出错",Toast.LENGTH_SHORT).show();
                 //BookSearchActivity.this.finish();
             }
+
+        }
+    }
+
+
+    private  void DealWithSeaResult(String sea_result)
+    {
+        Log.d(TAG,sea_result);
+        if (sea_result != null &&!sea_result.equals("") ) {
+
+            try {
+                boolean result = new JSONObject(sea_result).getBoolean("Result");
+                Log.d(TAG, result + "");
+                if (result) {
+                    String detail = new JSONObject(sea_result).getString("Detail");
+                    if (detail.equals("NO_RECORD")) {
+                        Message message = Message.obtain();
+                        message.what = 0;
+                        myHandler.sendMessage(message);
+
+                    } else {
+                        String bookData = new JSONObject(detail).getString("BookData");
+                        JSONArray jsonArray = new JSONArray(bookData);
+                        book_searches = new ArrayList<>();
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                            Book_Search book_search = new Book_Search(
+                                    jsonObject.getString("ID"),
+                                    jsonObject.getString("Title"),
+                                    jsonObject.getString("Author")
+                            );
+                            book_searches.add(book_search);
+                        }
+                        if (myAdapter != null) {
+                            myAdapter.notifyDataSetChanged();
+                        } else {
+                            setupListView();
+                        }
+                        Message message = new Message();
+                        message.what = 2;
+                        myHandler.sendMessage(message);
+                    }
+                } else {
+                    Message message = Message.obtain();
+                    message.what = 4;
+                    myHandler.sendMessage(message);
+                }
+            } catch (JSONException e) {
+                Message message = Message.obtain();
+                message.what = 4;
+                myHandler.sendMessage(message);
+            }
+
         }
     }
 }

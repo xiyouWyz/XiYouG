@@ -34,6 +34,7 @@ import com.example.wyz.xiyoug.Util.SerializableMap;
 import org.apache.http.ConnectionClosedException;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.ObjectStreamClass;
 import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,9 +77,8 @@ public class ScheduleFragment  extends Fragment{
     private RelativeLayout load_view;
     private  final String TAG="ScheduleFragment";
     private  String schedule;
-    private static String sessionId="";
+    public static String sessionId="";
     private  static   String schedule_url;
-    private   static boolean isLogin;
     private   static String account="",password="";
     private   static String name="";
     private static boolean isRemember=false;
@@ -135,8 +135,14 @@ public class ScheduleFragment  extends Fragment{
             String schedule= ReadFile.readSchedule(getContext());
             if(!schedule.equals("scheduleInfo"))
             {
+                new MyAnimation(getContext(),"胖萌正在努力为您加载...",R.drawable.loading,load_view);
+                load_view.setVisibility(View.VISIBLE);
+                content.setVisibility(View.INVISIBLE);
                 stringListMap=JsonHandle.getSchedule(schedule);
+                semester_title=JsonHandle.getSemesterTitleSchedule(schedule);
                 setSchedule();
+                content.setVisibility(View.VISIBLE);
+                load_view.setVisibility(View.INVISIBLE);
             }
     }
     private void setSchedule() {
@@ -181,7 +187,6 @@ public class ScheduleFragment  extends Fragment{
             }
             else if(msg.what==3)
             {
-                //Toast.makeText(getContext(),"导入成功",Toast.LENGTH_SHORT).show();
                 SerializableMap map=(SerializableMap)msg.getData().get("schedule");
                 stringListMap= map.getMap();
                 load_view.setVisibility(View.INVISIBLE);
@@ -191,16 +196,11 @@ public class ScheduleFragment  extends Fragment{
             }
              else if(msg.what==1)
              {
-                 isLogin=true;
-                // loginWindow.dismiss();
-
                  editor=pref.edit();
                  editor.putString("account",account);
                  editor.putString("password",password);
                  editor.putBoolean("isRemember",isRemember);
                  editor.commit();
-
-
              }
 
 
@@ -213,14 +213,13 @@ public class ScheduleFragment  extends Fragment{
         @Override
         public void run() {
             try {
-
-                sessionId=ScheduleOkHttp.postGetSessionFromServer(HttpLinkHeader.Schedule_Login,account,password);
-                String info=ScheduleOkHttp.getGetInfoFromServer(HttpLinkHeader.Schedule_Main,sessionId);
+                sessionId=ScheduleOkHttp.postGetSessionFromServer(HttpLinkHeader.XIYOU_Login,account,password);
+                String main_url=OkHttpUtil.attachHttpGetParam(HttpLinkHeader.XIYOU_Main,"xh",account);
+                String info=ScheduleOkHttp.getGetInfoFromServer(main_url,sessionId);
                 name= JsonHandle.getName(info);
                 Message message=new Message();
                 message.what=1;
                 myHandler.sendMessage(message);
-
 
                 List<BasicNameValuePair> basicNameValuePairs=new ArrayList<>();
                 basicNameValuePairs.add(new BasicNameValuePair("xh",account));
@@ -229,7 +228,7 @@ public class ScheduleFragment  extends Fragment{
                 schedule_url=OkHttpUtil.attachHttpGetParams(HttpLinkHeader.Schedule_KB,basicNameValuePairs);
                 try {
                     schedule = ScheduleOkHttp.getGetSchedule(schedule_url,sessionId);
-                    semester_title=JsonHandle.getSemesterSchedule(schedule);
+                    semester_title=JsonHandle.getSemesterTitleSchedule(schedule);
                     SaveFile.saveSchedule(getContext(),schedule);
                     Map<String,List<String>> listMap=JsonHandle.getSchedule(schedule);
                     Message message1=new Message();
@@ -290,7 +289,7 @@ public class ScheduleFragment  extends Fragment{
                     else
                     {
                         loginWindow.dismiss();
-                        new MyAnimation(getContext(),"胖萌正在努力为您登录...",R.drawable.loading,load_view);
+                        new MyAnimation(getContext(),"胖萌正在努力为您加载...",R.drawable.loading,load_view);
                         load_view.setVisibility(View.VISIBLE);
                         content.setVisibility(View.INVISIBLE);
                         myThread=new MyThread();

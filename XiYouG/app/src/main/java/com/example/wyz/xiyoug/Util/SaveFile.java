@@ -39,6 +39,10 @@ public class SaveFile {
     {
         saveData(context,"scheduleInfo",fileContent);
     }
+    public  static  void saveScore(Context context,String fileContent)
+    {
+        saveData(context,"scoreInfo",fileContent);
+    }
     private  static void saveData(Context context,String fileName,String fileContent)
     {
         FileOutputStream out=null;

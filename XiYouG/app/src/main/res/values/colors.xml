@@ -126,4 +126,7 @@
     <color name="schedule_my_exit">#f00</color>
     <color name="schedule_import">#59C4B6</color>
     <color name="schedule_import_word">#fff</color>
+
+    <color name="score_bottom">#fff</color>
+    <color name="score_divide">#ccc</color>
 </resources>

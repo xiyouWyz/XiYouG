@@ -138,9 +138,9 @@ public class HomeFragment extends Fragment {
         rank_collection.setOnClickListener(new MyRankOnClickListener(0));
         rank_borrow.setOnClickListener(new MyRankOnClickListener(1));
         rank_look.setOnClickListener(new MyRankOnClickListener(2));
-        rank_collection_img.setOnClickListener(new MyRankOnClickListener(0));
+        /*rank_collection_img.setOnClickListener(new MyRankOnClickListener(0));
         rank_borrow_img.setOnClickListener(new MyRankOnClickListener(1));
-        rank_look_img.setOnClickListener(new MyRankOnClickListener(2));
+        rank_look_img.setOnClickListener(new MyRankOnClickListener(2));*/
 
         pullListView = (ListView) view.findViewById(R.id.plv_data);
         pullListView.setOverScrollMode(View.OVER_SCROLL_NEVER);

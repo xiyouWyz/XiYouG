@@ -53,7 +53,6 @@ public class NewsFragment  extends Fragment{
     //获取新闻信息后对listview界面的更新
     private News_Handler news_handler=new News_Handler();
 
-    private  MyExceptionHandler myExceptionHandler=new  MyExceptionHandler();
     private  int news_page=1;
     private  boolean isRefresh=false;
     private int total_pages;
@@ -242,12 +241,13 @@ public class NewsFragment  extends Fragment{
                 Bundle bundle=new Bundle();
                 bundle.putString("info_result",info_result);
                 message.setData(bundle);
+                message.what=1;
                 news_handler.sendMessage(message);
             } catch (IOException e) {
                 Log.d(TAG,"新闻数据请求出错");
                 Message message=Message.obtain();
                 message.what=2;
-                myExceptionHandler.sendMessage(message);
+                news_handler.sendMessage(message);
             }
 
         }
@@ -256,66 +256,67 @@ public class NewsFragment  extends Fragment{
     {
         @Override
         public void handleMessage(Message msg) {
-            String news_info=msg.getData().getString("info_result");
-            if(!news_info.equals(""))
+            if(msg.what==1)
             {
-                try {
-                    boolean result=new JSONObject(news_info).getBoolean("Result");
-                    if(result)
-                    {
-
-                        JSONObject detail=(JSONObject) new JSONObject(news_info).get("Detail");
-                        String type=detail.getString("Type");
-                        total_pages=detail.getInt("Pages");
-                        amount=detail.getInt("Amount");
-                        JSONArray jsonArray= detail.getJSONArray("Data");
-                        if(type.equals("新闻"))
-                        {
-                            //下拉刷新，否则上拉加载
-                            if(news_page==1)
-                            {
-                                newses=new ArrayList<>();
-                            }
-                            for(int i=0;i<jsonArray.length();i++)
-                            {
-                                JSONObject jsonObject=(JSONObject)jsonArray.get(i);
-                                News news=new News(
-                                        jsonObject.getInt("ID"),
-                                        jsonObject.getString("Title"),
-                                        jsonObject.getString("Date")
-                                );
-                                newses.add(news);
-                            }
-                            adapter.notifyDataSetChanged();
-                            Log.d(TAG,"从网络中加载数据");
-                            if(news_page==1)
-                            {
-                                SaveFile.saveNews(getContext(),news_info);
-                            }
-
-                            //Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                    else
-                    {
-                        Toast.makeText(getContext(),"获取失败",Toast.LENGTH_SHORT).show();
-                    }
-
-                } catch (JSONException e) {
-                    Log.d(TAG,e.toString());
-                }
-
+                String news_info=msg.getData().getString("info_result");
+                DealWithNews(news_info);
+            }
+            else  if(msg.what==2)
+            {
+                Toast.makeText(getContext(),"网络超时",Toast.LENGTH_SHORT).show();
             }
         }
     }
-    private  class  MyExceptionHandler extends  Handler
+    private  void DealWithNews(String news_info)
     {
-        @Override
-        public void handleMessage(Message msg) {
-          if(msg.what==2)
-          {
-              Toast.makeText(getContext(),"请检查网络连接",Toast.LENGTH_SHORT).show();
-          }
+        if(!news_info.equals(""))
+        {
+            try {
+                boolean result=new JSONObject(news_info).getBoolean("Result");
+                if(result)
+                {
+
+                    JSONObject detail=(JSONObject) new JSONObject(news_info).get("Detail");
+                    String type=detail.getString("Type");
+                    total_pages=detail.getInt("Pages");
+                    amount=detail.getInt("Amount");
+                    JSONArray jsonArray= detail.getJSONArray("Data");
+                    if(type.equals("新闻"))
+                    {
+                        //下拉刷新，否则上拉加载
+                        if(news_page==1)
+                        {
+                            newses=new ArrayList<>();
+                        }
+                        for(int i=0;i<jsonArray.length();i++)
+                        {
+                            JSONObject jsonObject=(JSONObject)jsonArray.get(i);
+                            News news=new News(
+                                    jsonObject.getInt("ID"),
+                                    jsonObject.getString("Title"),
+                                    jsonObject.getString("Date")
+                            );
+                            newses.add(news);
+                        }
+                        adapter.notifyDataSetChanged();
+                        Log.d(TAG,"从网络中加载数据");
+                        if(news_page==1)
+                        {
+                            SaveFile.saveNews(getContext(),news_info);
+                        }
+
+                        //Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else
+                {
+                    Toast.makeText(getContext(),"获取失败",Toast.LENGTH_SHORT).show();
+                }
+
+            } catch (JSONException e) {
+                Log.d(TAG,e.toString());
+            }
+
         }
     }
 

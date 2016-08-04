@@ -40,7 +40,7 @@ public class MyFragment extends Fragment {
     private  TextView major_view;
     private  TextView name_view;
     private  TextView  studyNumber_view;
-    private  TextView debtLabel_view;
+
     private  TextView debt_view;
     private  LinearLayout my_login;
     private  LinearLayout my_bor;
@@ -102,7 +102,6 @@ public class MyFragment extends Fragment {
         major_view=(TextView)view.findViewById(R.id.major);
         name_view=(TextView) view.findViewById(R.id.name);
         studyNumber_view=(TextView) view.findViewById(R.id.studyNumber);
-        debtLabel_view=(TextView)view.findViewById(R.id.debtLabel);
         debt_view=(TextView)view.findViewById(R.id.debt);
 
 
@@ -125,7 +124,7 @@ public class MyFragment extends Fragment {
             public void onClick(View view) {
                 if(!isLogin)
                 {
-                    pref= PreferenceManager.getDefaultSharedPreferences(getContext());
+                    //pref= PreferenceManager.getDefaultSharedPreferences(getContext());
                     pref=getContext().getSharedPreferences("library_info", Context.MODE_PRIVATE);
                     boolean remember=pref.getBoolean("isRemember",false);
                     String account=pref.getString("account","");
@@ -190,7 +189,6 @@ public class MyFragment extends Fragment {
                         studyNumber_view.setText("点击登录");
                         name_view.setText("");
                         major_view.setText("");
-                        debtLabel_view.setText("");
                         debt_view.setText("");
                         studyNumber="点击登录";
                         major="";
@@ -311,8 +309,7 @@ public class MyFragment extends Fragment {
                 studyNumber_view.setText(studyNumber);
                 name_view.setText(name);
                 major_view.setText(major);
-                debtLabel_view.setText("欠费情况");
-                debt_view.setText(debt);
+                debt_view.setText("欠费情况"+debt);
 
                 editor=pref.edit();
                 editor.putString("account",account);

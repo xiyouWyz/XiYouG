@@ -17,10 +17,11 @@ import com.example.wyz.xiyoug.R;
  */
 public  class DividerItemDecoration extends RecyclerView.ItemDecoration{
     private static final int[] ATTRS = new int[]{
-
             android.R.attr.listDivider,
     };
-
+    private static final int[] ATTRS1 = new int[]{
+            android.R.attr.childDivider,
+    };
     public static final int HORIZONTAL_LIST = LinearLayoutManager.HORIZONTAL;
 
     public static final int VERTICAL_LIST = LinearLayoutManager.VERTICAL;
@@ -32,10 +33,19 @@ public  class DividerItemDecoration extends RecyclerView.ItemDecoration{
     private int mOrientation;
 
 
-    public DividerItemDecoration(Context context, int orientation) {
+    public DividerItemDecoration(Context context, int orientation,int i) {
         final TypedArray a = context.obtainStyledAttributes(ATTRS);
+        final TypedArray a1 = context.obtainStyledAttributes(ATTRS1);
         //获取分隔条
-        mDivider = a.getDrawable(0);
+        if(i==0)
+        {
+            mDivider = a.getDrawable(0);
+        }
+        else if(i==1)
+        {
+            mDivider=a1.getDrawable(0);
+        }
+
         a.recycle();
         setOrientation(orientation);
     }

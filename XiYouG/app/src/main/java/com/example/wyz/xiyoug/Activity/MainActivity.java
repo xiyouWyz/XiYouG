@@ -1,7 +1,6 @@
 package com.example.wyz.xiyoug.Activity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,21 +13,17 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
-import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.R;
-import com.example.wyz.xiyoug.Util.ScheduleOkHttp;
+import com.example.wyz.xiyoug.Util.IsNetworkConnected;
 import com.example.wyz.xiyoug.View.LibraryMainFragment;
-import com.example.wyz.xiyoug.View.LoginWindow;
 import com.example.wyz.xiyoug.View.ScheduleFragment;
-import com.example.wyz.xiyoug.View.ScheduleMainFragment;
+import com.example.wyz.xiyoug.View.ScoreMyFragment;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -39,10 +34,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Toolbar toolbar;
     private DrawerLayout dlMain;
     private ActionBarDrawerToggle drawerToggle;
-    private FrameLayout frameLayout;
-
-    private Fragment content;
-
     private LinearLayout menuLayout;
     private LinearLayout login_view;
     private RelativeLayout library_view;
@@ -50,9 +41,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RelativeLayout schedule_view;
     private RelativeLayout our_view;
     private RelativeLayout feedback_view;
-
     private Fragment scheduleFragment;
     private Fragment libraryFragment;
+    private Fragment scoreFragment;
     private FragmentManager fm;
     private  Menu  menu;
     private  final String TAG="MainActivity";
@@ -76,9 +67,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (item.getItemId())
         {
             case R.id.search:
-                Intent intent=new Intent();
-                intent.setClass(MainActivity.this,BookSearchActivity.class);
-                startActivity(intent);
+                if(!IsNetworkConnected.isNetworkConnected(MainActivity.this))
+                {
+                    Toast.makeText(MainActivity.this,"网络超时",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Intent intent=new Intent();
+                    intent.setClass(MainActivity.this,BookSearchActivity.class);
+                    startActivity(intent);
+
+                }
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -117,7 +116,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initView() {
-
+        if(!IsNetworkConnected.isNetworkConnected(MainActivity.this))
+        {
+            Toast.makeText(MainActivity.this,"网络超时",Toast.LENGTH_SHORT).show();
+        }
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
@@ -164,7 +166,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case  R.id.score:
-                Log.d(TAG,"点击了score");
+                setFragmentSelect(R.id.score);
+                menu.getItem(0).setVisible(false);
+                dlMain.closeDrawers();
                 break;
             case  R.id.schedule:
                 menu.getItem(0).setVisible(false);
@@ -176,18 +180,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case  R.id.feedback:
 
-                Intent intent=new Intent(Intent.ACTION_SEND);
+           /*     Intent intent=new Intent(Intent.ACTION_SEND);
                 intent.setType("message/rfc822");
                 String[] recipients=new String[]{"745322878@qq.com",""};
                 intent.putExtra(Intent.EXTRA_EMAIL,recipients);
                 intent.putExtra(Intent.EXTRA_SUBJECT,"Test");
                 intent.putExtra(Intent.EXTRA_TEXT, "This is email's message");
-                startActivity(Intent.createChooser(intent, "Select email application.."));
-               /* Intent data=new Intent(Intent.ACTION_SENDTO);
-                data.setData(Uri.parse("mailto:745322878@qq.com"));
-                data.putExtra(Intent.EXTRA_SUBJECT, "这是标题");
-                data.putExtra(Intent.EXTRA_TEXT, "这是内容");
-                startActivity(data);*/
+                startActivity(Intent.createChooser(intent, "Select email application.."));*/
+                /*Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+                String[] recipients = new String[]{"745322878@qq.com", "",};
+                emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, recipients);
+                emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Test");
+                emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "This is email's message");
+                emailIntent.setType("text/plain");
+                startActivity(Intent.createChooser(emailIntent, "Send mail..."));*/
+                Intent it = new Intent(Intent.ACTION_SEND);
+                String[] receiver;
+                receiver=new String[]{"745322878@qq.com"};
+                it.putExtra(Intent.EXTRA_EMAIL, receiver);
+                it.putExtra("subject", "About CodePad");
+                it.putExtra(Intent.EXTRA_TEXT, "/*Thanks advance for any tips.*/");
+
+                it.setType("text/plain");
+                startActivity(it);
                 break;
 
 
@@ -221,6 +236,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     transaction.show(scheduleFragment);
                 }
                 break;
+            case  R.id.score:
+                if(scoreFragment==null)
+                {
+                    scoreFragment=new ScoreMyFragment();
+                    transaction.add(R.id.dl_container,scoreFragment);
+                }
+                else
+                {
+                    transaction.show(scoreFragment);
+                }
+                break;
         }
         transaction.commitAllowingStateLoss();
     }
@@ -233,6 +259,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(libraryFragment!=null)
         {
             transaction.hide(libraryFragment);
+        }
+        if(scoreFragment!=null)
+        {
+            transaction.hide(scoreFragment);
         }
     }
 }

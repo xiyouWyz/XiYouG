@@ -50,14 +50,13 @@ public class MyBorrowActivity  extends AppCompatActivity
     private  MyAdapter myAdapter;
     private  MyThread myThread;
     private  MyRenewThread myRenewThread;
-    private  MyRenewHandler myRenewHandler=new MyRenewHandler();
     private  MyHandler myhandler=new MyHandler();
     private List<Book_Borrow> book_borrows;
     private final   String TAG="MyBorrowActivity";
     private String renew_url;
     private LinearLayout content;
     private RelativeLayout load_view;
-    private  MyLoadHandler myLoadHandler=new MyLoadHandler();
+
     private  String renew_barCode;
     private  String renew_department_id;
     private  String renew_library_id;
@@ -86,7 +85,7 @@ public class MyBorrowActivity  extends AppCompatActivity
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(MyBorrowActivity.this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        DividerItemDecoration dividerItemDecoration =new DividerItemDecoration(MyBorrowActivity.this,DividerItemDecoration.VERTICAL_LIST);
+        DividerItemDecoration dividerItemDecoration =new DividerItemDecoration(MyBorrowActivity.this,DividerItemDecoration.VERTICAL_LIST,0);
         recyclerView.addItemDecoration(dividerItemDecoration);
         content=(LinearLayout)findViewById(R.id.content);
         load_view=(RelativeLayout)findViewById(R.id.loading);
@@ -230,19 +229,19 @@ public class MyBorrowActivity  extends AppCompatActivity
         @Override
         public void run() {
             String url= OkHttpUtil.attachHttpGetParam(HttpLinkHeader.MY_BORROW,"session", MyFragment.SESSIONID);
-
             try {
                 String bor_result = OkHttpUtil.getStringFromServer(url);
                 Message message=new Message();
                 Bundle bundle=new Bundle();
                 bundle.putString("bor_result",bor_result);
+                message.what=1;
                 message.setData(bundle);
                 myhandler.sendMessage(message);
             } catch (Exception e) {
                 Log.d(TAG,e.toString());
                 Message message=Message.obtain();
-                message.what=2;
-                myLoadHandler.sendMessage(message);
+                message.what=3;
+                myhandler.sendMessage(message);
             }
 
         }
@@ -251,77 +250,42 @@ public class MyBorrowActivity  extends AppCompatActivity
     {
         @Override
         public void handleMessage(Message msg) {
-            String bor_result=msg.getData().getString("bor_result");
-            Log.d(TAG,bor_result);
-            if (bor_result != null && !bor_result.equals("")) {
-
-                try {
-                    boolean result = new JSONObject(bor_result).getBoolean("Result");
-                    if (result) {
-                        String detail = new JSONObject(bor_result).getString("Detail");
-                        if (detail.equals("NO_RECORD")) {
-                            already_view.setText(String.valueOf(0));
-                            remain_view.setText(String.valueOf(15));
-                            continue_view.setText(String.valueOf(0));
-                            outTime_view.setText(String.valueOf(0));
-                            Message message=Message.obtain();
-                            message.what=0;
-                            myLoadHandler.sendMessage(message);
-                        } else {
-                            JSONArray jsonArray = new JSONArray(detail);
-                            book_borrows = new ArrayList<>();
-                            int outTime_account = 0;
-                            int continue_account = 0;
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-                                Book_Borrow book_borrow = new Book_Borrow(
-                                        jsonObject.getString("Title"),
-                                        jsonObject.getString("Barcode"),
-                                        jsonObject.getString("Department"),
-                                        jsonObject.getString("State"),
-                                        jsonObject.getString("Date"),
-                                        jsonObject.getBoolean("CanRenew"),
-                                        jsonObject.getString("Department_id"),
-                                        jsonObject.getString("Library_id")
-                                );
-                                book_borrows.add(book_borrow);
-                                if (book_borrow.getState().equals("本馆续借")) {
-                                    continue_account++;
-                                }
-                            }
-                            if (myAdapter != null) {
-                                myAdapter.notifyDataSetChanged();
-                            } else {
-                                setupRecyclerView();
-                            }
-                            int bor_account = book_borrows.size();
-                            already_view.setText(String.valueOf(bor_account));
-                            remain_view.setText(String.valueOf(15 - bor_account));
-                            continue_view.setText(String.valueOf(continue_account));
-                            outTime_view.setText(String.valueOf(0));
-                            Message message =Message.obtain();
-                            message.what = 1;
-                            myLoadHandler.sendMessage(message);
-
-                        }
-
-                    } else {
-                        Message message=Message.obtain();
-                        message.what=3;
-                        myLoadHandler.sendMessage(message);
-                    }
-                } catch (JSONException e) {
-                    Message message=Message.obtain();
-                    message.what=3;
-                    myLoadHandler.sendMessage(message);
-                }
-
+            if(msg.what==0)
+            {
+                load_view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
+                Toast.makeText(MyBorrowActivity.this, "没有借阅记录", Toast.LENGTH_SHORT).show();
             }
+            else if(msg.what==1)
+            {
+                String bor_result=msg.getData().getString("bor_result");
+                DealWithBorResult(bor_result);
+            }
+            else if(msg.what==2)
+            {
+                load_view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
+            }
+            else if(msg.what==3)
+            {
+                Toast.makeText(MyBorrowActivity.this,"网络超时",Toast.LENGTH_SHORT).show();
+                MyBorrowActivity.this.finish();
+            }
+            else if(msg.what==4)
+            {
+                Toast.makeText(MyBorrowActivity.this,"请求出错",Toast.LENGTH_SHORT).show();
+                MyBorrowActivity.this.finish();
+            }
+            else if(msg.what==5)
+            {
+                String renew_result=msg.getData().getString("renew_result");
+                DealWithReNewResult(renew_result);
+            }
+
         }
     }
     private class MyRenewThread implements  Runnable
     {
-
         @Override
         public void run() {
             try {
@@ -330,36 +294,13 @@ public class MyBorrowActivity  extends AppCompatActivity
                 Bundle bundle=new Bundle();
                 bundle.putString("renew_result",renew_result);
                 message.setData(bundle);
-                myRenewHandler.sendMessage(message);
+                message.what=5;
+                myhandler.sendMessage(message);
             } catch (Exception e) {
                 Log.d(TAG,e.toString());
                 Message message=Message.obtain();
-                message.what=2;
-                myLoadHandler.sendMessage(message);
-            }
-
-        }
-    }
-    private class  MyRenewHandler extends  Handler
-    {
-        @Override
-        public void handleMessage(Message msg) {
-            String renew_result=msg.getData().getString("renew_result");
-            try {
-                boolean result=new JSONObject(renew_result).getBoolean("Result");
-                if(result==true)
-                {
-                    Toast.makeText(MyBorrowActivity.this,"续借成功",Toast.LENGTH_SHORT).show();
-                    UpDataRenew();
-                    myAdapter.notifyDataSetChanged();
-                }
-                else
-                {
-                    Toast.makeText(MyBorrowActivity.this,"续借失败",Toast.LENGTH_SHORT).show();
-                }
-            } catch (JSONException e) {
-                Log.d(TAG,e.toString());
-                Toast.makeText(MyBorrowActivity.this,"续借失败",Toast.LENGTH_SHORT).show();
+                message.what=3;
+                myhandler.sendMessage(message);
             }
 
         }
@@ -377,32 +318,92 @@ public class MyBorrowActivity  extends AppCompatActivity
             }
         }
     }
-    private  class  MyLoadHandler extends  Handler
+    private  void DealWithBorResult(String bor_result)
     {
-        @Override
-        public void handleMessage(Message msg) {
+        Log.d(TAG,bor_result);
+        if (bor_result != null && !bor_result.equals("")) {
 
-            if(msg.what==0)
-            {
-                load_view.setVisibility(View.INVISIBLE);
-                content.setVisibility(View.VISIBLE);
-                Toast.makeText(MyBorrowActivity.this, "没有借阅记录", Toast.LENGTH_SHORT).show();
-            }
-            else if(msg.what==1)
-            {
-                load_view.setVisibility(View.INVISIBLE);
-                content.setVisibility(View.VISIBLE);
-            }
-            if(msg.what==2)
-            {
-                Toast.makeText(MyBorrowActivity.this,"请检查网络连接",Toast.LENGTH_SHORT).show();
-                MyBorrowActivity.this.finish();
-            }
-            if(msg.what==3)
-            {
-                Toast.makeText(MyBorrowActivity.this,"请求出错",Toast.LENGTH_SHORT).show();
-                MyBorrowActivity.this.finish();
+            try {
+                boolean result = new JSONObject(bor_result).getBoolean("Result");
+                if (result) {
+                    String detail = new JSONObject(bor_result).getString("Detail");
+                    if (detail.equals("NO_RECORD")) {
+                        already_view.setText(String.valueOf(0));
+                        remain_view.setText(String.valueOf(15));
+                        continue_view.setText(String.valueOf(0));
+                        outTime_view.setText(String.valueOf(0));
+                        Message message = Message.obtain();
+                        message.what = 0;
+                        myhandler.sendMessage(message);
+                    } else {
+                        JSONArray jsonArray = new JSONArray(detail);
+                        book_borrows = new ArrayList<>();
+                        int outTime_account = 0;
+                        int continue_account = 0;
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                            Book_Borrow book_borrow = new Book_Borrow(
+                                    jsonObject.getString("Title"),
+                                    jsonObject.getString("Barcode"),
+                                    jsonObject.getString("Department"),
+                                    jsonObject.getString("State"),
+                                    jsonObject.getString("Date"),
+                                    jsonObject.getBoolean("CanRenew"),
+                                    jsonObject.getString("Department_id"),
+                                    jsonObject.getString("Library_id")
+                            );
+                            book_borrows.add(book_borrow);
+                            if (book_borrow.getState().equals("本馆续借")) {
+                                continue_account++;
+                            }
+                        }
+                        if (myAdapter != null) {
+                            myAdapter.notifyDataSetChanged();
+                        } else {
+                            setupRecyclerView();
+                        }
+                        int bor_account = book_borrows.size();
+                        already_view.setText(String.valueOf(bor_account));
+                        remain_view.setText(String.valueOf(15 - bor_account));
+                        continue_view.setText(String.valueOf(continue_account));
+                        outTime_view.setText(String.valueOf(0));
+                        Message message = Message.obtain();
+                        message.what = 2;
+                        myhandler.sendMessage(message);
+
+                    }
+
+                } else {
+                    Message message = Message.obtain();
+                    message.what = 4;
+                    myhandler.sendMessage(message);
+                }
+            } catch (JSONException e) {
+                Message message = Message.obtain();
+                message.what = 4;
+                myhandler.sendMessage(message);
             }
         }
+    }
+
+    private  void DealWithReNewResult(String renew_result)
+    {
+        try {
+            boolean result=new JSONObject(renew_result).getBoolean("Result");
+            if(result==true)
+            {
+                Toast.makeText(MyBorrowActivity.this,"续借成功",Toast.LENGTH_SHORT).show();
+                UpDataRenew();
+                myAdapter.notifyDataSetChanged();
+            }
+            else
+            {
+                Toast.makeText(MyBorrowActivity.this,"续借失败",Toast.LENGTH_SHORT).show();
+            }
+        } catch (JSONException e) {
+            Log.d(TAG,e.toString());
+            Toast.makeText(MyBorrowActivity.this,"续借失败",Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

@@ -35,6 +35,7 @@ import com.example.wyz.xiyoug.RecyclerView.FullyLinearLayoutManager;
 import com.example.wyz.xiyoug.RecyclerView.MyLinearLayoutManager;
 import com.example.wyz.xiyoug.RecyclerView.OnItemOnClickListenerInterface;
 import com.example.wyz.xiyoug.Util.ImageLoaderPicture;
+import com.example.wyz.xiyoug.Util.IsNetworkConnected;
 import com.example.wyz.xiyoug.Util.MyAnimation;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
 import com.example.wyz.xiyoug.View.MyFragment;
@@ -63,13 +64,9 @@ public class BookDetailActivity  extends AppCompatActivity{
     private  MyThread myThread;
     public  static Book_Detail book_detail=null;
     private MyColAddThread myColAddThread;
-    private  MyColAddHandler myColAddHandler=new MyColAddHandler();
-
     private RelativeLayout load_view;
     private  LinearLayout content;
-    private  MyLoadHandler myLoadHandler=new MyLoadHandler();
     private NestedScrollView scrollView;
-
     private ImageView imageView;
     private TextView title_view;
     private  TextView author_view;
@@ -90,9 +87,6 @@ public class BookDetailActivity  extends AppCompatActivity{
     LinearLayoutManager linearLayoutManager;
     DividerItemDecoration dividerItemDecoration;
     LinearLayoutManager hor_linearLayoutManager;
-    DividerItemDecoration hor_dividerItemDecoration;
-   /* private  ListView refer_listView;
-    private   MyAdapter myAdapter;*/
     private RecyclerView refer_recyclerView;
     private  MyReferAdapter myReferAdapter;
     private  String addColUrl;
@@ -135,7 +129,13 @@ public class BookDetailActivity  extends AppCompatActivity{
             case R.id.action_collection:
             {
                 pressCount++;
-                if(MyFragment.isLogin)
+                if(!IsNetworkConnected.isNetworkConnected(BookDetailActivity.this))
+                {
+                    Message message=Message.obtain();
+                    message.what=6;
+                    myHandler.sendMessage(message);
+                }
+                else if(MyFragment.isLogin)
                 {
                     //item.setIcon(R.drawable.book_col_press);
                     List<BasicNameValuePair>  basicNameValuePairs=new ArrayList<>();
@@ -202,7 +202,7 @@ public class BookDetailActivity  extends AppCompatActivity{
         circul_recyclerView=(RecyclerView) findViewById(R.id.circul_recyclerView);
         linearLayoutManager=new LinearLayoutManager(BookDetailActivity.this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        dividerItemDecoration=new DividerItemDecoration(BookDetailActivity.this,DividerItemDecoration.HORIZONTAL_LIST);
+        dividerItemDecoration=new DividerItemDecoration(BookDetailActivity.this,DividerItemDecoration.HORIZONTAL_LIST,0);
         circul_recyclerView.setLayoutManager(linearLayoutManager);
         circul_recyclerView.addItemDecoration(dividerItemDecoration);
 
@@ -250,11 +250,7 @@ public class BookDetailActivity  extends AppCompatActivity{
         //隐藏滚动条横向的
         circul_recyclerView.setHorizontalScrollBarEnabled(false);
     }
-  /*  private  void setReferListViewData()
-    {
-        myAdapter=new MyAdapter();
-        refer_listView.setAdapter(myAdapter);
-    }*/
+
     private void setReferRecyclerViewData() {
         myReferAdapter = new MyReferAdapter();
         myReferAdapter.setOnItemClickListener(new OnItemOnClickListenerInterface.OnItemClickListener() {
@@ -294,12 +290,13 @@ public class BookDetailActivity  extends AppCompatActivity{
                 Bundle bundle=new Bundle();
                 bundle.putString("book_result",book_result);
                 message.setData(bundle);
+                message.what=1;
                 myHandler.sendMessage(message);
             } catch (Exception e) {
                 Log.d(TAG,e.toString());
                 Message message=Message.obtain();
-                message.what=2;
-                myLoadHandler.sendMessage(message);
+                message.what=3;
+                myHandler.sendMessage(message);
             }
         }
     }
@@ -307,120 +304,48 @@ public class BookDetailActivity  extends AppCompatActivity{
     {
         @Override
         public void handleMessage(Message msg) {
-            String book_result=msg.getData().getString("book_result");
-            book_detail=null;
-            try {
-                boolean result=new JSONObject(book_result).getBoolean("Result");
-                if(result)
-                {
-                    String detail=new JSONObject(book_result).getString("Detail");
-                    if(detail.equals("NO_RECORD"))
-                    {
-                        Message message=Message.obtain();
-                        message.what=0;
-                        myLoadHandler.sendMessage(message);
-                    }
-                    else
-                    {
-                        JSONArray circulArray=new JSONArray(new JSONObject(detail).getString("CirculationInfo"));
-                        List<Book_CirculationInfo> book_circulationInfos=new ArrayList<>();
-                        int j=0,canBorCount=0,totalCount=circulArray.length();
-                        for(int i=0;i<circulArray.length();i++)
-                        {
-                            JSONObject circulObject=(JSONObject) circulArray.get(i);
-                            Book_CirculationInfo book_circulationInfo=new Book_CirculationInfo(
-                                    circulObject.getString("Barcode"),
-                                    circulObject.getString("Sort"),
-                                    circulObject.getString("Department"),
-                                    circulObject.getString("Status"),
-                                    circulObject.getString("Date")
-                            );
-                            if(book_circulationInfo.getStatue().equals("在架可借"))
-                            {
-                                book_circulationInfos.add(j,book_circulationInfo);
-                                j++;
-                                canBorCount++;
-                            }
-                            else{
-                                book_circulationInfos.add(book_circulationInfo);
-                            }
+            //请求成功没有记录
+            if(msg.what==0)
+            {
+                load_view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
+                Toast.makeText(BookDetailActivity.this, "没有记录", Toast.LENGTH_SHORT).show();
+                BookDetailActivity.this.finish();
+            }
+            //请求成功
+            else if(msg.what==1)
+            {
 
-                        }
-                        JSONArray referArray=new JSONArray(new JSONObject(detail).getString("ReferBooks"));
-                        List<Book_ReferBooks> book_referBookses=new ArrayList<>();
-                        for(int i=0;i<referArray.length();i++)
-                        {
-                            JSONObject referObject=(JSONObject)referArray.get(i);
-                            Book_ReferBooks book_referBooks=new Book_ReferBooks(
-                                    referObject.getString("ID"),
-                                    referObject.getString("Title"),
-                                    referObject.getString("Author")
-                            );
-                            book_referBookses.add(book_referBooks);
-                        }
-                        String doubanInfo=new JSONObject(detail).getString("DoubanInfo");
-                        String image="";
-                        if(!doubanInfo.equals("null"))
-                        {
-                            String images=new JSONObject(doubanInfo).getString("Images");
-                            if(!images.equals(""))
-                            {
-                                image=new JSONObject(images).getString("medium");
-                            }
-                        }
-                        JSONObject jsonObject=new JSONObject(detail);
-                        book_detail=new Book_Detail(
-                                jsonObject.getString("ID"),
-                                jsonObject.getString("Pub"),
-                                jsonObject.getString("Summary"),
-                                jsonObject.getString("Title"),
-                                jsonObject.getString("Form"),
-                                jsonObject.getString("Author"),
-                                jsonObject.getString("Sort"),
-                                jsonObject.getString("Subject"),
-                                jsonObject.getString("RentTimes"),
-                                jsonObject.getString("FavTimes"),
-                                jsonObject.getString("BrowseTimes"),
-                                jsonObject.getString("Total"),
-                                jsonObject.getString("Avaliable"),
-                                book_circulationInfos,
-                                book_referBookses,
-                                image
-                        );
-                        pub_view.setText(book_detail.getPub());
-                        summary_view.setText(book_detail.getSummary());
-                        title_view.setText(book_detail.getTitle());
-                        pages_view.setText(book_detail.getForm());
-                        author_view.setText(book_detail.getAuthor());
-                        sort_view.setText(book_detail.getSort());
-                        subject_view.setText(book_detail.getSubject());
-                        rentTimes_view.setText(book_detail.getRentTimes());
-                        fav_view.setText(book_detail.getFavTimes());
-                        total_view.setText(book_detail.getTotal());
-                        avaliable_view.setText(book_detail.getAvaliable());
-                        canBorCount_view.setText(String.valueOf(canBorCount));
-                        totalCount_view.setText(String.valueOf(totalCount));
-                        if(image!="")
-                        {
-                            ImageLoader.getInstance().displayImage(image,imageView,new ImageLoaderPicture(BookDetailActivity.this).getOptions(),new SimpleImageLoadingListener());
-                        }
-                        else
-                        {
-                            imageView.setImageResource(R.drawable.book_detail_img);
-                        }
+                String book_result=msg.getData().getString("book_result");
+                DealWithBookResult(book_result);
+            }
+            //添加收藏成功
+            else if(msg.what==2)
+            {
+                String addColResult=msg.getData().getString("addColResult");
+                DealWithAddResult(addColResult);
+            }
+            //没有网络
+            else if(msg.what==3)
+            {
+                Toast.makeText(BookDetailActivity.this,"网络超时",Toast.LENGTH_SHORT).show();
+                BookDetailActivity.this.finish();
+            }
+            else if(msg.what==6)
+            {
+                Toast.makeText(BookDetailActivity.this,"网络超时",Toast.LENGTH_SHORT).show();
+            }
+            //解析错误，请求错误
+            else  if(msg.what==4)
+            {
 
-                        setCirculRecyclerViewData();
-                        setReferRecyclerViewData();
-                        isLoad=true;
-                        Message message=new Message();
-                        message.what=1;
-                        myLoadHandler.sendMessage(message);
-                    }
-                }
-            } catch (JSONException e) {
-               Message message=Message.obtain();
-                message.what=3;
-                myLoadHandler.sendMessage(message);
+                Toast.makeText(BookDetailActivity.this,"请求出错",Toast.LENGTH_SHORT).show();
+                BookDetailActivity.this.finish();
+            }
+            else if(msg.what==5)
+            {
+                load_view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -435,44 +360,14 @@ public class BookDetailActivity  extends AppCompatActivity{
                 Bundle bundle=new Bundle();
                 bundle.putString("addColResult",addColResult);
                 message.setData(bundle);
-                myColAddHandler.sendMessage(message);
+                message.what=2;
+                myHandler.sendMessage(message);
             } catch (Exception e) {
                 Log.d(TAG,e.toString());
                 Message message=new Message();
-                message.what=2;
-                myLoadHandler.sendMessage(message);
+                message.what=3;
+                myHandler.sendMessage(message);
             }
-        }
-    }
-    private  class MyColAddHandler extends  Handler
-    {
-        @Override
-        public void handleMessage(Message msg) {
-            String addColResult=msg.getData().getString("addColResult");
-            String detail="";
-            try {
-                detail =new JSONObject(addColResult).getString("Detail");
-                switch (detail)
-                {
-                    case  "ADDED_SUCCEED":
-
-                        Toast.makeText(BookDetailActivity.this,"亲，收藏成功",Toast.LENGTH_SHORT).show();
-                        break;
-                    case  "ALREADY_IN_FAVORITE":
-                        Toast.makeText(BookDetailActivity.this,"亲，已经收藏过啦",Toast.LENGTH_SHORT).show();
-                        break;
-                    case "USER_NOT_LOGIN":
-                        Toast.makeText(BookDetailActivity.this,"亲，请先登录",Toast.LENGTH_SHORT).show();
-                        break;
-                    default:
-                        Toast.makeText(BookDetailActivity.this,"sorry，收藏失败啦",Toast.LENGTH_SHORT).show();
-                        break;
-
-                }
-            } catch (JSONException e) {
-                Log.d(TAG,e.toString());
-            }
-
         }
     }
 
@@ -669,34 +564,150 @@ public class BookDetailActivity  extends AppCompatActivity{
             public TextView id_view;
         }
     }
-    private  class  MyLoadHandler extends  Handler
+    private  void DealWithBookResult(String book_result)
     {
-        @Override
-        public void handleMessage(Message msg) {
 
-            if(msg.what==0)
+        book_detail=null;
+        try {
+            boolean result=new JSONObject(book_result).getBoolean("Result");
+            if(result)
             {
-                load_view.setVisibility(View.INVISIBLE);
-                content.setVisibility(View.VISIBLE);
-                Toast.makeText(BookDetailActivity.this, "没有记录", Toast.LENGTH_SHORT).show();
-                BookDetailActivity.this.finish();
-            }
-            else if(msg.what==1)
-            {
-                load_view.setVisibility(View.INVISIBLE);
-                content.setVisibility(View.VISIBLE);
-            }
-            else if(msg.what==2)
-            {
-                Toast.makeText(BookDetailActivity.this,"网络不稳定，请检查网络",Toast.LENGTH_SHORT).show();
-                BookDetailActivity.this.finish();
-            }
-            else  if(msg.what==3)
-            {
+                String detail=new JSONObject(book_result).getString("Detail");
+                if(detail.equals("NO_RECORD"))
+                {
+                    Message message=Message.obtain();
+                    message.what=0;
+                    myHandler.sendMessage(message);
+                }
+                else
+                {
+                    JSONArray circulArray=new JSONArray(new JSONObject(detail).getString("CirculationInfo"));
+                    List<Book_CirculationInfo> book_circulationInfos=new ArrayList<>();
+                    int j=0,canBorCount=0,totalCount=circulArray.length();
+                    for(int i=0;i<circulArray.length();i++)
+                    {
+                        JSONObject circulObject=(JSONObject) circulArray.get(i);
+                        Book_CirculationInfo book_circulationInfo=new Book_CirculationInfo(
+                                circulObject.getString("Barcode"),
+                                circulObject.getString("Sort"),
+                                circulObject.getString("Department"),
+                                circulObject.getString("Status"),
+                                circulObject.getString("Date")
+                        );
+                        if(book_circulationInfo.getStatue().equals("在架可借"))
+                        {
+                            book_circulationInfos.add(j,book_circulationInfo);
+                            j++;
+                            canBorCount++;
+                        }
+                        else{
+                            book_circulationInfos.add(book_circulationInfo);
+                        }
 
-                Toast.makeText(BookDetailActivity.this,"请求出错",Toast.LENGTH_SHORT).show();
-                BookDetailActivity.this.finish();
+                    }
+                    JSONArray referArray=new JSONArray(new JSONObject(detail).getString("ReferBooks"));
+                    List<Book_ReferBooks> book_referBookses=new ArrayList<>();
+                    for(int i=0;i<referArray.length();i++)
+                    {
+                        JSONObject referObject=(JSONObject)referArray.get(i);
+                        Book_ReferBooks book_referBooks=new Book_ReferBooks(
+                                referObject.getString("ID"),
+                                referObject.getString("Title"),
+                                referObject.getString("Author")
+                        );
+                        book_referBookses.add(book_referBooks);
+                    }
+                    String doubanInfo=new JSONObject(detail).getString("DoubanInfo");
+                    String image="";
+                    if(!doubanInfo.equals("null"))
+                    {
+                        String images=new JSONObject(doubanInfo).getString("Images");
+                        if(!images.equals(""))
+                        {
+                            image=new JSONObject(images).getString("medium");
+                        }
+                    }
+                    JSONObject jsonObject=new JSONObject(detail);
+                    book_detail=new Book_Detail(
+                            jsonObject.getString("ID"),
+                            jsonObject.getString("Pub"),
+                            jsonObject.getString("Summary"),
+                            jsonObject.getString("Title"),
+                            jsonObject.getString("Form"),
+                            jsonObject.getString("Author"),
+                            jsonObject.getString("Sort"),
+                            jsonObject.getString("Subject"),
+                            jsonObject.getString("RentTimes"),
+                            jsonObject.getString("FavTimes"),
+                            jsonObject.getString("BrowseTimes"),
+                            jsonObject.getString("Total"),
+                            jsonObject.getString("Avaliable"),
+                            book_circulationInfos,
+                            book_referBookses,
+                            image
+                    );
+                    pub_view.setText(book_detail.getPub());
+                    summary_view.setText(book_detail.getSummary());
+                    title_view.setText(book_detail.getTitle());
+                    pages_view.setText(book_detail.getForm());
+                    author_view.setText(book_detail.getAuthor());
+                    sort_view.setText(book_detail.getSort());
+                    subject_view.setText(book_detail.getSubject());
+                    rentTimes_view.setText(book_detail.getRentTimes());
+                    fav_view.setText(book_detail.getFavTimes());
+                    total_view.setText(book_detail.getTotal());
+                    avaliable_view.setText(book_detail.getAvaliable());
+                    canBorCount_view.setText(String.valueOf(canBorCount));
+                    totalCount_view.setText(String.valueOf(totalCount));
+                    if(!image.equals(""))
+                    {
+                        ImageLoader.getInstance().displayImage(image,imageView,new ImageLoaderPicture(BookDetailActivity.this).getOptions(),new SimpleImageLoadingListener());
+                    }
+                    else
+                    {
+                        imageView.setImageResource(R.drawable.book_detail_img);
+                    }
+
+                    setCirculRecyclerViewData();
+                    setReferRecyclerViewData();
+                    isLoad=true;
+                    Message message=new Message();
+                    message.what=5;
+                    myHandler.sendMessage(message);
+                }
             }
+        } catch (JSONException e) {
+            Message message=Message.obtain();
+            message.what=4;
+            myHandler.sendMessage(message);
         }
+    }
+    private  void DealWithAddResult(String addColResult)
+    {
+
+        String detail="";
+        try {
+            detail =new JSONObject(addColResult).getString("Detail");
+            switch (detail)
+            {
+                case  "ADDED_SUCCEED":
+
+                    Toast.makeText(BookDetailActivity.this,"亲，收藏成功",Toast.LENGTH_SHORT).show();
+                    break;
+                case  "ALREADY_IN_FAVORITE":
+                    Toast.makeText(BookDetailActivity.this,"亲，已经收藏过啦",Toast.LENGTH_SHORT).show();
+                    break;
+                case "USER_NOT_LOGIN":
+                    Toast.makeText(BookDetailActivity.this,"亲，请先登录",Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    Toast.makeText(BookDetailActivity.this,"sorry，收藏失败啦",Toast.LENGTH_SHORT).show();
+                    break;
+
+            }
+        } catch (JSONException e) {
+            Log.d(TAG,e.toString());
+        }
+
     }
 }
