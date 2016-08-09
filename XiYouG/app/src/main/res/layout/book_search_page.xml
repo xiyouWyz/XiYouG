@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/book_search_back"
 
     >
@@ -10,14 +11,16 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/book_search_title_back"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         >
         <TextView
             android:text="@string/book_search_title"
             android:textColor="@color/book_search_title"
             android:textSize="@dimen/book_search_title"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </android.support.v7.widget.Toolbar>
     <SearchView

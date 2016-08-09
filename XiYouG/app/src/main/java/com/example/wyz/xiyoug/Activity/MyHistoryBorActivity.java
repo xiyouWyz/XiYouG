@@ -25,7 +25,7 @@ import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.Util.MyAnimation;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
-import com.example.wyz.xiyoug.View.MyFragment;
+import com.example.wyz.xiyoug.Viewer.MyFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;

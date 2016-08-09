@@ -1,4 +1,4 @@
-package com.example.wyz.xiyoug.View;
+package com.example.wyz.xiyoug.Viewer;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,7 +21,6 @@ import android.widget.Toast;
 import com.example.wyz.xiyoug.Activity.ScoreActivity;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.Model.ScoreUser;
-import com.example.wyz.xiyoug.Model.User;
 import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.Util.IsNetworkConnected;
 import com.example.wyz.xiyoug.Util.JsonHandle;
@@ -29,16 +28,12 @@ import com.example.wyz.xiyoug.Util.MyAnimation;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
 import com.example.wyz.xiyoug.Util.ScheduleOkHttp;
 import com.example.wyz.xiyoug.Util.SerializableList;
-import com.example.wyz.xiyoug.Util.SerializableMap;
 
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONObject;
 
-import java.io.IOException;
 import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Wyz on 2016/8/4.

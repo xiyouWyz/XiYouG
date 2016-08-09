@@ -1,4 +1,4 @@
-package com.example.wyz.xiyoug.View;
+package com.example.wyz.xiyoug.Viewer;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

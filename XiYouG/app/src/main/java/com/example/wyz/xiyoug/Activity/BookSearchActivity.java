@@ -1,6 +1,8 @@
 package com.example.wyz.xiyoug.Activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,13 +53,58 @@ public class BookSearchActivity extends AppCompatActivity  implements SearchView
     private  final  String TAG="BookSearchActivity";
     private LinearLayout content;
     private RelativeLayout load_view;
+    private final int  ACTIVITY_RESULT_SCAN = 1;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.book_search_page);
         setupViewComponent();
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.scan,menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.scan:
+            {
+                Intent intent2 = new Intent(BookSearchActivity.this,ScanActivity.class);
+                startActivityForResult(intent2, ACTIVITY_RESULT_SCAN,null);
+                break;
+            }
+            case  android.R.id.home:
+            {
+                finish();
+                break;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+/*    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ACTIVITY_RESULT_SCAN){
+            if (data != null){
+                String result = data.getStringExtra("result");
+                Log.d(TAG,result);
+                //mResultTextView.setText(result);
+                Bitmap barcode = null;
+                byte[] compressedBitmap = data.getByteArrayExtra("resultByte");
+                if (compressedBitmap != null) {
+                    barcode = BitmapFactory.decodeByteArray(compressedBitmap, 0, compressedBitmap.length, null);
+                    barcode = barcode.copy(Bitmap.Config.RGB_565, true);
+
+                }
+
+            }else {
+                Toast.makeText(BookSearchActivity.this,"没有结果!!!",Toast.LENGTH_SHORT).show();
+            }
+        }
+    }*/
     private void setupViewComponent() {
         toolbar=(Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -125,14 +173,6 @@ public class BookSearchActivity extends AppCompatActivity  implements SearchView
     }
 
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==android.R.id.home)
-        {
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     private  class  MyAdapter extends BaseAdapter
     {

@@ -1,4 +1,4 @@
-package com.example.wyz.xiyoug.View;
+package com.example.wyz.xiyoug.Viewer;
 
 
 import android.content.Intent;

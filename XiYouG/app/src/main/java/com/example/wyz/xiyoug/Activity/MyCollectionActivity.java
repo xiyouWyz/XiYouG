@@ -28,7 +28,7 @@ import com.example.wyz.xiyoug.Model.User;
 import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.Util.MyAnimation;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
-import com.example.wyz.xiyoug.View.MyFragment;
+import com.example.wyz.xiyoug.Viewer.MyFragment;
 
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -91,7 +91,7 @@ public class MyCollectionActivity extends AppCompatActivity {
                   basicNameValuePairs.add(new BasicNameValuePair("session",MyFragment.SESSIONID));
                   colDelID=book_collections.get(i).getId();
                   basicNameValuePairs.add(new BasicNameValuePair("id",colDelID));
-                  if(User.getInstance().getId().equals(""))
+                  if(!User.getInstance().getId().equals(""))
                   {
                       basicNameValuePairs.add(new BasicNameValuePair("username", User.getInstance().getId()));
                   }

@@ -121,12 +121,35 @@
     <color name="schedule_around_time">#999</color>
     <color name="schedule_page_divide">#36B19F</color>
     <color name="schedule_bottom">#fff</color>
-
+    <color name="schedule_textView">#fff</color>
     <color name="schedule_my_no_login">#fff</color>
     <color name="schedule_my_exit">#f00</color>
-    <color name="schedule_import">#59C4B6</color>
-    <color name="schedule_import_word">#fff</color>
+    <color name="schedule_day1_one">#F77C89</color>
+    <color name="schedule_day2_one">#6D9EF6</color>
+    <color name="schedule_day3_one">#FEB906</color>
+    <color name="schedule_day4_one">#F77D8A</color>
+    <color name="schedule_day5_one">#B98ADF</color>
+    <color name="schedule_day1_two">#01B3EE</color>
+    <color name="schedule_day2_two">#FE8D41</color>
+    <color name="schedule_day3_two">#E377C3</color>
+    <color name="schedule_day4_two">#00B3EE</color>
+    <color name="schedule_day5_two">#E477C3</color>
+    <color name="schedule_day1_three">#12C99A</color>
+    <color name="schedule_day2_three">#90C507</color>
+    <color name="schedule_day3_three">#6D9EF6</color>
+    <color name="schedule_day4_three">#12C99A</color>
+    <color name="schedule_day5_three">#F77C89</color>
+    <color name="schedule_day1_four">#FEB906</color>
+    <color name="schedule_day2_four">#B989DE</color>
+    <color name="schedule_day3_four">#90C506</color>
+    <color name="schedule_day4_four">#FEB906</color>
+    <color name="schedule_day5_four">#00B2ED</color>
+    <color name="schedule_none">#fff</color>
+    <color name="schedule_import">#36B19F</color>
+    <color name="schedule_import_press">#1FA294</color>
 
     <color name="score_bottom">#fff</color>
     <color name="score_divide">#ccc</color>
+    <color name="score_title">#fff</color>
+    <color name="score_title_back">#36B19F</color>
 </resources>

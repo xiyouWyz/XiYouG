@@ -38,7 +38,7 @@ import com.example.wyz.xiyoug.Util.ImageLoaderPicture;
 import com.example.wyz.xiyoug.Util.IsNetworkConnected;
 import com.example.wyz.xiyoug.Util.MyAnimation;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
-import com.example.wyz.xiyoug.View.MyFragment;
+import com.example.wyz.xiyoug.Viewer.MyFragment;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
@@ -161,7 +161,13 @@ public class BookDetailActivity  extends AppCompatActivity{
 
 
             case R.id.action_share:
-                Toast.makeText(BookDetailActivity.this,"点击分享",Toast.LENGTH_SHORT).show();
+                Intent it = new Intent(Intent.ACTION_SEND);
+                String[] receiver;
+                receiver=new String[]{"745322878@qq.com"};
+                it.putExtra(Intent.EXTRA_EMAIL, receiver);
+                it.putExtra(Intent.EXTRA_TEXT, book_detail.getTitle());
+                it.setType("text/plain");
+                startActivity(it);
                 break;
             case  android.R.id.home:
                 finish();
@@ -307,10 +313,8 @@ public class BookDetailActivity  extends AppCompatActivity{
             //请求成功没有记录
             if(msg.what==0)
             {
-                load_view.setVisibility(View.INVISIBLE);
-                content.setVisibility(View.VISIBLE);
-                Toast.makeText(BookDetailActivity.this, "没有记录", Toast.LENGTH_SHORT).show();
                 BookDetailActivity.this.finish();
+                Toast.makeText(BookDetailActivity.this, "没有此书", Toast.LENGTH_SHORT).show();
             }
             //请求成功
             else if(msg.what==1)
@@ -570,7 +574,12 @@ public class BookDetailActivity  extends AppCompatActivity{
         book_detail=null;
         try {
             boolean result=new JSONObject(book_result).getBoolean("Result");
-            if(result)
+            if(!result)
+            {
+                Toast.makeText(BookDetailActivity.this,"没有此书!",Toast.LENGTH_SHORT).show();
+                finish();
+            }
+            else if(result)
             {
                 String detail=new JSONObject(book_result).getString("Detail");
                 if(detail.equals("NO_RECORD"))

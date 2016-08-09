@@ -113,5 +113,8 @@
     <string name="score_login_btn">登录</string>
     <string name="score_bottom_left">成绩</string>
     <string name="score_bottom_right">我的</string>
-
-</resources>
+    <string name="score_title">我的成绩</string>
+    <string name="score_item_score">成绩:</string>
+    <string name="score_item_credit">学分:</string>
+    <string name="score_item_courseNature">课程性质:</string>
+    </resources>

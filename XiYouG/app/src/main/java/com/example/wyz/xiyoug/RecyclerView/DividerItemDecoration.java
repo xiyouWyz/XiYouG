@@ -40,13 +40,15 @@ public  class DividerItemDecoration extends RecyclerView.ItemDecoration{
         if(i==0)
         {
             mDivider = a.getDrawable(0);
+            a.recycle();
         }
         else if(i==1)
         {
             mDivider=a1.getDrawable(0);
+            a1.recycle();
         }
 
-        a.recycle();
+
         setOrientation(orientation);
     }
 

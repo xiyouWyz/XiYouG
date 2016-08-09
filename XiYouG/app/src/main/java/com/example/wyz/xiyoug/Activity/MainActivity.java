@@ -1,6 +1,7 @@
 package com.example.wyz.xiyoug.Activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,20 +11,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.Util.IsNetworkConnected;
-import com.example.wyz.xiyoug.View.LibraryMainFragment;
-import com.example.wyz.xiyoug.View.ScheduleFragment;
-import com.example.wyz.xiyoug.View.ScoreMyFragment;
+import com.example.wyz.xiyoug.Viewer.LibraryMainFragment;
+import com.example.wyz.xiyoug.Viewer.ScheduleFragment;
+import com.example.wyz.xiyoug.Viewer.ScoreMyFragment;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -194,15 +193,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "This is email's message");
                 emailIntent.setType("text/plain");
                 startActivity(Intent.createChooser(emailIntent, "Send mail..."));*/
-                Intent it = new Intent(Intent.ACTION_SEND);
-                String[] receiver;
-                receiver=new String[]{"745322878@qq.com"};
-                it.putExtra(Intent.EXTRA_EMAIL, receiver);
-                it.putExtra("subject", "About CodePad");
-                it.putExtra(Intent.EXTRA_TEXT, "/*Thanks advance for any tips.*/");
-
-                it.setType("text/plain");
-                startActivity(it);
+                Intent data=new Intent();
+                data.setAction(Intent.ACTION_SENDTO);
+                data.setData(Uri.parse("mailto:745322878@qq.com"));
+                startActivity(data);
                 break;
 
 

@@ -2,6 +2,7 @@ package com.example.wyz.xiyoug.Util;
 
 import android.util.Log;
 
+import com.example.wyz.xiyoug.Model.ScoreModel;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -17,13 +18,22 @@ import java.net.CookieHandler;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.StreamHandler;
 
 /**
  * Created by Wyz on 2016/7/31.
  */
 public class ScheduleOkHttp {
     private static   String TAG="MyOkHttp";
+    public static int semesCount;
     private static OkHttpClient okHttpClient=new OkHttpClient();
+    static
+    {
+        okHttpClient.setConnectTimeout(30,TimeUnit.SECONDS);
+    }
+
     public  static String postGetSessionFromServer(String url,String studyNumber,String password) throws IOException {
         RequestBody requestBody=new FormEncodingBuilder()
                 .add("__VIEWSTATE","dDwxMTE4MjQwNDc1Ozs+ombGLJflIyczODVOjorgMB6XZe8=")
@@ -36,7 +46,6 @@ public class ScheduleOkHttp {
                 .url(url)
                 .post(requestBody)
                 .build();
-
         okHttpClient.setFollowSslRedirects(false);
         okHttpClient.setFollowRedirects(false);
         Response response=okHttpClient.newCall(request).execute();
@@ -59,13 +68,19 @@ public class ScheduleOkHttp {
                 .url(url)
                 .addHeader("Cookie",sessionID)
                 .build();
-
         okHttpClient.setFollowSslRedirects(false);
         okHttpClient.setFollowRedirects(false);
         Response response=okHttpClient.newCall(request).execute();
         if(response.isSuccessful())
         {
-            return response.body().string();
+            BufferedReader bufferedReader=new BufferedReader( response.body().charStream());
+            StringBuffer stringBuffer=new StringBuffer();
+            String line;
+            while (((line=bufferedReader.readLine())!=null))
+            {
+                stringBuffer.append(line);
+            }
+            return stringBuffer.toString();
         }
         return  null;
     }
@@ -86,13 +101,13 @@ public class ScheduleOkHttp {
         if(response.isSuccessful())
         {
             BufferedReader bufferedReader=new BufferedReader( response.body().charStream());
-            String lines="";
+            StringBuffer stringBuffer=new StringBuffer();
             String line;
             while (((line=bufferedReader.readLine())!=null))
             {
-                lines+=line;
+                stringBuffer.append(line);
             }
-            return lines;
+            return stringBuffer.toString();
         }
         return  "";
     }
@@ -100,18 +115,69 @@ public class ScheduleOkHttp {
     public  static    List<String>  getPostScore(String url,String sessionID,String viewState,List<String> semesters) throws  IOException
     {
         List<String> allScoreHtml=new ArrayList<>();
-        List<String> xqs=new ArrayList<>(Arrays.asList("1","2"));
+        List<String> xqs=new ArrayList<>(Arrays.asList("2","1"));
+        List<Map<String,String>> maps=null;
         for (int i=0;i<semesters.size();i++)
         {
             for(int j=0;j<xqs.size();j++)
             {
                 String score=getPostSemesterScore(url,sessionID,viewState,semesters.get(i),xqs.get(j));
                 allScoreHtml.add(score);
+
             }
         }
         return  allScoreHtml;
     }
-    private   static  String getPostSemesterScore(String url,String sessionID,String viewState,String xn,String xq) throws  IOException
+    public  static     List<ScoreModel> getPostFirstScore(String url, String sessionID, String viewState, List<String> xns, int alreadySeme) throws  IOException
+    {
+        List<String> xqs=new ArrayList<>(Arrays.asList("2","1"));
+        List<ScoreModel> scoreModels=null;
+        for (int i=0;i<xns.size();i++)
+        {
+            for(int j=0;j<xqs.size();j++)
+            {
+                String score_html=getPostSemesterScore(url,sessionID,viewState,xns.get(i),xqs.get(j));
+                scoreModels=JsonHandle.getSemesterScore(score_html);
+                if(scoreModels!=null)
+                {
+                    semesCount=alreadySeme;
+                    return  scoreModels;
+                }
+                else
+                {
+                    alreadySeme-=1;
+                }
+                //allScoreHtml.add(score);
+            }
+        }
+        return  null;
+    }
+    public  static  int  getPostFirstScoreCount(String url,String sessionID,String viewState,List<String> xns,int alreadySeme) throws  IOException
+    {
+        String score_html;
+        List<String> xqs=new ArrayList<>(Arrays.asList("2","1"));
+        List<ScoreModel> scoreModels=null;
+        for (int i=0;i<xns.size();i++)
+        {
+            for(int j=0;j<xqs.size();j++)
+            {
+                score_html=getPostSemesterScore(url,sessionID,viewState,xns.get(i),xqs.get(j));
+                scoreModels=JsonHandle.getSemesterScore(score_html);
+                if(scoreModels!=null)
+                {
+                    semesCount=alreadySeme;
+                    return semesCount;
+                }
+                else
+                {
+                    alreadySeme-=1;
+                }
+                //allScoreHtml.add(score);
+            }
+        }
+        return 0;
+    }
+    public    static  String getPostSemesterScore(String url,String sessionID,String viewState,String xn,String xq) throws  IOException
     {
         RequestBody requestBody=new FormEncodingBuilder()
                 .add("__VIEWSTATE",viewState)
@@ -130,20 +196,21 @@ public class ScheduleOkHttp {
                 .addHeader("Referer",url)
                 .post(requestBody)
                 .build();
-
         okHttpClient.setFollowSslRedirects(false);
         okHttpClient.setFollowRedirects(false);
         Response response=okHttpClient.newCall(request).execute();
         if(response.isSuccessful())
         {
             BufferedReader bufferedReader=new BufferedReader( response.body().charStream());
-            String lines="";
+            StringBuilder lines=new StringBuilder();
+
             String line;
             while (((line=bufferedReader.readLine())!=null))
             {
-                lines+=line;
+                lines.append(line);
+                line=null;
             }
-            return lines;
+            return lines.toString();
         }
         return  null;
     }

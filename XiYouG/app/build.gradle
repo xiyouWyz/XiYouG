@@ -1,9 +1,7 @@
 apply plugin: 'com.android.application'
-
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.0"
-
     aaptOptions.cruncherEnabled = false
     aaptOptions.useNewCruncher = false
 
@@ -25,11 +23,14 @@ android {
     }
 
 }
-
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.0.0'
+    compile 'com.android.support:design:23.0.1'
+    compile 'com.google.zxing:android-core:3.2.1'
+    compile 'com.google.zxing:core:3.2.1'
+
     compile files('libs/RecyclerView.jar')
     compile files('libs/okhttp-2.7.5.jar')
     compile files('libs/httpclient-4.5.jar')

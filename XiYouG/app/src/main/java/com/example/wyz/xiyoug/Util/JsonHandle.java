@@ -2,6 +2,8 @@ package com.example.wyz.xiyoug.Util;
 
 import android.util.Log;
 
+import com.example.wyz.xiyoug.Model.ScoreModel;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -47,7 +49,7 @@ public class JsonHandle {
         List<String> time4=new ArrayList<>();
         Map<String,List<String>> listMap=new HashMap<>();
         Document document= Jsoup.parse(result);
-        String schedule= document.body().getElementById("Table1").text();
+        //String schedule= document.body().getElementById("Table1").text();
         Element tbody=document.body().getElementById("Table1").child(0);
 
         Element tr_day1_time1=tbody.child(2);
@@ -80,7 +82,7 @@ public class JsonHandle {
                 String schedule_name = textNodes.get(0).text();
                 String schedule_teacher = textNodes.get(2).text();
                 String schedule_room = textNodes.get(3).text();
-                String schedule = schedule_name +"@"+ schedule_teacher +"@"+ schedule_room;
+                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
                 time.add(schedule);
             }
         }
@@ -99,7 +101,7 @@ public class JsonHandle {
                 String schedule_name = textNodes.get(0).text();
                 String schedule_teacher = textNodes.get(2).text();
                 String schedule_room = textNodes.get(3).text();
-                String schedule = schedule_name +"@"+ schedule_teacher +"@"+ schedule_room;
+                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
                 time.add(schedule);
             }
         }
@@ -118,6 +120,8 @@ public class JsonHandle {
         semester+=tbody.getElementById("Label1").text();
         return  semester;
     }
+
+
     public static  List<String> getScoreUserInfo(String score_html)
     {
         List<String> userinfo=new ArrayList<>();
@@ -146,26 +150,27 @@ public class JsonHandle {
         String result=form.select("input[name=__VIEWSTATE]").get(0).attr("value");
         return  result;
     }
-    public  static  List<String> getSemesterCount(String score_html)
+    public  static  List<String> getYearCount(String score_html)
     {
-        List<String> semester=new ArrayList<>();
+        List<String> years=new ArrayList<>();
+        String year;
         Document document=Jsoup.parse(score_html);
         Element form=document.body().getElementById("Form1");
         Element select=form.getElementById("ddlXN");
 
         for(int i=0;i<select.children().size();i++)
         {
-            String seme=select.child(i).text();
-            if(!seme.equals(""))
+             year=select.child(i).text();
+            if(!year.equals(""))
             {
-                semester.add(seme);
+                years.add(year);
             }
         }
-        return  semester;
+        return  years;
     }
-    private static List<Map<String,String>> getSemesterScore(String semesterScore) {
-        Map<String,String> map;
-        List<Map<String,String>> mapList=new ArrayList<>();
+    public static List<ScoreModel> getSemesterScore(String semesterScore) {
+        ScoreModel scoreModel=null;
+        List<ScoreModel> scoreModels=new ArrayList<>();
         Document doc=Jsoup.parse(semesterScore);
         Element table=doc.getElementById("Datagrid1");
         //select用于找某一个元素
@@ -176,7 +181,23 @@ public class JsonHandle {
             for (int i=1;i<tbody.children().size();i++)
             {
                 Element tr=tbody.child(i);
-                map=new HashMap<>();
+                scoreModel=new ScoreModel.Builder()
+                        .title(getSemesterTitle(semesterScore))
+                        .college(tr.child(0).text())
+                        .semester(tr.child(1).text())
+                        .course_code(tr.child(2).text())
+                        .course_name(tr.child(3).text())
+                        .course_nature(tr.child(4).text())
+                        .course_attribute(tr.child(5).text())
+                        .credit(tr.child(6).text())
+                        .grade_point(tr.child(7).text())
+                        .grade(tr.child(8).text())
+                        .minor_mark(tr.child(9).text())
+                        .repair_code(tr.child(10).text())
+                        .restudy_code(tr.child(11).text())
+                        .build();
+                scoreModels.add(scoreModel);
+           /*     map=new HashMap<>();
                 map.put("title",getSemesterTitle(semesterScore));
                 map.put("学年",tr.child(0).text());
                 map.put("学期",tr.child(1).text());
@@ -191,8 +212,9 @@ public class JsonHandle {
                 map.put("补考成绩",tr.child(10).text());
                 map.put("重修成绩",tr.child(11).text());
                 mapList.add(map);
+                map=null;*/
             }
-            return  mapList;
+            return  scoreModels;
         }
        return  null;
     }
@@ -204,17 +226,17 @@ public class JsonHandle {
         Element span=trName.getElementById("lbl_bt");
         return  span.child(0).text();
     }
-    public static List<List<Map<String,String>>> getAllScore(List<String> allScoreHtml) {
-        List<List<Map<String,String>>> lists=new ArrayList<>();
+    public static List<List<ScoreModel>> getAllScore(List<String> allScoreHtml) {
+        List<List<ScoreModel>> lists=new ArrayList<>();
         List<String> semesterTitle=new ArrayList<>();
-        List<Map<String,String>> maps;
+        List<ScoreModel> scoreModels;
         for(int i=0;i<allScoreHtml.size();i++)
         {
-           maps=getSemesterScore(allScoreHtml.get(i));
-            if(maps!=null)
+            scoreModels=getSemesterScore(allScoreHtml.get(i));
+            if(scoreModels!=null)
             {
                 semesterTitle.add(getSemesterTitle(allScoreHtml.get(i)));
-                lists.add(maps);
+                lists.add(scoreModels);
             }
         }
         return  lists;

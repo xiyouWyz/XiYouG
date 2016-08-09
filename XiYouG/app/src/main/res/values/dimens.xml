@@ -3,72 +3,75 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="slideMenuItem">20sp</dimen>
-    <dimen name="libraryTitle">20sp</dimen>
-    <dimen name="main_viewpager">14sp</dimen>
-    <dimen name="rank_viewpager">12sp</dimen>
-    <dimen name="rank_listView_word">15sp</dimen
+    <dimen name="slideMenuItem">17sp</dimen>
+    <dimen name="libraryTitle">18sp</dimen>
+    <dimen name="main_viewpager">12sp</dimen>
+    <dimen name="rank_viewpager">10sp</dimen>
+    <dimen name="rank_listView_word">13sp</dimen
         >
-    <dimen name="info_news">18sp</dimen>
-    <dimen name="info_notice">18sp</dimen>
-    <dimen name="info_item">16sp</dimen>
-    <dimen name="info_item_date">13sp</dimen>
-    <dimen name="info_detail">22sp</dimen>
+    <dimen name="info_news">16sp</dimen>
+    <dimen name="info_notice">16sp</dimen>
+    <dimen name="info_item">14sp</dimen>
+    <dimen name="info_item_date">11sp</dimen>
+    <dimen name="info_detail">20sp</dimen>
 
-    <dimen name="my_col">18sp</dimen>
-    <dimen name="my_col_arrow">18sp</dimen>
+    <dimen name="my_col">16sp</dimen>
+    <dimen name="my_col_arrow">16sp</dimen>
     <dimen name="my_col_divide">1dp</dimen>
 
-    <dimen name="login_title"> 20sp</dimen>
-    <dimen name="login_account">18sp</dimen>
-    <dimen name="login_password">18sp</dimen>
-    <dimen name="login_btn">18sp</dimen>
-    <dimen name="login_close">17sp</dimen>
+    <dimen name="login_title"> 18sp</dimen>
+    <dimen name="login_account">16sp</dimen>
+    <dimen name="login_password">16sp</dimen>
+    <dimen name="login_btn">16sp</dimen>
+    <dimen name="login_close">15sp</dimen>
 
-    <dimen name="my_bor_title">18sp</dimen>
-    <dimen name="my_bor_info">17sp</dimen>
-    <dimen name="my_bor_item_title">18sp</dimen>
-    <dimen name="my_bor_item_others">15sp</dimen>
-    <dimen name="my_bor_item_state">13sp</dimen>
+    <dimen name="my_bor_title">16sp</dimen>
+    <dimen name="my_bor_info">15sp</dimen>
+    <dimen name="my_bor_item_title">16sp</dimen>
+    <dimen name="my_bor_item_others">13sp</dimen>
+    <dimen name="my_bor_item_state">11sp</dimen>
 
-    <dimen name="my_col_title">18sp</dimen>
-    <dimen name="my_col_item_title">18sp</dimen>
-    <dimen name="my_col_item_pub">13sp</dimen>
-    <dimen name="my_col_item_sortLabel">15sp</dimen>
-    <dimen name="my_col_item_sort">15sp</dimen>
+    <dimen name="my_col_title">16sp</dimen>
+    <dimen name="my_col_item_title">16sp</dimen>
+    <dimen name="my_col_item_pub">11sp</dimen>
+    <dimen name="my_col_item_sortLabel">13sp</dimen>
+    <dimen name="my_col_item_sort">13sp</dimen>
 
-    <dimen name="my_his_title">18sp</dimen>
-    <dimen name="my_his_item_title">18sp</dimen>
-    <dimen name="my_his_item_typeLabel">15sp</dimen>
-    <dimen name="my_his_item_type">15sp</dimen>
-    <dimen name="my_his_item_date">15sp</dimen>
+    <dimen name="my_his_title">16sp</dimen>
+    <dimen name="my_his_item_title">16sp</dimen>
+    <dimen name="my_his_item_typeLabel">13sp</dimen>
+    <dimen name="my_his_item_type">13sp</dimen>
+    <dimen name="my_his_item_date">13sp</dimen>
 
-    <dimen name="book_detail_page_title">18sp</dimen>
-    <dimen name="book_detail_page_fragmentTitle">16sp</dimen>
-    <dimen name="book_detail_page_content">15sp</dimen>
+    <dimen name="book_detail_page_title">16sp</dimen>
+    <dimen name="book_detail_page_fragmentTitle">14sp</dimen>
+    <dimen name="book_detail_page_content">13sp</dimen>
 
-    <dimen name="book_detail_class_title1">17sp</dimen>
-    <dimen name="book_detail_class_title2">17sp</dimen>
-    <dimen name="book_detail_class_title3">17sp</dimen>
+    <dimen name="book_detail_class_title1">15sp</dimen>
+    <dimen name="book_detail_class_title2">15sp</dimen>
+    <dimen name="book_detail_class_title3">15sp</dimen>
 
-    <dimen name="book_search_content">16sp</dimen>
-    <dimen name="book_search_author">13sp</dimen>
-    <dimen name="book_search_title">18sp</dimen>
+    <dimen name="book_search_content">14sp</dimen>
+    <dimen name="book_search_author">11sp</dimen>
+    <dimen name="book_search_title">16sp</dimen>
 
-    <dimen name="book_circul_word">16sp</dimen>
-    <dimen name="book_circul_status">18sp</dimen>
+    <dimen name="book_circul_word">14sp</dimen>
+    <dimen name="book_circul_status">16sp</dimen>
 
-    <dimen name="book_refer_title">18sp</dimen>
-    <dimen name="book_refer_word">16sp</dimen>
+    <dimen name="book_refer_title">16sp</dimen>
+    <dimen name="book_refer_word">14sp</dimen>
 
     <dimen name="schedule_around_day">12sp</dimen>
     <dimen name="schedule_around_time">10sp</dimen>
     <dimen name="schedule_around_margin">0.5dp</dimen>
     <dimen name="schedule_import">10sp</dimen>
+    <dimen name="schedule_textView">12sp</dimen>
 
-    <dimen name="schedule_my_no_login">18sp</dimen>
-    <dimen name="schedule_my_import">18sp</dimen>
-    <dimen name="schedule_my_exit">18sp</dimen>
+    <dimen name="schedule_my_no_login">16sp</dimen>
+    <dimen name="schedule_my_import">16sp</dimen>
+    <dimen name="schedule_my_exit">16sp</dimen>
+
+    <dimen name="score_title">16sp</dimen>
 
 
 </resources>

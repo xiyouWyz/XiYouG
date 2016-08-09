@@ -16,8 +16,8 @@
             android:id="@+id/score_img"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/rank_count"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/scorelogo"
             />
         <TextView
             android:id="@+id/score_name"
@@ -38,11 +38,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:text="成绩:"
+            android:text="@string/score_item_score"
             android:textSize="@dimen/rank_listView_word"
             android:layout_alignLeft="@id/score_name"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="5dp"
             android:textColor="@color/plistView_itemText"
             android:layout_below="@id/score_name"
             />
@@ -64,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:text="学分:"
+            android:text="@string/score_item_credit"
             android:textSize="@dimen/rank_listView_word"
             android:layout_marginLeft="40dp"
             android:layout_toRightOf="@id/score"
@@ -85,6 +85,25 @@
             android:layout_alignTop="@id/scoreLabel"
             />
         <TextView
+            android:id="@+id/courseNatureLabel"
+            android:text="@string/score_item_courseNature"
+            android:layout_alignStart="@id/scoreLabel"
+            android:layout_below="@id/scoreLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            />
+        <TextView
+            android:id="@+id/courseNature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="必修课"
+            android:layout_marginStart="5dp"
+            android:layout_toRightOf="@id/courseNatureLabel"
+            android:layout_alignTop="@id/courseNatureLabel"
+
+            />
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text=">"
@@ -93,6 +112,8 @@
             android:textSize="20sp"
             android:layout_alignParentRight="true"
             />
+
+
     </RelativeLayout>
 
 

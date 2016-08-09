@@ -1,4 +1,4 @@
-package com.example.wyz.xiyoug.View;
+package com.example.wyz.xiyoug.Viewer;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,11 +16,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.example.wyz.xiyoug.View.HomeFragment;
-import com.example.wyz.xiyoug.View.InfoFragment;
-import com.example.wyz.xiyoug.View.MyFragment;
-import com.example.wyz.xiyoug.View.SlideMenu;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.wyz.xiyoug.View;
+package com.example.wyz.xiyoug.Viewer;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
@@ -62,7 +62,8 @@ public class LoginWindow extends PopupWindow{
         this.setWidth((int)(displayMetrics.widthPixels*0.8));
         this.setHeight((int)(displayMetrics.heightPixels*0.6));
         this.setFocusable(true);
-        this.setBackgroundDrawable(context.getDrawable(R.drawable.login_view_shape));
+
+        this.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.login_view_shape));
         this.setAnimationStyle(R.style.Login_Animation);
         this.setOutsideTouchable(false);
 

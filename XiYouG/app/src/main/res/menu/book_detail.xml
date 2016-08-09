@@ -6,11 +6,11 @@
         android:orderInCategory="80"
         android:title="收藏"
         android:icon="@drawable/book_col"
-        android:checkable="false"
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/action_share"
         android:orderInCategory="90"
+        android:icon="@drawable/share"
         android:title="分享"
         app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
         app:showAsAction="ifRoom"/>

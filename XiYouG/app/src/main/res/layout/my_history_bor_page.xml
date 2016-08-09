@@ -2,21 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         android:background="@color/my_his_title_back"
         >
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/my_his_title"
             android:textSize="@dimen/my_his_title"
             android:textColor="@color/my_his_title"
-            android:gravity="center"
             />
     </android.support.v7.widget.Toolbar>
     <LinearLayout
@@ -34,12 +36,12 @@
             android:layout_margin="10dp"
             android:dividerHeight="3dp"
             android:divider="@color/my_his_listView_divide"
-            ></ListView>
+            />
     </LinearLayout>
     <include
         android:id="@+id/loading"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:layout_below="@id/toolbar"
-        layout="@layout/loading"></include>
+        layout="@layout/loading"/>
 </RelativeLayout>

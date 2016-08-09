@@ -1,13 +1,14 @@
-package com.example.wyz.xiyoug.View;
+package com.example.wyz.xiyoug.Viewer;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresPermission;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
@@ -20,9 +21,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.wyz.xiyoug.Activity.MainActivity;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.R;
+import com.example.wyz.xiyoug.Util.AnnotateUtils;
 import com.example.wyz.xiyoug.Util.JsonHandle;
 import com.example.wyz.xiyoug.Util.MyAnimation;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
@@ -31,12 +32,11 @@ import com.example.wyz.xiyoug.Util.SaveFile;
 import com.example.wyz.xiyoug.Util.ScheduleOkHttp;
 import com.example.wyz.xiyoug.Util.SerializableMap;
 
-import org.apache.http.ConnectionClosedException;
 import org.apache.http.message.BasicNameValuePair;
 
-import java.io.ObjectStreamClass;
 import java.net.ConnectException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -44,29 +44,69 @@ import java.util.Map;
  * Created by Wyz on 2016/7/31.
  */
 public class ScheduleFragment  extends Fragment{
-    private  View view;
+    public   View view;
     private  TextView semester;
+
+    //@BindView(R.id.day1_one)
+    @AnnotateUtils.ViewInject(id=R.id.day1_one)
     private TextView day1_one_view;
+    //@BindView( R.id.day1_two)
+    @AnnotateUtils.ViewInject(id=R.id.day1_two)
     private TextView day1_two_view;
+    //@BindView( R.id.day1_three)
+    @AnnotateUtils.ViewInject(id=R.id.day1_three)
     private TextView day1_three_view;
-    private TextView day1_four_view;
-    private TextView day2_one_view;
-    private TextView day2_two_view;
-    private TextView day2_three_view;
-    private TextView day2_four_view;
-    private TextView day3_one_view;
-    private TextView day3_two_view;
-    private TextView day3_three_view;
-    private TextView day3_four_view;
-    private TextView day4_one_view;
-    private TextView day4_two_view;
-    private TextView day4_three_view;
-    private TextView day4_four_view;
-    private TextView day5_one_view;
-    private TextView day5_two_view;
-    private TextView day5_three_view;
-    private TextView day5_four_view;
-    private Button import_btn;
+   // @BindView( R.id.day1_four)
+   @AnnotateUtils.ViewInject(id=R.id.day1_four)
+     TextView day1_four_view;
+   // @BindView( R.id.day2_one)
+   @AnnotateUtils.ViewInject(id=R.id.day2_one)
+     TextView day2_one_view;
+    //@BindView( R.id.day2_two)
+    @AnnotateUtils.ViewInject(id=R.id.day2_two)
+     TextView day2_two_view;
+   // @BindView( R.id.day2_three)
+   @AnnotateUtils.ViewInject(id=R.id.day2_three)
+     TextView day2_three_view;
+   // @BindView( R.id.day2_four)
+   @AnnotateUtils.ViewInject(id=R.id.day2_four)
+     TextView day2_four_view;
+    //@BindView( R.id.day3_one)
+    @AnnotateUtils.ViewInject(id=R.id.day3_one)
+     TextView day3_one_view;
+   // @BindView( R.id.day3_two)
+   @AnnotateUtils.ViewInject(id=R.id.day3_two)
+     TextView day3_two_view;
+   // @BindView( R.id.day3_three)
+   @AnnotateUtils.ViewInject(id=R.id.day3_three)
+     TextView day3_three_view;
+   // @BindView( R.id.day3_four)
+   @AnnotateUtils.ViewInject(id=R.id.day3_four)
+     TextView day3_four_view;
+   // @BindView(R.id.day4_one)
+   @AnnotateUtils.ViewInject(id=R.id.day4_one)
+     TextView day4_one_view;
+   // @BindView( R.id.day4_two)
+   @AnnotateUtils.ViewInject(id=R.id.day4_two)
+     TextView day4_two_view;
+   // @BindView(R.id.day4_three)
+   @AnnotateUtils.ViewInject(id=R.id.day4_three)
+     TextView day4_three_view;
+ //   @BindView( R.id.day4_four)
+ @AnnotateUtils.ViewInject(id=R.id.day4_four)
+     TextView day4_four_view;
+  //  @BindView( R.id.day5_one)
+  @AnnotateUtils.ViewInject(id=R.id.day5_one)
+     TextView day5_one_view;
+  //  @BindView(R.id.day5_two)
+  @AnnotateUtils.ViewInject(id=R.id.day5_two)
+     TextView day5_two_view;
+  //  @BindView( R.id.day5_three)
+  @AnnotateUtils.ViewInject(id=R.id.day5_three)
+     TextView day5_three_view;
+  //  @BindView( R.id.day5_four)
+  @AnnotateUtils.ViewInject(id=R.id.day5_four)
+     TextView day5_four_view;
     private  Map<String,List<String>> stringListMap;
     private  MyThread myThread;
     private  MyHandler myHandler=new MyHandler();
@@ -94,7 +134,24 @@ public class ScheduleFragment  extends Fragment{
 
     private void setupViewComponent() {
         semester=(TextView)view.findViewById(R.id.semester);
-        day1_one_view=(TextView)view.findViewById(R.id.day1_one);
+        AnnotateUtils.injectViews(ScheduleFragment.this);
+        FloatingActionButton import_btn = (FloatingActionButton) view.findViewById(R.id.import_schedule);
+        import_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //pref= PreferenceManager.getDefaultSharedPreferences(getContext());
+                pref=getContext().getSharedPreferences("schedule_info", Context.MODE_PRIVATE);
+                boolean remember=pref.getBoolean("isRemember",false);
+                String account=pref.getString("account","");
+                String password=pref.getString("password","");
+                loginWindow=new LoginWindow(getContext(),new MyLoginOnClickListener(),account,password,remember,1);
+                loginWindow.showAtLocation(view, Gravity.CENTER,0,0);
+            }
+        });
+        content=(LinearLayout)view.findViewById(R.id.content);
+        load_view=(RelativeLayout)view.findViewById(R.id.loading);
+        load_view.setVisibility(View.INVISIBLE);
+        /*  day1_one_view=(TextView)view.findViewById(R.id.day1_one);
         day1_two_view=(TextView)view.findViewById(R.id.day1_two);
         day1_three_view=(TextView)view.findViewById(R.id.day1_three);
         day1_four_view=(TextView)view.findViewById(R.id.day1_four);
@@ -113,27 +170,11 @@ public class ScheduleFragment  extends Fragment{
         day5_one_view=(TextView)view.findViewById(R.id.day5_one);
         day5_two_view=(TextView)view.findViewById(R.id.day5_two);
         day5_three_view=(TextView)view.findViewById(R.id.day5_three);
-        day5_four_view=(TextView)view.findViewById(R.id.day5_four);
-        import_btn=(Button)view.findViewById(R.id.import_schedule);
-        import_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //pref= PreferenceManager.getDefaultSharedPreferences(getContext());
-                pref=getContext().getSharedPreferences("schedule_info", Context.MODE_PRIVATE);
-                boolean remember=pref.getBoolean("isRemember",false);
-                String account=pref.getString("account","");
-                String password=pref.getString("password","");
-                loginWindow=new LoginWindow(getContext(),new MyLoginOnClickListener(),account,password,remember,1);
-                loginWindow.showAtLocation(view, Gravity.CENTER,0,0);
-            }
-        });
-        content=(LinearLayout)view.findViewById(R.id.content);
-        load_view=(RelativeLayout)view.findViewById(R.id.loading);
-        load_view.setVisibility(View.INVISIBLE);
+        day5_four_view=(TextView)view.findViewById(R.id.day5_four);*/
     }
     private void initSchedule() {
             String schedule= ReadFile.readSchedule(getContext());
-            if(!schedule.equals("scheduleInfo"))
+            if(!schedule.equals("scheduleInfo")&&!schedule.equals(""))
             {
                 new MyAnimation(getContext(),"胖萌正在努力为您加载...",R.drawable.loading,load_view);
                 load_view.setVisibility(View.VISIBLE);
@@ -147,16 +188,48 @@ public class ScheduleFragment  extends Fragment{
     }
     private void setSchedule() {
         semester.setText(semester_title);
-       day1_one_view.setText(stringListMap.get("time1").get(0));
-       day2_one_view.setText(stringListMap.get("time1").get(1));
-       day3_one_view.setText(stringListMap.get("time1").get(2));
-       day4_one_view.setText(stringListMap.get("time1").get(3));
-       day5_one_view.setText(stringListMap.get("time1").get(4));
-       day1_two_view.setText(stringListMap.get("time2").get(0));
-       day2_two_view.setText(stringListMap.get("time2").get(1));
-       day3_two_view.setText(stringListMap.get("time2").get(2));
-       day4_two_view.setText(stringListMap.get("time2").get(3));
-       day5_two_view.setText(stringListMap.get("time2").get(4));
+        List<TextView> textViews=new ArrayList<>(Arrays.asList(
+                day1_one_view,day2_one_view,day3_one_view,day4_one_view,day5_one_view
+            ,day1_two_view,day2_two_view,day3_two_view,day4_two_view,day5_two_view
+            ,day1_three_view,day2_three_view,day3_three_view,day4_three_view,day5_three_view
+            ,day1_four_view,day2_four_view,day3_four_view,day4_four_view,day5_four_view));
+        List<String> times=new ArrayList<>(Arrays.asList("time1","time1","time1","time1","time1",
+                "time2","time2","time2","time2","time2",
+                "time3","time3","time3","time3","time3",
+                "time4","time4","time4","time4","time4"
+        ));
+        List<Integer> days=new ArrayList<>(Arrays.asList(0,1,2,3,4,0,1,2,3,4,0,1,2,3,4,0,1,2,3,4));
+        List<Integer> colors=new ArrayList<>(Arrays.asList(R.color.schedule_day1_one,R.color.schedule_day2_one,R.color.schedule_day3_one,R.color.schedule_day4_one,R.color.schedule_day5_one
+            ,R.color.schedule_day1_two,R.color.schedule_day2_two,R.color.schedule_day3_two,R.color.schedule_day4_two,R.color.schedule_day5_two
+                ,R.color.schedule_day1_three,R.color.schedule_day2_three,R.color.schedule_day3_three,R.color.schedule_day4_three,R.color.schedule_day5_three
+            ,R.color.schedule_day1_four,R.color.schedule_day2_four,R.color.schedule_day3_four,R.color.schedule_day4_four,R.color.schedule_day5_four));
+
+       // AnnotateUtils.setDataViews((Activity)getContext(),stringListMap,times,days,colors);
+        setScheduleOneData(textViews,times,days,colors);
+     /*   if(stringListMap.get("time1").get(0).equals(""))
+        {
+            day1_one_view.setText(stringListMap.get("time1").get(0));
+            day1_one_view.setBackgroundColor(getResources().getColor(R.color.schedule_day1_one));
+        }
+        day2_one_view.setText(stringListMap.get("time1").get(1));
+        day2_one_view.setBackgroundColor(getResources().getColor(R.color.schedule_day2_one));
+        day3_one_view.setText(stringListMap.get("time1").get(2));
+        day3_one_view.setBackgroundColor(getResources().getColor(R.color.schedule_day3_one));
+        day4_one_view.setText(stringListMap.get("time1").get(3));
+        day4_one_view.setBackgroundColor(getResources().getColor(R.color.schedule_day4_one));
+        day5_one_view.setText(stringListMap.get("time1").get(4));
+        day5_one_view.setBackgroundColor(getResources().getColor(R.color.schedule_day5_one));
+        day1_two_view.setText(stringListMap.get("time2").get(0));
+        day1_two_view.setBackgroundColor(getResources().getColor(R.color.schedule_day1_two));
+        day2_two_view.setText(stringListMap.get("time2").get(1));
+        day2_two_view.setBackgroundColor(getResources().getColor(R.color.schedule_day2_two));
+        day3_two_view.setText(stringListMap.get("time2").get(2));
+        day3_two_view.setBackgroundColor(getResources().getColor(R.color.schedule_day3_two));
+        day4_two_view.setText(stringListMap.get("time2").get(3));
+        day4_two_view.setBackgroundColor(getResources().getColor(R.color.schedule_day4_two));
+        day5_two_view.setText(stringListMap.get("time2").get(4));
+        day5_two_view.setBackgroundColor(getResources().getColor(R.color.schedule_day5_two));
+        day1_three_view.setBackgroundColor(getResources().getColor(R.color.schedule_day1_three));
        day1_three_view.setText(stringListMap.get("time3").get(0));
        day2_three_view.setText(stringListMap.get("time3").get(1));
        day3_three_view.setText(stringListMap.get("time3").get(2));
@@ -166,7 +239,27 @@ public class ScheduleFragment  extends Fragment{
        day2_four_view.setText(stringListMap.get("time4").get(1));
        day3_four_view.setText(stringListMap.get("time4").get(2));
        day4_four_view.setText(stringListMap.get("time4").get(3));
-       day5_four_view.setText(stringListMap.get("time4").get(4));
+       day5_four_view.setText(stringListMap.get("time4").get(4));*/
+    }
+    private  void setScheduleOneData(List<TextView> textviews,List<String> times,List<Integer> day,List<Integer> color)
+    {
+        int i=0;
+        for(i=0;i<textviews.size();i++)
+        {
+            String str=stringListMap.get(times.get(i)).get(day.get(i));
+            if(str.equals(""))
+            {
+                textviews.get(i).setBackgroundColor(getResources().getColor(R.color.schedule_none));
+            }
+            else
+            {
+                textviews.get(i).setText(str);
+                textviews.get(i).setBackgroundColor(getResources().getColor(color.get(i)));
+            }
+        }
+
+
+
     }
     private class MyHandler  extends Handler {
         @Override

@@ -8,12 +8,17 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowNoTitle">true</item>
-
         <item name="android:listDivider">@drawable/recyclerview_divide_shape</item>
-        <item name="android:childDivider">@drawable/score_recyclerview_shape</item>
+        <item name="android:childDivider">@drawable/score_recyclerview_divide_shape</item>
     </style>
     <style name="Login_Animation" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/login_push_bottom_in</item>
         <item name="android:windowExitAnimation">@anim/login_push_bottom_out</item>
     </style>
+    <style name="AppTheme.NoActionBarFullScreen">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
 </resources>

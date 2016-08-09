@@ -9,16 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/info_news_back"
-        android:layout_weight="2"
+        android:layout_weight="2.5"
         >
         <LinearLayout
+            android:id="@+id/login_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center"
             >
             <LinearLayout
-                android:id="@+id/login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -37,11 +37,8 @@
                     android:id="@+id/studyNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/my_no_login"
                     android:textColor="@color/my_studyNumber"
                     android:layout_gravity="center"
-
-
                     android:textSize="@dimen/my_col"
                     />
 
@@ -94,7 +91,42 @@
                     />
             </LinearLayout>
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/notLogin_layout"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            >
+            <LinearLayout
+                android:id="@+id/notLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
 
+                >
+                <com.example.wyz.xiyoug.Util.CircleImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/logo"
+                    android:layout_gravity="center"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="#222222"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/my_no_login"
+                    android:textColor="@color/my_studyNumber"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/my_col"
+                    />
+
+
+
+
+            </LinearLayout>
+        </LinearLayout>
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -116,7 +148,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
                 >
                 <TextView
                     android:layout_width="wrap_content"
@@ -151,7 +186,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
                 >
                 <TextView
                     android:layout_width="wrap_content"
@@ -186,7 +224,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
                 >
                 <TextView
                     android:layout_width="wrap_content"
@@ -221,7 +262,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
                 >
                 <TextView
                     android:layout_width="wrap_content"

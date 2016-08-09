@@ -1,4 +1,4 @@
-package com.example.wyz.xiyoug.View;
+package com.example.wyz.xiyoug.Viewer;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -47,6 +46,8 @@ public class MyFragment extends Fragment {
     private  LinearLayout my_col;
     private  LinearLayout my_history;
     private  LinearLayout my_exit;
+    private  LinearLayout login_layout;
+    private  LinearLayout notLogin_layout;
     private  final  String TAG="MyFragment";
     private  LoginWindow loginWindow;
 
@@ -104,12 +105,13 @@ public class MyFragment extends Fragment {
         studyNumber_view=(TextView) view.findViewById(R.id.studyNumber);
         debt_view=(TextView)view.findViewById(R.id.debt);
 
-
         studyNumber_view.setText(studyNumber);
         major_view.setText(major);
         name_view.setText(name);
-        debt_view.setText(debt);
-
+        if(!debt.equals(""))
+        {
+            debt_view.setText("欠费情况: "+debt);
+        }
         my_bor=(LinearLayout)view.findViewById(R.id.my_bor);
         my_col=(LinearLayout)view.findViewById(R.id.my_col);
         my_history=(LinearLayout)view.findViewById(R.id.my_history);
@@ -118,7 +120,7 @@ public class MyFragment extends Fragment {
         my_bor.setOnClickListener(new MyOnClickListener());
         my_col.setOnClickListener(new MyOnClickListener());
         my_history.setOnClickListener(new MyOnClickListener());
-        my_login=(LinearLayout)view.findViewById(R.id.login);
+        my_login=(LinearLayout)view.findViewById(R.id.notLogin);
         my_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -134,6 +136,19 @@ public class MyFragment extends Fragment {
                 }
             }
         });
+        login_layout=(LinearLayout)view.findViewById(R.id.login_layout);
+        notLogin_layout=(LinearLayout)view.findViewById(R.id.notLogin_layout);
+        if(isLogin)
+        {
+            login_layout.setVisibility(View.VISIBLE);
+            notLogin_layout.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            notLogin_layout.setVisibility(View.VISIBLE);
+            login_layout.setVisibility(View.INVISIBLE);
+        }
+
     }
 
     private class MyOnClickListener implements View.OnClickListener {
@@ -195,6 +210,8 @@ public class MyFragment extends Fragment {
                         name="";
                         debt="";
                         SESSIONID="";
+                        login_layout.setVisibility(View.INVISIBLE);
+                        notLogin_layout.setVisibility(View.VISIBLE);
 
                     }
                     else
@@ -309,7 +326,7 @@ public class MyFragment extends Fragment {
                 studyNumber_view.setText(studyNumber);
                 name_view.setText(name);
                 major_view.setText(major);
-                debt_view.setText("欠费情况"+debt);
+                debt_view.setText("欠费情况: "+debt);
 
                 editor=pref.edit();
                 editor.putString("account",account);
@@ -320,6 +337,8 @@ public class MyFragment extends Fragment {
 
                 User.getInstance(studyNumber,name,major,debt);
                 isLogin=true;
+                login_layout.setVisibility(View.VISIBLE);
+                notLogin_layout.setVisibility(View.INVISIBLE);
                 loginWindow.dismiss();
             }
 
