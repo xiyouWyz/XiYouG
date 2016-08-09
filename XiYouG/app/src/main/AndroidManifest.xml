@@ -25,10 +25,12 @@
         <activity android:name=".Activity.ScanActivity"
             android:theme="@style/AppTheme.NoActionBarFullScreen"
             />
+        <activity android:name=".Activity.ScoreFailedActivity"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
 </manifest>

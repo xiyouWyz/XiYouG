@@ -12,6 +12,5 @@
         android:orderInCategory="90"
         android:icon="@drawable/share"
         android:title="分享"
-        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
         app:showAsAction="ifRoom"/>
 </menu>

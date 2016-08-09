@@ -117,4 +117,6 @@
     <string name="score_item_score">成绩:</string>
     <string name="score_item_credit">学分:</string>
     <string name="score_item_courseNature">课程性质:</string>
-    </resources>
+    <string name="score_not_pass">未通过的成绩</string>
+    <string name="score_item_failed_score">最高成绩:</string>
+</resources>

@@ -2,13 +2,13 @@ package com.example.wyz.xiyoug.Util;
 
 import android.util.Log;
 
+import com.example.wyz.xiyoug.Model.ScoreFailedModel;
 import com.example.wyz.xiyoug.Model.ScoreModel;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.TextNode;
-import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -225,6 +225,31 @@ public class JsonHandle {
         Element trName=tbody.child(0);
         Element span=trName.getElementById("lbl_bt");
         return  span.child(0).text();
+    }
+    public  static  List<ScoreFailedModel> getFailedScore(String score_html)
+    {
+        List<ScoreFailedModel> scoreFailedModels=new ArrayList<>();
+        ScoreFailedModel scoreFailedModel=null;
+        Document document=Jsoup.parse(score_html);
+        Element table=document.body().getElementById("Datagrid3");
+        Element tbody=table.child(0);
+        if(tbody.children().size()!=1)
+        {
+            for (int i=1;i<tbody.children().size();i++)
+            {
+                Element tr=tbody.child(i);
+               scoreFailedModel=new ScoreFailedModel.Builder()
+                      .course_code(tr.child(0).text())
+                      .course_name(tr.child(1).text())
+                      .course_nature(tr.child(2).text())
+                      .credit(tr.child(3).text())
+                      .best_score(tr.child(4).text())
+                      .build();
+                scoreFailedModels.add(scoreFailedModel);
+            }
+            return  scoreFailedModels;
+        }
+        return  null;
     }
     public static List<List<ScoreModel>> getAllScore(List<String> allScoreHtml) {
         List<List<ScoreModel>> lists=new ArrayList<>();

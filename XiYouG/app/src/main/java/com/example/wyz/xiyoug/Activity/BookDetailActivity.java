@@ -165,7 +165,7 @@ public class BookDetailActivity  extends AppCompatActivity{
                 String[] receiver;
                 receiver=new String[]{"745322878@qq.com"};
                 it.putExtra(Intent.EXTRA_EMAIL, receiver);
-                it.putExtra(Intent.EXTRA_TEXT, book_detail.getTitle());
+                it.putExtra(Intent.EXTRA_TEXT,book_url);
                 it.setType("text/plain");
                 startActivity(it);
                 break;

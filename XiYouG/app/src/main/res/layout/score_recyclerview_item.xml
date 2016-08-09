@@ -2,15 +2,15 @@
 <LinearLayout   xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="100dp"
     android:layout_width="match_parent"
+    android:gravity="center_vertical"
     >
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginTop="10dp"
         android:padding="10dp"
-        android:layout_gravity="center"
+        android:gravity="center_vertical"
         >
         <ImageView
             android:id="@+id/score_img"
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:text="@string/score_item_score"
+            android:text="@string/score_item_failed_score"
             android:textSize="@dimen/rank_listView_word"
             android:layout_alignLeft="@id/score_name"
             android:layout_marginLeft="5dp"
@@ -103,15 +103,7 @@
             android:layout_alignTop="@id/courseNatureLabel"
 
             />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text=">"
-            android:gravity="center_vertical"
-            android:layout_marginRight="10dp"
-            android:textSize="20sp"
-            android:layout_alignParentRight="true"
-            />
+
 
 
     </RelativeLayout>

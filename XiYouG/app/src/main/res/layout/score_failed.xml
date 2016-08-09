@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/score_not_pass_back"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        >
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/score_not_pass"
+            android:text="@string/score_not_pass"
+            android:textSize="@dimen/score_not_pass"
+            />
+    </android.support.v7.widget.Toolbar>
+    <LinearLayout
+        android:layout_below="@id/toolbar"
+        android:layout_margin="10dp"
+        android:id="@+id/content"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="5dp"
+            android:id="@+id/recyclerView"
+            android:background="@drawable/score_recyclerview_shape"
+            android:fadeScrollbars="false"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+      <include android:id="@+id/loading"
+          android:layout_height="match_parent"
+          android:layout_width="match_parent"
+          android:layout_below="@id/toolbar"
+          layout="@layout/loading"/>
 
-</LinearLayout>
+</RelativeLayout>

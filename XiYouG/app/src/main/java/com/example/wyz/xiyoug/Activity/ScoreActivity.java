@@ -45,7 +45,7 @@ import java.util.Map;
  */
 public class ScoreActivity extends AppCompatActivity {
 
-    private  final String  TAG="ScoreActivity";
+       private  final String  TAG="ScoreActivity";
     private Toolbar toolbar;
     private  String score_html;
     private  String score_url;
@@ -170,14 +170,14 @@ public class ScoreActivity extends AppCompatActivity {
 
 
 
-    private  class GetScoreThread implements  Runnable
-    {
+private  class GetScoreThread implements  Runnable
+{
 
-        @Override
-        public void run() {
-            DealWithFirstScore();
-        }
+    @Override
+    public void run() {
+        DealWithFirstScore();
     }
+}
     private  void setFirstData()
     {
         if(semester_title!=null)
@@ -203,6 +203,7 @@ public class ScoreActivity extends AppCompatActivity {
                     return view;
                 }
 
+
             };
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(arrayAdapter);
@@ -224,163 +225,163 @@ public class ScoreActivity extends AppCompatActivity {
         recyclerView.setAdapter(myAdapter);
 
     }
-    private  class SemesterScoreThread implements Runnable
-    {
-        @Override
-        public void run() {
-            try {
-                String semester_html=ScheduleOkHttp.getPostSemesterScore(score_url,sessionId,viewState,college,semester);
-                oneSemesterScore=JsonHandle.getSemesterScore(semester_html);
-                Message message=Message.obtain();
-                message.what=4;
-                myHandler.sendMessage(message);
-            } catch (Exception e) {
-                Log.d(TAG,e.toString());
-                Message message=Message.obtain();
-                message.what=3;
-                myHandler.sendMessage(message);
-            }
+private  class SemesterScoreThread implements Runnable
+{
+    @Override
+    public void run() {
+        try {
+            String semester_html=ScheduleOkHttp.getPostSemesterScore(score_url,sessionId,viewState,college,semester);
+            oneSemesterScore=JsonHandle.getSemesterScore(semester_html);
+            Message message=Message.obtain();
+            message.what=4;
+            myHandler.sendMessage(message);
+        } catch (Exception e) {
+            Log.d(TAG,e.toString());
+            Message message=Message.obtain();
+            message.what=3;
+            myHandler.sendMessage(message);
         }
     }
-   /* private  class  LoadAllScoreThread implements  Runnable
-    {
-        @Override
-        public void run() {
+}
+/* private  class  LoadAllScoreThread implements  Runnable
+ {
+     @Override
+     public void run() {
 
-            try {
-                viewState= JsonHandle.getViewState(score_html);
-                List<String> year=JsonHandle.getYearCount(score_html);
-                List<String> allScoreHtml= null;
-                allScoreHtml = ScheduleOkHttp.getPostScore(score_url,sessionId,viewState,year);
-                lists=JsonHandle.getAllScore(allScoreHtml);
-                oneSemesterScore=lists.get(0);
-                Message message=Message.obtain();
-                message.what=1;
-                myHandler.sendMessage(message);
-                Log.d(TAG,lists.toString());
-            } catch (Exception e1) {
-                Log.d(TAG, e1.toString());
-            }
-        }
-    }
-    private  void setAllData()
-    {
-        if(lists!=null)
+         try {
+             viewState= JsonHandle.getViewState(score_html);
+             List<String> year=JsonHandle.getYearCount(score_html);
+             List<String> allScoreHtml= null;
+             allScoreHtml = ScheduleOkHttp.getPostScore(score_url,sessionId,viewState,year);
+             lists=JsonHandle.getAllScore(allScoreHtml);
+             oneSemesterScore=lists.get(0);
+             Message message=Message.obtain();
+             message.what=1;
+             myHandler.sendMessage(message);
+             Log.d(TAG,lists.toString());
+         } catch (Exception e1) {
+             Log.d(TAG, e1.toString());
+         }
+     }
+ }
+ private  void setAllData()
+ {
+     if(lists!=null)
+     {
+         for(int i=0;i<lists.size();i++)
+         {
+             String title=lists.get(i).get(i).get("title");
+             semester_title.add(title);
+         }
+     }
+     if(semester_title!=null)
+     {
+         arrayAdapter=new ArrayAdapter<String>(ScoreActivity.this,android.R.layout.simple_spinner_item,semester_title);
+         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+         spinner.setAdapter(arrayAdapter);
+     }
+
+     myAdapter=new MyAdapter();
+     myAdapter.setOnItemClickListener(new OnItemOnClickListenerInterface.OnItemClickListener() {
+         @Override
+         public void OnItemClick(View view, int position) {
+             String s=oneSemesterScore.get(position).get("课程名称");
+             Toast.makeText(ScoreActivity.this,s,Toast.LENGTH_SHORT).show();
+         }
+
+         @Override
+         public void OnItemLongClick(View view, int position) {
+
+         }
+     });
+     recyclerView.setAdapter(myAdapter);
+
+ }*/
+private class MyHandler extends Handler {
+    @Override
+    public void handleMessage(Message msg) {
+        switch (msg.what)
         {
-            for(int i=0;i<lists.size();i++)
-            {
-                String title=lists.get(i).get(i).get("title");
-                semester_title.add(title);
-            }
-        }
-        if(semester_title!=null)
-        {
-            arrayAdapter=new ArrayAdapter<String>(ScoreActivity.this,android.R.layout.simple_spinner_item,semester_title);
-            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner.setAdapter(arrayAdapter);
-        }
-
-        myAdapter=new MyAdapter();
-        myAdapter.setOnItemClickListener(new OnItemOnClickListenerInterface.OnItemClickListener() {
-            @Override
-            public void OnItemClick(View view, int position) {
-                String s=oneSemesterScore.get(position).get("课程名称");
-                Toast.makeText(ScoreActivity.this,s,Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void OnItemLongClick(View view, int position) {
-
-            }
-        });
-        recyclerView.setAdapter(myAdapter);
-
-    }*/
-    private class MyHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what)
-            {
-                case 1:
+            case 1:
                  /*   load_view.setVisibility(View.INVISIBLE);
                     content.setVisibility(View.VISIBLE);*/
-                    setFirstData();
-                    break;
-                case  2:
-                    Toast.makeText(ScoreActivity.this,"网络超时",Toast.LENGTH_SHORT).show();
-                    load_view.setVisibility(View.INVISIBLE);
-                    content.setVisibility(View.VISIBLE);
-                    finish();
-                    break;
-                case 3:
-                    Toast.makeText(ScoreActivity.this,"网络超时",Toast.LENGTH_SHORT).show();
-                    load_view.setVisibility(View.INVISIBLE);
-                    content.setVisibility(View.VISIBLE);
-                    break;
-                case 4:
-                    if(oneSemesterScore!=null)
-                    {
-                        myAdapter.notifyDataSetChanged();
-                    }
-                    load_view.setVisibility(View.INVISIBLE);
-                    content.setVisibility(View.VISIBLE);
-                    break;
-            }
-        }
-    }
-    private class MyAdapter extends  RecyclerView.Adapter<MyAdapter.MyViewHolder>{
-        @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            MyViewHolder holder=new MyViewHolder(LayoutInflater.from(ScoreActivity.this).inflate(R.layout.score_recyclerview_item,null));
-            return  holder;
-        }
-        @Override
-        public void onBindViewHolder(final MyViewHolder myViewHolder, int i) {
-            myViewHolder.scorename_view.setText(oneSemesterScore.get(i).course_name);
-            myViewHolder.score_view.setText(oneSemesterScore.get(i).grade);
-            myViewHolder.credit_view.setText(oneSemesterScore.get(i).credit);
-            myViewHolder.couresNature_view.setText(oneSemesterScore.get(i).course_nature);
-            myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int pos=myViewHolder.getPosition();
-                    onItemClickListener.OnItemClick(view,pos);
+                setFirstData();
+                break;
+            case  2:
+                Toast.makeText(ScoreActivity.this,"网络超时",Toast.LENGTH_SHORT).show();
+                load_view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
+                finish();
+                break;
+            case 3:
+                Toast.makeText(ScoreActivity.this,"网络超时",Toast.LENGTH_SHORT).show();
+                load_view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
+                break;
+            case 4:
+                if(oneSemesterScore!=null)
+                {
+                    myAdapter.notifyDataSetChanged();
                 }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-
-            if(oneSemesterScore!=null)
-            {
-                return  oneSemesterScore.size();
-            }
-            return 0;
-        }
-
-        public  class  MyViewHolder extends  RecyclerView.ViewHolder
-        {
-            public TextView scorename_view;
-            private  TextView score_view;
-            private  TextView credit_view;
-            private  TextView couresNature_view;
-
-            public MyViewHolder(View itemView) {
-                super(itemView);
-                scorename_view=(TextView)itemView.findViewById(R.id.score_name);
-                score_view=(TextView)itemView.findViewById(R.id.score);
-                credit_view=(TextView)itemView.findViewById(R.id.credit);
-                couresNature_view=(TextView)itemView.findViewById(R.id.courseNature);
-            }
-        }
-        private OnItemOnClickListenerInterface.OnItemClickListener onItemClickListener;
-
-
-        public void setOnItemClickListener(OnItemOnClickListenerInterface.OnItemClickListener onItemClickListener) {
-            this.onItemClickListener = onItemClickListener;
+                load_view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
+                break;
         }
     }
+}
+private class MyAdapter extends  RecyclerView.Adapter<MyAdapter.MyViewHolder>{
+    @Override
+    public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        MyViewHolder holder=new MyViewHolder(LayoutInflater.from(ScoreActivity.this).inflate(R.layout.score_recyclerview_item,null));
+        return  holder;
+    }
+    @Override
+    public void onBindViewHolder(final MyViewHolder myViewHolder, int i) {
+        myViewHolder.scorename_view.setText(oneSemesterScore.get(i).course_name);
+        myViewHolder.score_view.setText(oneSemesterScore.get(i).grade);
+        myViewHolder.credit_view.setText(oneSemesterScore.get(i).credit);
+        myViewHolder.couresNature_view.setText(oneSemesterScore.get(i).course_nature);
+        myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int pos=myViewHolder.getPosition();
+                onItemClickListener.OnItemClick(view,pos);
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+
+        if(oneSemesterScore!=null)
+        {
+            return  oneSemesterScore.size();
+        }
+        return 0;
+    }
+
+    public  class  MyViewHolder extends  RecyclerView.ViewHolder
+    {
+        public TextView scorename_view;
+        private  TextView score_view;
+        private  TextView credit_view;
+        private  TextView couresNature_view;
+
+        public MyViewHolder(View itemView) {
+            super(itemView);
+            scorename_view=(TextView)itemView.findViewById(R.id.score_name);
+            score_view=(TextView)itemView.findViewById(R.id.score);
+            credit_view=(TextView)itemView.findViewById(R.id.credit);
+            couresNature_view=(TextView)itemView.findViewById(R.id.courseNature);
+        }
+    }
+    private OnItemOnClickListenerInterface.OnItemClickListener onItemClickListener;
+
+
+    public void setOnItemClickListener(OnItemOnClickListenerInterface.OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+}
     private  void DealWithFirstScore()
     {
         try {
@@ -420,7 +421,7 @@ public class ScoreActivity extends AppCompatActivity {
     {
         List<String> result=new ArrayList<>();
         for ( int i =lists.size()-1;i>=0;i--) {
-           result.add(lists.get(i));
+            result.add(lists.get(i));
         }
         return  result;
     }

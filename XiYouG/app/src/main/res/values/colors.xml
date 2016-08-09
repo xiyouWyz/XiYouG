@@ -152,4 +152,7 @@
     <color name="score_divide">#ccc</color>
     <color name="score_title">#fff</color>
     <color name="score_title_back">#36B19F</color>
+    <color name="score_not_pass">#fff</color>
+    <color name="score_not_pass_back">#36B19F</color>
+
 </resources>

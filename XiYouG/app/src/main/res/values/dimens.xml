@@ -72,6 +72,7 @@
     <dimen name="schedule_my_exit">16sp</dimen>
 
     <dimen name="score_title">16sp</dimen>
+    <dimen name="score_not_pass">16sp</dimen>
 
 
 </resources>

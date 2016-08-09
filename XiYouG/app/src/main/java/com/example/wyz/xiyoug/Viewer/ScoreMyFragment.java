@@ -19,7 +19,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wyz.xiyoug.Activity.ScoreActivity;
+import com.example.wyz.xiyoug.Activity.ScoreFailedActivity;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
+import com.example.wyz.xiyoug.Model.ScoreFailedModel;
 import com.example.wyz.xiyoug.Model.ScoreUser;
 import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.Util.IsNetworkConnected;
@@ -152,7 +154,12 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
                 }
                 else
                 {
-
+                    Intent intent=new Intent();
+                    Bundle bundle=new Bundle();
+                    bundle.putString("score_html",score_html);
+                    intent.putExtras(bundle);
+                    intent.setClass(getContext(), ScoreFailedActivity.class);
+                    startActivity(intent);
                 }
                 break;
             case  R.id.exit:
