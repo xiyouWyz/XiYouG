@@ -26,6 +26,7 @@ import com.example.wyz.xiyoug.Model.Book_Collection;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.Model.User;
 import com.example.wyz.xiyoug.R;
+import com.example.wyz.xiyoug.Util.IsNetworkConnected;
 import com.example.wyz.xiyoug.Util.MyAnimation;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
 import com.example.wyz.xiyoug.Viewer.MyFragment;
@@ -76,6 +77,7 @@ public class MyCollectionActivity extends AppCompatActivity {
 
     }
     private void getListViewData() {
+
         myThread=new MyThread();
         new Thread(myThread).start();
     }
@@ -86,18 +88,26 @@ public class MyCollectionActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
               @Override
               public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                  List<BasicNameValuePair> basicNameValuePairs=new ArrayList<BasicNameValuePair>();
-                  basicNameValuePairs.add(new BasicNameValuePair("session",MyFragment.SESSIONID));
-                  colDelID=book_collections.get(i).getId();
-                  basicNameValuePairs.add(new BasicNameValuePair("id",colDelID));
-                  if(!User.getInstance().getId().equals(""))
+                  if(!IsNetworkConnected.isNetworkConnected(MyCollectionActivity.this))
                   {
-                      basicNameValuePairs.add(new BasicNameValuePair("username", User.getInstance().getId()));
+                      Message message=Message.obtain();
+                      message.what=6;
+                      myHandler.sendMessage(message);
                   }
+                  else
+                  {
+                      List<BasicNameValuePair> basicNameValuePairs=new ArrayList<BasicNameValuePair>();
+                      basicNameValuePairs.add(new BasicNameValuePair("session",MyFragment.SESSIONID));
+                      colDelID=book_collections.get(i).getId();
+                      basicNameValuePairs.add(new BasicNameValuePair("id",colDelID));
+                      if(!User.getInstance().getId().equals(""))
+                      {
+                          basicNameValuePairs.add(new BasicNameValuePair("username", User.getInstance().getId()));
+                      }
 
-                  colDelUrl=OkHttpUtil.attachHttpGetParams(HttpLinkHeader.BOOK_CANCEL_COLLECTION,basicNameValuePairs);
-                  dialog();
+                      colDelUrl=OkHttpUtil.attachHttpGetParams(HttpLinkHeader.BOOK_CANCEL_COLLECTION,basicNameValuePairs);
+                      dialog();
+                  }
                   return false;
               }
          });
@@ -255,6 +265,10 @@ public class MyCollectionActivity extends AppCompatActivity {
             {
                 String addDelResult=msg.getData().getString("addDelResult");
                 DealWithDelColResult(addDelResult);
+            }
+            else if(msg.what==6)
+            {
+                Toast.makeText(MyCollectionActivity.this,"网络超时",Toast.LENGTH_SHORT).show();
             }
         }
     }

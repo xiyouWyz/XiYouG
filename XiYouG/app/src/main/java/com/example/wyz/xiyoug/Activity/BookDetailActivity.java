@@ -56,8 +56,6 @@ import java.util.List;
 public class BookDetailActivity  extends AppCompatActivity{
 
     private Toolbar toolbar;
-
-    private boolean colIsPress=false;
     private  final  String TAG="BookDetailActivity";
     public  static  String book_url;
     private  MyHandler myHandler=new MyHandler();
@@ -66,7 +64,6 @@ public class BookDetailActivity  extends AppCompatActivity{
     private MyColAddThread myColAddThread;
     private RelativeLayout load_view;
     private  LinearLayout content;
-    private NestedScrollView scrollView;
     private ImageView imageView;
     private TextView title_view;
     private  TextView author_view;
@@ -161,13 +158,21 @@ public class BookDetailActivity  extends AppCompatActivity{
 
 
             case R.id.action_share:
-                Intent it = new Intent(Intent.ACTION_SEND);
-                String[] receiver;
-                receiver=new String[]{"745322878@qq.com"};
-                it.putExtra(Intent.EXTRA_EMAIL, receiver);
-                it.putExtra(Intent.EXTRA_TEXT,book_url);
-                it.setType("text/plain");
-                startActivity(it);
+                if(!IsNetworkConnected.isNetworkConnected(BookDetailActivity.this))
+                {
+                    Message message=Message.obtain();
+                    message.what=6;
+                    myHandler.sendMessage(message);
+                }
+                else {
+                    Intent it = new Intent(Intent.ACTION_SEND);
+                    String[] receiver;
+                    receiver = new String[]{"745322878@qq.com"};
+                    it.putExtra(Intent.EXTRA_EMAIL, receiver);
+                    it.putExtra(Intent.EXTRA_TEXT, book_url);
+                    it.setType("text/plain");
+                    startActivity(it);
+                }
                 break;
             case  android.R.id.home:
                 finish();

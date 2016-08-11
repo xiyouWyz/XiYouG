@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.example.wyz.xiyoug.Model.Book_Search;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.R;
+import com.example.wyz.xiyoug.Util.IsNetworkConnected;
 import com.example.wyz.xiyoug.Util.MyAnimation;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
 
@@ -72,8 +73,17 @@ public class BookSearchActivity extends AppCompatActivity  implements SearchView
         {
             case R.id.scan:
             {
-                Intent intent2 = new Intent(BookSearchActivity.this,ScanActivity.class);
-                startActivityForResult(intent2, ACTIVITY_RESULT_SCAN,null);
+                if(!IsNetworkConnected.isNetworkConnected(BookSearchActivity.this))
+                {
+                    Message message=Message.obtain();
+                    message.what=3;
+                    myHandler.sendMessage(message);
+                }
+                else
+                {
+                    Intent intent2 = new Intent(BookSearchActivity.this,ScanActivity.class);
+                    startActivityForResult(intent2, ACTIVITY_RESULT_SCAN,null);
+                }
                 break;
             }
             case  android.R.id.home:
@@ -129,13 +139,23 @@ public class BookSearchActivity extends AppCompatActivity  implements SearchView
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d(TAG,"点击了搜索的第"+i+"个item");
-                String url=HttpLinkHeader.BOOK_DETAIL_ID+book_searches.get(i).getId();
-                Intent intent=new Intent();
-                Bundle bundle=new Bundle();
-                bundle.putString("url",url);
-                intent.putExtras(bundle);
-                intent.setClass(BookSearchActivity.this,BookDetailActivity.class);
-                startActivity(intent);
+                if(!IsNetworkConnected.isNetworkConnected(BookSearchActivity.this))
+                {
+                    Message message=Message.obtain();
+                    message.what=3;
+                    myHandler.sendMessage(message);
+                }
+                else
+                {
+                    String url=HttpLinkHeader.BOOK_DETAIL_ID+book_searches.get(i).getId();
+                    Intent intent=new Intent();
+                    Bundle bundle=new Bundle();
+                    bundle.putString("url",url);
+                    intent.putExtras(bundle);
+                    intent.setClass(BookSearchActivity.this,BookDetailActivity.class);
+                    startActivity(intent);
+                }
+
             }
         });
     }
@@ -146,34 +166,40 @@ public class BookSearchActivity extends AppCompatActivity  implements SearchView
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        if(!newText.equals(""))
+        if(!IsNetworkConnected.isNetworkConnected(BookSearchActivity.this))
         {
-            List<BasicNameValuePair> basicNameValuePairs=new ArrayList<>();
-            basicNameValuePairs.add(new BasicNameValuePair("matchMethod","qx"));
-            basicNameValuePairs.add(new BasicNameValuePair("keyword",newText));
-
-            url= OkHttpUtil.attachHttpGetParams(HttpLinkHeader.BOOK_SEARCH,basicNameValuePairs);
-            load_view.setVisibility(View.VISIBLE);
-            content.setVisibility(View.INVISIBLE);
-            new MyAnimation(BookSearchActivity.this, "胖萌正在为您努力加载....", R.drawable.loading, load_view);
-
-            new Thread(myThread).start();
+            Message message=Message.obtain();
+            message.what=3;
+            myHandler.sendMessage(message);
         }
         else
         {
-            if(book_searches!=null)
+            if(!newText.equals(""))
             {
-                book_searches.clear();
-                myAdapter.notifyDataSetChanged();
+                List<BasicNameValuePair> basicNameValuePairs=new ArrayList<>();
+                basicNameValuePairs.add(new BasicNameValuePair("matchMethod","qx"));
+                basicNameValuePairs.add(new BasicNameValuePair("keyword",newText));
+
+                url= OkHttpUtil.attachHttpGetParams(HttpLinkHeader.BOOK_SEARCH,basicNameValuePairs);
+                load_view.setVisibility(View.VISIBLE);
+                content.setVisibility(View.INVISIBLE);
+                new MyAnimation(BookSearchActivity.this, "胖萌正在为您努力加载....", R.drawable.loading, load_view);
+
+                new Thread(myThread).start();
             }
+            else
+            {
+                if(book_searches!=null)
+                {
+                    book_searches.clear();
+                    myAdapter.notifyDataSetChanged();
+                }
 
 
+            }
         }
         return  false;
     }
-
-
-
     private  class  MyAdapter extends BaseAdapter
     {
 

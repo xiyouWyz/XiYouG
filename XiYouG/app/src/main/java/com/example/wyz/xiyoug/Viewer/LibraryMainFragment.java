@@ -208,38 +208,4 @@ public class LibraryMainFragment extends Fragment {
 
 
     }
-
-    /**
-     * 侧边栏每个Item的点击事件
-     */
-    private class MySlideMenuOnClickListener implements View.OnClickListener {
-
-        private int index = 0;
-
-        public MySlideMenuOnClickListener(int i) {
-            index = i;
-        }
-
-        @Override
-        public void onClick(View view) {
-            Log.d("slideMenuClick", String.valueOf(index));
-            switch (index) {
-
-                case 0:
-                    break;
-                case 1:
-                    break;
-                case 2:
-                    Uri uri = Uri.parse("http://www.xiyou.edu.cn/");
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    startActivity(intent);
-                    break;
-                case 3:
-                    Uri uri1 = Uri.parse("mailto:745322878@qq.com");
-                    Intent intent1 = new Intent(Intent.ACTION_SENDTO, uri1);
-                    startActivity(intent1);
-                    break;
-            }
-        }
-    }
 }

@@ -155,4 +155,9 @@
     <color name="score_not_pass">#fff</color>
     <color name="score_not_pass_back">#36B19F</color>
 
+    <color name="question_back">#D6F1ED</color>
+    <color name="question_title">#fff</color>
+    <color name="question_item1">#000</color>
+
+    <color name="circle_image_border">#fff</color>
 </resources>

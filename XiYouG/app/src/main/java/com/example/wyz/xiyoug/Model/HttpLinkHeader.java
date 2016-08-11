@@ -31,4 +31,6 @@ public class HttpLinkHeader {
     public final static  String XIYOU_Main="http://222.24.19.201/xs_main.aspx";
     public final static  String Schedule_KB="http://222.24.19.201/xskbcx.aspx";
     public final static String SCORE="http://222.24.19.201/xscjcx.aspx";
+
+    public  final  static  String LABWEBSITE="https://www.xiyoumobile.com/";
 }

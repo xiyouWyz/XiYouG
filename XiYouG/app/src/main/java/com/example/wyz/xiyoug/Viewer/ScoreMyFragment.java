@@ -106,101 +106,95 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View view) {
-        switch (view.getId())
+        if(!IsNetworkConnected.isNetworkConnected(getContext()))
         {
-            case R.id.score_query:
-                if(!IsNetworkConnected.isNetworkConnected(getContext()))
-                {
-                    Toast.makeText(getContext(),"网络超时",Toast.LENGTH_SHORT).show();
-                }
-                else if(!isLogin)
-                {
-                    Toast.makeText(getContext(),"请先登录",Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    Intent intent=new Intent();
-                    Bundle bundle=new Bundle();
-                    bundle.putString("score_html",score_html);
-                    bundle.putString("score_url",score_url);
-                    bundle.putString("sessionId",sessionId);
-                    intent.putExtras(bundle);
-                    intent.setClass(getContext(), ScoreActivity.class);
-                    startActivity(intent);
-                }
-                break;
-            case  R.id.level_query:
-                if(!IsNetworkConnected.isNetworkConnected(getContext()))
-                {
-                    Toast.makeText(getContext(),"网络超时",Toast.LENGTH_SHORT).show();
-                }
-                else if(!isLogin)
-                {
-                    Toast.makeText(getContext(),"请先登录",Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-
-                }
-                break;
-            case  R.id.failed_query:
-                if(!IsNetworkConnected.isNetworkConnected(getContext()))
-                {
-                    Toast.makeText(getContext(),"网络超时",Toast.LENGTH_SHORT).show();
-                }
-                else if(!isLogin)
-                {
-                    Toast.makeText(getContext(),"请先登录",Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    Intent intent=new Intent();
-                    Bundle bundle=new Bundle();
-                    bundle.putString("score_html",score_html);
-                    intent.putExtras(bundle);
-                    intent.setClass(getContext(), ScoreFailedActivity.class);
-                    startActivity(intent);
-                }
-                break;
-            case  R.id.exit:
-                if(!isLogin)
-                {
-                    Toast.makeText(getContext(),"未登录",Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    isLogin=false;
-                    if(!ScoreUser.getInstance().getId().equals(""))
-                    {
-                        ScoreUser.Clear();
-                    }
-                    alreadyLogin_view.setVisibility(View.INVISIBLE);
-                    notLogin_view.setVisibility(View.VISIBLE);
-                    studyNumber_view.setText("");
-                    name_view.setText("");
-                    college_view.setText("");
-                    department_view.setText("");
-                    //loginWindow.showAtLocation(view,Gravity.CENTER,0,0);
-
-                }
-                break;
-            case  R.id.login:
-
-                    if(!IsNetworkConnected.isNetworkConnected(getContext()))
-                    {
-                        Toast.makeText(getContext(),"网络超时",Toast.LENGTH_SHORT).show();
-                    }
-                    else if(!isLogin)
-                    {
-                            pref=getContext().getSharedPreferences("score_info", Context.MODE_PRIVATE);
-                            isRemember=pref.getBoolean("isRemember",false);
-                            account=pref.getString("account","");
-                            password=pref.getString("password","");
-                            loginWindow=new LoginWindow(getContext(),new MyLoginOnClickListener(),account,password,isRemember,1);
-                            loginWindow.showAtLocation(view, Gravity.CENTER,0,0);
-                    }
-                break;
+            Message message=Message.obtain();
+            message.what=5;
+            myHandler.sendMessage(message);
         }
+        else
+        {
+            switch (view.getId())
+            {
+                case R.id.score_query:
+                     if(!isLogin)
+                    {
+                        Toast.makeText(getContext(),"请先登录",Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        Intent intent=new Intent();
+                        Bundle bundle=new Bundle();
+                        bundle.putString("score_html",score_html);
+                        bundle.putString("score_url",score_url);
+                        bundle.putString("sessionId",sessionId);
+                        intent.putExtras(bundle);
+                        intent.setClass(getContext(), ScoreActivity.class);
+                        startActivity(intent);
+                    }
+                    break;
+                case  R.id.level_query:
+                    if(!isLogin)
+                    {
+                        Toast.makeText(getContext(),"请先登录",Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+
+                    }
+                    break;
+                case  R.id.failed_query:
+                    if(!isLogin)
+                    {
+                        Toast.makeText(getContext(),"请先登录",Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        Intent intent=new Intent();
+                        Bundle bundle=new Bundle();
+                        bundle.putString("score_html",score_html);
+                        intent.putExtras(bundle);
+                        intent.setClass(getContext(), ScoreFailedActivity.class);
+                        startActivity(intent);
+                    }
+                    break;
+                case  R.id.exit:
+                    if(!isLogin)
+                    {
+                        Toast.makeText(getContext(),"未登录",Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        isLogin=false;
+                        if(!ScoreUser.getInstance().getId().equals(""))
+                        {
+                            ScoreUser.Clear();
+                        }
+                        alreadyLogin_view.setVisibility(View.INVISIBLE);
+                        notLogin_view.setVisibility(View.VISIBLE);
+                        studyNumber_view.setText("");
+                        name_view.setText("");
+                        college_view.setText("");
+                        department_view.setText("");
+                        //loginWindow.showAtLocation(view,Gravity.CENTER,0,0);
+
+                    }
+                    break;
+                case  R.id.login:
+
+                     if(!isLogin)
+                    {
+                        pref=getContext().getSharedPreferences("score_info", Context.MODE_PRIVATE);
+                        isRemember=pref.getBoolean("isRemember",false);
+                        account=pref.getString("account","");
+                        password=pref.getString("password","");
+                        loginWindow=new LoginWindow(getContext(),new MyLoginOnClickListener(),account,password,isRemember,1);
+                        loginWindow.showAtLocation(view, Gravity.CENTER,0,0);
+                    }
+                    break;
+            }
+        }
+
     }
     private class MyLoginOnClickListener implements View.OnClickListener {
         @Override
@@ -208,25 +202,35 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
             switch (view.getId())
             {
                 case R.id.login_btn:
-                    account=loginWindow.getAccount();
-                    password=loginWindow.getPassword();
-                    isRemember=loginWindow.getRemember();
-                    if(account.equals(""))
+                    if(!IsNetworkConnected.isNetworkConnected(getContext()))
                     {
-                        Toast.makeText(getContext(),"用户名不能为空",Toast.LENGTH_SHORT).show();
-                    }
-                    else if(password.equals(""))
-                    {
-                        Toast.makeText(getContext(),"密码不能为空",Toast.LENGTH_SHORT).show();
+                        Message message=Message.obtain();
+                        message.what=5;
+                        myHandler.sendMessage(message);
                     }
                     else
                     {
-                        new MyAnimation(getContext(),"胖萌正在努力为您加载...",R.drawable.loading,load_view);
-                        loginWindow.dismiss();
-                        load_view.setVisibility(View.VISIBLE);
-                        content.setVisibility(View.INVISIBLE);
-                        myThread=new MyThread();
-                        new Thread(myThread).start();
+                        account=loginWindow.getAccount();
+                        password=loginWindow.getPassword();
+                        isRemember=loginWindow.getRemember();
+                        if(account.equals(""))
+                        {
+                            Toast.makeText(getContext(),"用户名不能为空",Toast.LENGTH_SHORT).show();
+                        }
+                        else if(password.equals(""))
+                        {
+                            Toast.makeText(getContext(),"密码不能为空",Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            new MyAnimation(getContext(),"胖萌正在努力为您加载...",R.drawable.loading,load_view);
+                            loginWindow.dismiss();
+                            load_view.setVisibility(View.VISIBLE);
+                            content.setVisibility(View.INVISIBLE);
+                            myThread=new MyThread();
+                            new Thread(myThread).start();
+                        }
+                        break;
                     }
                     break;
                 case R.id.close:
@@ -346,7 +350,11 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
                 editor.putString("account", account);
                 editor.putString("password", password);
                 editor.putBoolean("isRemember", isRemember);
-                editor.commit();
+                editor.apply();
+            }
+            else  if(msg.what==5)
+            {
+                Toast.makeText(getContext(),"网络超时",Toast.LENGTH_SHORT).show();
             }
         }
     }

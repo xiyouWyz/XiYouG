@@ -30,6 +30,7 @@ import com.example.wyz.xiyoug.Model.ScoreModel;
 import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.RecyclerView.DividerItemDecoration;
 import com.example.wyz.xiyoug.RecyclerView.OnItemOnClickListenerInterface;
+import com.example.wyz.xiyoug.Util.IsNetworkConnected;
 import com.example.wyz.xiyoug.Util.JsonHandle;
 import com.example.wyz.xiyoug.Util.MyAnimation;
 import com.example.wyz.xiyoug.Util.ScheduleOkHttp;
@@ -109,16 +110,26 @@ public class ScoreActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                //oneSemesterScore=lists.get(i);
-                String selectStr=semester_title.get(i);
-                college=getCollege(selectStr);
-                semester=getSemester(selectStr);
-                new MyAnimation(ScoreActivity.this,"胖萌正在努力为您加载...",R.drawable.loading,load_view);
-                load_view.setVisibility(View.VISIBLE);
-                content.setVisibility(View.INVISIBLE);
-                //myAdapter.notifyDataSetChanged();
-                semesterScoreThread =new SemesterScoreThread();
-                new Thread(semesterScoreThread).start();
+                if(!IsNetworkConnected.isNetworkConnected(ScoreActivity.this))
+                {
+                    Message message=Message.obtain();
+                    message.what=3;
+                    myHandler.sendMessage(message);
+                }
+                else
+                {
+                    //oneSemesterScore=lists.get(i);
+                    String selectStr=semester_title.get(i);
+                    college=getCollege(selectStr);
+                    semester=getSemester(selectStr);
+                    new MyAnimation(ScoreActivity.this,"胖萌正在努力为您加载...",R.drawable.loading,load_view);
+                    load_view.setVisibility(View.VISIBLE);
+                    content.setVisibility(View.INVISIBLE);
+                    //myAdapter.notifyDataSetChanged();
+                    semesterScoreThread =new SemesterScoreThread();
+                    new Thread(semesterScoreThread).start();
+                }
+
             }
 
             @Override

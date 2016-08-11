@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.R;
+import com.example.wyz.xiyoug.Util.IsNetworkConnected;
 import com.example.wyz.xiyoug.Util.MyAnimation;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
 
@@ -68,8 +69,18 @@ public class InfoDetail_Activity extends AppCompatActivity{
         {
             url= HttpLinkHeader.NOTICES_DETAIL+id;
         }
-        myThread=new MyThread();
-        new Thread(myThread).start();
+        if(!IsNetworkConnected.isNetworkConnected(InfoDetail_Activity.this))
+        {
+            Message message=Message.obtain();
+            message.what=3;
+            myHandler.sendMessage(message);
+        }
+        else
+        {
+            myThread=new MyThread();
+            new Thread(myThread).start();
+        }
+
     }
 
     private void setupViewComponent() {

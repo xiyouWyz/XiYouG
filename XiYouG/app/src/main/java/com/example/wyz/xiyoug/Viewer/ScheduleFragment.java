@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.Util.AnnotateUtils;
+import com.example.wyz.xiyoug.Util.IsNetworkConnected;
 import com.example.wyz.xiyoug.Util.JsonHandle;
 import com.example.wyz.xiyoug.Util.MyAnimation;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
@@ -83,29 +84,29 @@ public class ScheduleFragment  extends Fragment{
    // @BindView( R.id.day3_four)
    @AnnotateUtils.ViewInject(id=R.id.day3_four)
      TextView day3_four_view;
-   // @BindView(R.id.day4_one)
-   @AnnotateUtils.ViewInject(id=R.id.day4_one)
+    // @BindView(R.id.day4_one)
+    @AnnotateUtils.ViewInject(id=R.id.day4_one)
      TextView day4_one_view;
-   // @BindView( R.id.day4_two)
-   @AnnotateUtils.ViewInject(id=R.id.day4_two)
+    // @BindView( R.id.day4_two)
+    @AnnotateUtils.ViewInject(id=R.id.day4_two)
      TextView day4_two_view;
-   // @BindView(R.id.day4_three)
-   @AnnotateUtils.ViewInject(id=R.id.day4_three)
+    // @BindView(R.id.day4_three)
+    @AnnotateUtils.ViewInject(id=R.id.day4_three)
      TextView day4_three_view;
- //   @BindView( R.id.day4_four)
- @AnnotateUtils.ViewInject(id=R.id.day4_four)
+    //   @BindView( R.id.day4_four)
+    @AnnotateUtils.ViewInject(id=R.id.day4_four)
      TextView day4_four_view;
-  //  @BindView( R.id.day5_one)
-  @AnnotateUtils.ViewInject(id=R.id.day5_one)
+    //  @BindView( R.id.day5_one)
+    @AnnotateUtils.ViewInject(id=R.id.day5_one)
      TextView day5_one_view;
-  //  @BindView(R.id.day5_two)
-  @AnnotateUtils.ViewInject(id=R.id.day5_two)
+   //  @BindView(R.id.day5_two)
+   @AnnotateUtils.ViewInject(id=R.id.day5_two)
      TextView day5_two_view;
-  //  @BindView( R.id.day5_three)
-  @AnnotateUtils.ViewInject(id=R.id.day5_three)
+   //  @BindView( R.id.day5_three)
+   @AnnotateUtils.ViewInject(id=R.id.day5_three)
      TextView day5_three_view;
-  //  @BindView( R.id.day5_four)
-  @AnnotateUtils.ViewInject(id=R.id.day5_four)
+   //  @BindView( R.id.day5_four)
+   @AnnotateUtils.ViewInject(id=R.id.day5_four)
      TextView day5_four_view;
     private  Map<String,List<String>> stringListMap;
     private  MyThread myThread;
@@ -139,13 +140,23 @@ public class ScheduleFragment  extends Fragment{
         import_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //pref= PreferenceManager.getDefaultSharedPreferences(getContext());
-                pref=getContext().getSharedPreferences("schedule_info", Context.MODE_PRIVATE);
-                boolean remember=pref.getBoolean("isRemember",false);
-                String account=pref.getString("account","");
-                String password=pref.getString("password","");
-                loginWindow=new LoginWindow(getContext(),new MyLoginOnClickListener(),account,password,remember,1);
-                loginWindow.showAtLocation(view, Gravity.CENTER,0,0);
+                if(!IsNetworkConnected.isNetworkConnected(getContext()))
+                {
+                    Message message=Message.obtain();
+                    message.what=4;
+                    myHandler.sendMessage(message);
+                }
+                else
+                {
+                    //pref= PreferenceManager.getDefaultSharedPreferences(getContext());
+                    pref=getContext().getSharedPreferences("schedule_info", Context.MODE_PRIVATE);
+                    boolean remember=pref.getBoolean("isRemember",false);
+                    String account=pref.getString("account","");
+                    String password=pref.getString("password","");
+                    loginWindow=new LoginWindow(getContext(),new MyLoginOnClickListener(),account,password,remember,1);
+                    loginWindow.showAtLocation(view, Gravity.CENTER,0,0);
+                }
+
             }
         });
         content=(LinearLayout)view.findViewById(R.id.content);
@@ -204,42 +215,7 @@ public class ScheduleFragment  extends Fragment{
                 ,R.color.schedule_day1_three,R.color.schedule_day2_three,R.color.schedule_day3_three,R.color.schedule_day4_three,R.color.schedule_day5_three
             ,R.color.schedule_day1_four,R.color.schedule_day2_four,R.color.schedule_day3_four,R.color.schedule_day4_four,R.color.schedule_day5_four));
 
-       // AnnotateUtils.setDataViews((Activity)getContext(),stringListMap,times,days,colors);
         setScheduleOneData(textViews,times,days,colors);
-     /*   if(stringListMap.get("time1").get(0).equals(""))
-        {
-            day1_one_view.setText(stringListMap.get("time1").get(0));
-            day1_one_view.setBackgroundColor(getResources().getColor(R.color.schedule_day1_one));
-        }
-        day2_one_view.setText(stringListMap.get("time1").get(1));
-        day2_one_view.setBackgroundColor(getResources().getColor(R.color.schedule_day2_one));
-        day3_one_view.setText(stringListMap.get("time1").get(2));
-        day3_one_view.setBackgroundColor(getResources().getColor(R.color.schedule_day3_one));
-        day4_one_view.setText(stringListMap.get("time1").get(3));
-        day4_one_view.setBackgroundColor(getResources().getColor(R.color.schedule_day4_one));
-        day5_one_view.setText(stringListMap.get("time1").get(4));
-        day5_one_view.setBackgroundColor(getResources().getColor(R.color.schedule_day5_one));
-        day1_two_view.setText(stringListMap.get("time2").get(0));
-        day1_two_view.setBackgroundColor(getResources().getColor(R.color.schedule_day1_two));
-        day2_two_view.setText(stringListMap.get("time2").get(1));
-        day2_two_view.setBackgroundColor(getResources().getColor(R.color.schedule_day2_two));
-        day3_two_view.setText(stringListMap.get("time2").get(2));
-        day3_two_view.setBackgroundColor(getResources().getColor(R.color.schedule_day3_two));
-        day4_two_view.setText(stringListMap.get("time2").get(3));
-        day4_two_view.setBackgroundColor(getResources().getColor(R.color.schedule_day4_two));
-        day5_two_view.setText(stringListMap.get("time2").get(4));
-        day5_two_view.setBackgroundColor(getResources().getColor(R.color.schedule_day5_two));
-        day1_three_view.setBackgroundColor(getResources().getColor(R.color.schedule_day1_three));
-       day1_three_view.setText(stringListMap.get("time3").get(0));
-       day2_three_view.setText(stringListMap.get("time3").get(1));
-       day3_three_view.setText(stringListMap.get("time3").get(2));
-       day4_three_view.setText(stringListMap.get("time3").get(3));
-       day5_three_view.setText(stringListMap.get("time3").get(4));
-       day1_four_view.setText(stringListMap.get("time4").get(0));
-       day2_four_view.setText(stringListMap.get("time4").get(1));
-       day3_four_view.setText(stringListMap.get("time4").get(2));
-       day4_four_view.setText(stringListMap.get("time4").get(3));
-       day5_four_view.setText(stringListMap.get("time4").get(4));*/
     }
     private  void setScheduleOneData(List<TextView> textviews,List<String> times,List<Integer> day,List<Integer> color)
     {
@@ -271,7 +247,16 @@ public class ScheduleFragment  extends Fragment{
                 content.setVisibility(View.VISIBLE);
                 loginWindow.showAtLocation(view,Gravity.CENTER,0,0);
             }
-             if(msg.what==2)
+            else if(msg.what==1)
+            {
+                editor=pref.edit();
+                editor.putString("account",account);
+                editor.putString("password",password);
+                editor.putBoolean("isRemember",isRemember);
+                editor.apply();
+
+            }
+             else if(msg.what==2)
             {
                 Toast.makeText(getContext(),"网络超时",Toast.LENGTH_SHORT).show();
                 load_view.setVisibility(View.INVISIBLE);
@@ -281,20 +266,19 @@ public class ScheduleFragment  extends Fragment{
             else if(msg.what==3)
             {
                 SerializableMap map=(SerializableMap)msg.getData().get("schedule");
-                stringListMap= map.getMap();
+                if (map != null) {
+                    stringListMap= map.getMap();
+                }
                 load_view.setVisibility(View.INVISIBLE);
                 content.setVisibility(View.VISIBLE);
 
                 setSchedule();
             }
-             else if(msg.what==1)
-             {
-                 editor=pref.edit();
-                 editor.putString("account",account);
-                 editor.putString("password",password);
-                 editor.putBoolean("isRemember",isRemember);
-                 editor.commit();
-             }
+            else if(msg.what==4)
+            {
+                Toast.makeText(getContext(),"网络超时",Toast.LENGTH_SHORT).show();
+            }
+
 
 
 
@@ -310,7 +294,7 @@ public class ScheduleFragment  extends Fragment{
                 String main_url=OkHttpUtil.attachHttpGetParam(HttpLinkHeader.XIYOU_Main,"xh",account);
                 String info=ScheduleOkHttp.getGetInfoFromServer(main_url,sessionId);
                 name= JsonHandle.getName(info);
-                Message message=new Message();
+                Message message=Message.obtain();
                 message.what=1;
                 myHandler.sendMessage(message);
 

@@ -24,6 +24,7 @@ import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.RecyclerView.DividerItemDecoration;
 import com.example.wyz.xiyoug.RecyclerView.OnItemOnClickListenerInterface;
+import com.example.wyz.xiyoug.Util.IsNetworkConnected;
 import com.example.wyz.xiyoug.Util.MyAnimation;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
 import com.example.wyz.xiyoug.Viewer.MyFragment;
@@ -97,14 +98,24 @@ public class MyBorrowActivity  extends AppCompatActivity
         myAdapter.setOnItemClickListener(new OnItemOnClickListenerInterface.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
-                String url=HttpLinkHeader.BOOK_DETAIL_BARCODE+book_borrows.get(position).getBarcode();
-                Intent intent=new Intent();
-                Bundle  bundle=new Bundle();
-                bundle.putString("url",url);
-                intent.putExtras(bundle);
-                intent.setClass(MyBorrowActivity.this,BookDetailActivity.class);
-                startActivity(intent);
-                Log.d(TAG,"点击了第"+position+"个item");
+                if(!IsNetworkConnected.isNetworkConnected(MyBorrowActivity.this))
+                {
+                    Message message=Message.obtain();
+                    message.what=6;
+                    myhandler.sendMessage(message);
+                }
+                else
+                {
+                    String url=HttpLinkHeader.BOOK_DETAIL_BARCODE+book_borrows.get(position).getBarcode();
+                    Intent intent=new Intent();
+                    Bundle  bundle=new Bundle();
+                    bundle.putString("url",url);
+                    intent.putExtras(bundle);
+                    intent.setClass(MyBorrowActivity.this,BookDetailActivity.class);
+                    startActivity(intent);
+                    Log.d(TAG,"点击了第"+position+"个item");
+                }
+
             }
 
             @Override
@@ -211,17 +222,27 @@ public class MyBorrowActivity  extends AppCompatActivity
 
         @Override
         public void onClick(View view) {
-            List<BasicNameValuePair> basicNameValuePairs=new ArrayList<BasicNameValuePair>();
-            renew_barCode=book_borrows.get(index).getBarcode();
-            renew_department_id=book_borrows.get(index).getDepartment_id();
-            renew_library_id=book_borrows.get(index).getLibrary_id();
-            basicNameValuePairs.add(new BasicNameValuePair("session",MyFragment.SESSIONID));
-            basicNameValuePairs.add(new BasicNameValuePair("barcode",renew_barCode));
-            basicNameValuePairs.add(new BasicNameValuePair("department_id",renew_department_id));
-            basicNameValuePairs.add(new BasicNameValuePair("library_id",renew_library_id));
-            renew_url=OkHttpUtil.attachHttpGetParams(HttpLinkHeader.BOOK_RENEW,basicNameValuePairs);
+            if(!IsNetworkConnected.isNetworkConnected(MyBorrowActivity.this))
+            {
+                Message message=Message.obtain();
+                message.what=6;
+                myhandler.sendMessage(message);
+            }
+            else
+            {
+                List<BasicNameValuePair> basicNameValuePairs=new ArrayList<BasicNameValuePair>();
+                renew_barCode=book_borrows.get(index).getBarcode();
+                renew_department_id=book_borrows.get(index).getDepartment_id();
+                renew_library_id=book_borrows.get(index).getLibrary_id();
+                basicNameValuePairs.add(new BasicNameValuePair("session",MyFragment.SESSIONID));
+                basicNameValuePairs.add(new BasicNameValuePair("barcode",renew_barCode));
+                basicNameValuePairs.add(new BasicNameValuePair("department_id",renew_department_id));
+                basicNameValuePairs.add(new BasicNameValuePair("library_id",renew_library_id));
+                renew_url=OkHttpUtil.attachHttpGetParams(HttpLinkHeader.BOOK_RENEW,basicNameValuePairs);
           /*  myRenewThread =new MyRenewThread();
             new Thread(myRenewThread).start();*/
+            }
+
         }
     }
     private   class  MyThread implements  Runnable
@@ -280,6 +301,10 @@ public class MyBorrowActivity  extends AppCompatActivity
             {
                 String renew_result=msg.getData().getString("renew_result");
                 DealWithReNewResult(renew_result);
+            }
+            else if(msg.what==6)
+            {
+                Toast.makeText(MyBorrowActivity.this,"网络超时",Toast.LENGTH_SHORT).show();
             }
 
         }

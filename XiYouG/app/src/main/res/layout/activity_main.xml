@@ -63,27 +63,13 @@
                         android:layout_centerInParent="true"
                         >
                         <com.example.wyz.xiyoug.Util.CircleImageView
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
                             android:src="@drawable/logo"
                             android:layout_gravity="center"
-                            app:civ_border_width="2dp"
-                            app:civ_border_color="#222222"
+                            app:civ_border_width="@dimen/circle_image_border"
+                            app:civ_border_color="@color/circle_image_border"
                             />
-                        <TextView
-                            android:id="@+id/userName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/my_no_login"
-                            android:textColor="@color/my_studyNumber"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="5dp"
-
-                            android:textSize="@dimen/my_col"
-                            />
-
-
-
 
                     </LinearLayout>
                 </LinearLayout>
@@ -191,7 +177,7 @@
                     android:id="@+id/our_logo"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:src="@drawable/our"
+                    android:src="@drawable/about"
                     android:layout_centerVertical="true"
                     />
                     <TextView
@@ -247,7 +233,27 @@
                 android:layout_alignLeft="@id/library"
                 android:gravity="center"
                 >
-
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:background="@mipmap/logo"
+                    />
+                <TextView
+                    android:layout_marginTop="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/about_our_team"
+                    android:textColor="@color/whiteWords"
+                    android:textSize="14sp"
+                    />
+                <TextView
+                    android:layout_marginTop="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/about_our_me"
+                    android:textColor="@color/whiteWords"
+                    android:textSize="14sp"
+                    />
 
             </LinearLayout>
         </LinearLayout>

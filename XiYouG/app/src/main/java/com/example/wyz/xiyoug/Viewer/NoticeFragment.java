@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.Model.News;
 import com.example.wyz.xiyoug.R;
+import com.example.wyz.xiyoug.Util.IsNetworkConnected;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
 import com.example.wyz.xiyoug.Activity.InfoDetail_Activity;
 import com.example.wyz.xiyoug.Util.ReadFile;
@@ -123,7 +124,17 @@ public class NoticeFragment  extends Fragment{
                 handler_pull.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        getPullDownData();
+                        if(!IsNetworkConnected.isNetworkConnected(getContext()))
+                        {
+                            Message message=Message.obtain();
+                            message.what=2;
+                            notice_handler.sendMessage(message);
+                        }
+                        else
+                        {
+                            getPullDownData();
+                        }
+
                     }
                 },2000);
             }
@@ -137,7 +148,13 @@ public class NoticeFragment  extends Fragment{
                 handler_up.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        getUpLoadData();
+                        if (!IsNetworkConnected.isNetworkConnected(getContext())) {
+                            Message message = Message.obtain();
+                            message.what = 2;
+                            notice_handler.sendMessage(message);
+                        } else {
+                            getUpLoadData();
+                        }
                     }
                 },2000);
             }
@@ -145,17 +162,23 @@ public class NoticeFragment  extends Fragment{
         pullListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                Intent intent=new Intent();
-                Bundle bundle=new Bundle();
-                bundle.putString("type","announce");
-                bundle.putString("format","html");
-                bundle.putInt("id",newses.get(i-1).getId());
-                intent.putExtras(bundle);
-                intent.setClass(getActivity(),InfoDetail_Activity.class);
-                startActivity(intent);
-
-
+                if(!IsNetworkConnected.isNetworkConnected(getContext()))
+                {
+                    Message message=Message.obtain();
+                    message.what=2;
+                    notice_handler.sendMessage(message);
+                }
+                else
+                {
+                    Intent intent=new Intent();
+                    Bundle bundle=new Bundle();
+                    bundle.putString("type","announce");
+                    bundle.putString("format","html");
+                    bundle.putInt("id",newses.get(i-1).getId());
+                    intent.putExtras(bundle);
+                    intent.setClass(getActivity(),InfoDetail_Activity.class);
+                    startActivity(intent);
+                }
             }
         });
         adapter=new MyAdapter();

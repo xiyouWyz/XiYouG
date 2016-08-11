@@ -89,6 +89,8 @@ public class HomeFragment extends Fragment {
     };
     private String TAG = "HomeFragment";
 
+    private  View itemView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.home_page, container, false);
@@ -604,7 +606,7 @@ public class HomeFragment extends Fragment {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 2) {
-                Toast.makeText(getContext(), "请检查网络连接", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "网络超时", Toast.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(false);
                 Log.d(TAG, "已停止刷新");
             } else if (msg.what == 1) {

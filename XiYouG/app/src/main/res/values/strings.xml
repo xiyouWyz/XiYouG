@@ -3,7 +3,7 @@
     <string name="library_name">西邮图书馆</string>
     <string name="score_name">西邮成绩</string>
     <string name="schedule_name">西邮课程表</string>
-    <string name="our_name">关于我们</string>
+    <string name="our_name">关于</string>
     <string name="feedback_name">反馈</string>
     <string name="exit">退出登录</string>
     <string name="Main_home">首页</string>
@@ -119,4 +119,22 @@
     <string name="score_item_courseNature">课程性质:</string>
     <string name="score_not_pass">未通过的成绩</string>
     <string name="score_item_failed_score">最高成绩:</string>
+
+    <string name="about_our_app_name">掌上西邮</string>
+    <string name="about_our_version_label">当前版本号:</string>
+    <string name="about_our_version">1.0</string>
+    <string name="about_our_update">版本更新</string>
+    <string name="about_our_question">常见问题</string>
+    <string name="about_our_feedback">问题反馈</string>
+    <string name="about_our_our">关于我们</string>
+    <string name="about_our_team">应用开发:西邮移动应用开发实验室</string>
+    <string name="about_our_me">联系:wangyongzhi@xiyou3g.com</string>
+
+    <string name="question_title">问题帮助</string>
+    <string name="question_item1">
+        1.登录时的学号和密码都指的是什么？
+        \n\t图书馆账号和密码一般为:
+        \n\ta.15级及以后学生为自己的学号，初始密码为学号后6位或123456;
+        \n\tb.15级以前学生账号为：大写S+自己的学号，初始密码为123456;
+        \n\t课表和成绩的账号和密码为自己的教务处账号和密码</string>
 </resources>

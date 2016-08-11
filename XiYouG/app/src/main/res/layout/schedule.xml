@@ -647,7 +647,7 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:layout_gravity="bottom|end"
-                        android:layout_margin="16dp"
+                        android:layout_margin="10dp"
                         app:backgroundTint="@color/schedule_import"
                         app:rippleColor="@color/schedule_import_press"
                         android:src="@drawable/add" />

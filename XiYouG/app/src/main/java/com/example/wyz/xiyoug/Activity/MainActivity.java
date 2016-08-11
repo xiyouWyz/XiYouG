@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.Util.IsNetworkConnected;
+import com.example.wyz.xiyoug.Viewer.AboutOurFragment;
 import com.example.wyz.xiyoug.Viewer.LibraryMainFragment;
 import com.example.wyz.xiyoug.Viewer.ScheduleFragment;
 import com.example.wyz.xiyoug.Viewer.ScoreMyFragment;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Fragment scheduleFragment;
     private Fragment libraryFragment;
     private Fragment scoreFragment;
+    private Fragment about_ourFragment;
     private FragmentManager fm;
     private  Menu  menu;
     private  final String TAG="MainActivity";
@@ -175,7 +177,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 dlMain.closeDrawers();
                 break;
             case  R.id.our:
-                Log.d(TAG,"点击了our");
+                setFragmentSelect(R.id.our);
+                menu.getItem(0).setVisible(false);
+                dlMain.closeDrawers();
                 break;
             case  R.id.feedback:
 
@@ -241,6 +245,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     transaction.show(scoreFragment);
                 }
                 break;
+            case  R.id.our:
+                if(about_ourFragment==null)
+                {
+                    about_ourFragment=new AboutOurFragment();
+                    transaction.add(R.id.dl_container,about_ourFragment);
+                }
+                else
+                {
+                    transaction.show(about_ourFragment);
+                }
         }
         transaction.commitAllowingStateLoss();
     }
@@ -258,32 +272,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
             transaction.hide(scoreFragment);
         }
+        if(about_ourFragment!=null)
+        {
+            transaction.hide(about_ourFragment);
+        }
     }
 }
-
-
-/*
-        btnClickGetMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fm.beginTransaction().replace(R.id.dl_container, clickGetMoreFragment).commit();
-                dlMain.closeDrawers();
-            }
-        });
-        btnAddExtraHeader1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fm.beginTransaction().replace(R.id.dl_container, addExtraHeaderFragment1).commit();
-                dlMain.closeDrawers();
-            }
-        });
-
-        btnAddExtraHeader2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fm.beginTransaction().replace(R.id.dl_container, addExtraHeaderFragment2).commit();
-                dlMain.closeDrawers();
-            }
-        });*/
-
-

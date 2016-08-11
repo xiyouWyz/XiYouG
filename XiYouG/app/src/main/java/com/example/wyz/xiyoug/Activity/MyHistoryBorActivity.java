@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.example.wyz.xiyoug.Model.Book_HistoryBor;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.R;
+import com.example.wyz.xiyoug.Util.IsNetworkConnected;
 import com.example.wyz.xiyoug.Util.MyAnimation;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
 import com.example.wyz.xiyoug.Viewer.MyFragment;
@@ -76,13 +77,22 @@ public class MyHistoryBorActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d(TAG,"点击了第"+i+"个item");
-                String url=HttpLinkHeader.BOOK_DETAIL_BARCODE+book_historyBors.get(i).getBarcode();
-                Intent intent=new Intent();
-                Bundle bundle=new Bundle();
-                bundle.putString("url",url);
-                intent.putExtras(bundle);
-                intent.setClass(MyHistoryBorActivity.this,BookDetailActivity.class);
-                startActivity(intent);
+                if(!IsNetworkConnected.isNetworkConnected(MyHistoryBorActivity.this))
+                {
+                    Message message=Message.obtain();
+                    message.what=5;
+                    myHandler.sendMessage(message);
+                }
+                else
+                {
+                    String url=HttpLinkHeader.BOOK_DETAIL_BARCODE+book_historyBors.get(i).getBarcode();
+                    Intent intent=new Intent();
+                    Bundle bundle=new Bundle();
+                    bundle.putString("url",url);
+                    intent.putExtras(bundle);
+                    intent.setClass(MyHistoryBorActivity.this,BookDetailActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -178,31 +188,32 @@ public class MyHistoryBorActivity extends AppCompatActivity {
                 Toast.makeText(MyHistoryBorActivity.this,"没有历史记录",Toast.LENGTH_SHORT).show();
             }
             //请求成功处理
-            if(msg.what==1)
+            else if(msg.what==1)
             {
                 String his_result=msg.getData().getString("his_result");
                 DealWithHisResult(his_result);
             }
-            if(msg.what==2)
+            else if(msg.what==2)
             {
                 load_view.setVisibility(View.INVISIBLE);
                 content.setVisibility(View.VISIBLE);
             }
             //没有网络连接处理
-            if(msg.what==3)
+            else if(msg.what==3)
             {
                 Toast.makeText(MyHistoryBorActivity.this,"网络超时",Toast.LENGTH_SHORT).show();
+                MyHistoryBorActivity.this.finish();
             }
-            if(msg.what==4)
+            else if(msg.what==4)
             {
                 Toast.makeText(MyHistoryBorActivity.this,"请求出错",Toast.LENGTH_SHORT).show();
                 MyHistoryBorActivity.this.finish();
             }
-
-
-
+            else if(msg.what==5)
+            {
+                Toast.makeText(MyHistoryBorActivity.this,"网络超时",Toast.LENGTH_SHORT).show();
             }
-
+        }
     }
     private  void DealWithHisResult(String his_result)
     {

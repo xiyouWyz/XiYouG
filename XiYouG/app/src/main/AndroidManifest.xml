@@ -26,6 +26,8 @@
             android:theme="@style/AppTheme.NoActionBarFullScreen"
             />
         <activity android:name=".Activity.ScoreFailedActivity"/>
+        <activity android:name=".Activity.LabWebSiteActivity"/>
+        <activity android:name=".Activity.QuestionActivity"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
