@@ -193,7 +193,7 @@ private  class GetScoreThread implements  Runnable
     {
         if(semester_title!=null)
         {
-            arrayAdapter=new ArrayAdapter<String>(ScoreActivity.this,android.R.layout.simple_spinner_item,semester_title)
+            arrayAdapter=new ArrayAdapter<String>(ScoreActivity.this,R.layout.score_spinner_item,semester_title)
             {
                 @Override
                 public View getView(int position, View convertView, ViewGroup parent)
@@ -209,7 +209,7 @@ private  class GetScoreThread implements  Runnable
 
                 private View setCentered(View view)
                 {
-                    TextView textView = (TextView)view.findViewById(android.R.id.text1);
+                    TextView textView = (TextView)view;
                     textView.setGravity(Gravity.CENTER);
                     return view;
                 }

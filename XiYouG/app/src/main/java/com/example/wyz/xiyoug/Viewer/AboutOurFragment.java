@@ -50,6 +50,7 @@ public class AboutOurFragment extends Fragment  implements View.OnClickListener{
         switch (view.getId())
         {
             case  R.id.update:
+                Toast.makeText(getContext(),"已是最新版本",Toast.LENGTH_SHORT).show();
                 break;
             case  R.id.question:
                 Intent intent=new Intent();

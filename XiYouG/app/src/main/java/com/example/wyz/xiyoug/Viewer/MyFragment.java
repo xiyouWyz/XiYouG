@@ -283,9 +283,11 @@ public class MyFragment extends Fragment {
                             basicNameValuePairs.add(new BasicNameValuePair("username",account));
                             basicNameValuePairs.add(new BasicNameValuePair("password",password));
                             login_url= OkHttpUtil.attachHttpGetParams(HttpLinkHeader.LOGIN,basicNameValuePairs);
+                            loginWindow.dismiss();
                             new MyAnimation(getContext(),"胖萌为您努力登录中...",R.drawable.loading,load_view);
                             load_view.setVisibility(View.VISIBLE);
                             content.setVisibility(View.INVISIBLE);
+
                             myThread=new MyThread();
                             new Thread(myThread).start();
                         }

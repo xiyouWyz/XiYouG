@@ -168,7 +168,7 @@
                 android:layout_height="@dimen/my_col_divide"
                 android:background="@color/my_col_divide"
                 />
-            <LinearLayout
+         <!--   <LinearLayout
                 android:id="@+id/level_query"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -205,7 +205,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/my_col_divide"
                 android:background="@color/my_col_divide"
-                />
+                />-->
             <LinearLayout
                 android:id="@+id/failed_query"
                 android:layout_width="match_parent"

@@ -50,7 +50,7 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
     private  TextView college_view;
     private  TextView department_view;
     private LinearLayout score_query;
-    private  LinearLayout level_query;
+    //private  LinearLayout level_query;
     private  LinearLayout faied_query;
     private  LinearLayout exit;
     private  boolean isLogin=false;
@@ -90,7 +90,7 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
         college_view=(TextView)view.findViewById(R.id.college);
         department_view=(TextView)view.findViewById(R.id.department);
         score_query=(LinearLayout)view.findViewById(R.id.score_query);
-        level_query=(LinearLayout)view.findViewById(R.id.level_query);
+        //level_query=(LinearLayout)view.findViewById(R.id.level_query);
         faied_query=(LinearLayout)view.findViewById(R.id.failed_query);
         exit=(LinearLayout)view.findViewById(R.id.exit);
         load_view=(RelativeLayout)view.findViewById(R.id.loading);
@@ -99,7 +99,7 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
 
         login_view.setOnClickListener(this);
         score_query.setOnClickListener(this);
-        level_query.setOnClickListener(this);
+        //level_query.setOnClickListener(this);
         faied_query.setOnClickListener(this);
         exit.setOnClickListener(this);
     }
@@ -133,16 +133,7 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
                         startActivity(intent);
                     }
                     break;
-                case  R.id.level_query:
-                    if(!isLogin)
-                    {
-                        Toast.makeText(getContext(),"请先登录",Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    {
 
-                    }
-                    break;
                 case  R.id.failed_query:
                     if(!isLogin)
                     {

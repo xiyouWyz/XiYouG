@@ -116,6 +116,10 @@ public class ScoreFailedActivity extends AppCompatActivity {
 
                 }
             });
+            if(failedModels==null)
+            {
+                Toast.makeText(ScoreFailedActivity.this,"无未通过记录",Toast.LENGTH_SHORT).show();
+            }
             recyclerView.setAdapter(myAdapter);
 
         }
