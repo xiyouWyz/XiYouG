@@ -267,19 +267,19 @@ public class BookDetailActivity  extends AppCompatActivity{
         myReferAdapter.setOnItemClickListener(new OnItemOnClickListenerInterface.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
-
-            }
-
-            @Override
-            public void OnItemLongClick(View view, int position) {
-                Log.d(TAG,"点击了第"+position+"个item");
                 String url=HttpLinkHeader.BOOK_DETAIL_ID+ BookDetailActivity.book_detail.getBook_referBookses().get(position).getId();
                 Intent intent=new Intent();
                 Bundle bundle=new Bundle();
                 bundle.putString("url",url);
                 intent.putExtras(bundle);
-                //intent.setClass(getContext(),BookDetailActivity.class);
+                intent.setClass(BookDetailActivity.this,BookDetailActivity.class);
                 startActivity(intent);
+            }
+
+            @Override
+            public void OnItemLongClick(View view, int position) {
+                Log.d(TAG,"点击了第"+position+"个item");
+
             }
         });
         //设置适配器

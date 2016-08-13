@@ -78,7 +78,40 @@ public class JsonHandle {
             {
                 time.add("");
             }
-            else {
+            else if(textNodes.size()==3){
+
+                String schedule_name = textNodes.get(0).text();
+                String schedule_teacher = textNodes.get(1).text();
+                String schedule_room = textNodes.get(2).text();
+                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                time.add(schedule);
+            }
+            else if(textNodes.size()==4){
+
+                String schedule_name = textNodes.get(0).text();
+                String schedule_teacher = textNodes.get(2).text();
+                String schedule_room = textNodes.get(3).text();
+                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                time.add(schedule);
+            }
+            else if(textNodes.size()==8){
+
+                String schedule_name = textNodes.get(0).text();
+                String schedule_teacher = textNodes.get(2).text();
+                String schedule_room = textNodes.get(3).text();
+                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                time.add(schedule);
+            }
+            else if(textNodes.size()==12){
+
+                String schedule_name = textNodes.get(0).text();
+                String schedule_teacher = textNodes.get(2).text();
+                String schedule_room = textNodes.get(3).text();
+                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                time.add(schedule);
+            }
+            else if(textNodes.size()==16){
+
                 String schedule_name = textNodes.get(0).text();
                 String schedule_teacher = textNodes.get(2).text();
                 String schedule_room = textNodes.get(3).text();
@@ -97,7 +130,40 @@ public class JsonHandle {
             {
                 time.add("");
             }
-            else {
+            else if(textNodes.size()==3){
+
+                String schedule_name = textNodes.get(0).text();
+                String schedule_teacher = textNodes.get(1).text();
+                String schedule_room = textNodes.get(2).text();
+                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                time.add(schedule);
+            }
+            else if(textNodes.size()==4){
+
+                String schedule_name = textNodes.get(0).text();
+                String schedule_teacher = textNodes.get(2).text();
+                String schedule_room = textNodes.get(3).text();
+                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                time.add(schedule);
+            }
+            else if(textNodes.size()==8){
+
+                String schedule_name = textNodes.get(0).text();
+                String schedule_teacher = textNodes.get(2).text();
+                String schedule_room = textNodes.get(3).text();
+                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                time.add(schedule);
+            }
+            else if(textNodes.size()==12){
+
+                String schedule_name = textNodes.get(0).text();
+                String schedule_teacher = textNodes.get(2).text();
+                String schedule_room = textNodes.get(3).text();
+                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                time.add(schedule);
+            }
+            else if(textNodes.size()==16){
+
                 String schedule_name = textNodes.get(0).text();
                 String schedule_teacher = textNodes.get(2).text();
                 String schedule_room = textNodes.get(3).text();
