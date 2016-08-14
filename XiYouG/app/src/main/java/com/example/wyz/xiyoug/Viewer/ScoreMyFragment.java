@@ -18,6 +18,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.example.wyz.xiyoug.Activity.FourLevelActivity;
 import com.example.wyz.xiyoug.Activity.ScoreActivity;
 import com.example.wyz.xiyoug.Activity.ScoreFailedActivity;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
@@ -30,6 +33,9 @@ import com.example.wyz.xiyoug.Util.MyAnimation;
 import com.example.wyz.xiyoug.Util.OkHttpUtil;
 import com.example.wyz.xiyoug.Util.ScheduleOkHttp;
 import com.example.wyz.xiyoug.Util.SerializableList;
+import com.example.wyz.xiyoug.VolleyUtil.GetObjectRequest;
+import com.example.wyz.xiyoug.VolleyUtil.ResponseListener;
+import com.example.wyz.xiyoug.VolleyUtil.VolleyUtil;
 
 import org.apache.http.message.BasicNameValuePair;
 
@@ -50,7 +56,7 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
     private  TextView college_view;
     private  TextView department_view;
     private LinearLayout score_query;
-    //private  LinearLayout level_query;
+    private  LinearLayout level_query;
     private  LinearLayout faied_query;
     private  LinearLayout exit;
     private  boolean isLogin=false;
@@ -68,6 +74,7 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
     private  String score_html;
     private  String name;
     private  List<String> score_userInfo;
+    private  Intent intentFour;
 
 
 
@@ -90,7 +97,7 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
         college_view=(TextView)view.findViewById(R.id.college);
         department_view=(TextView)view.findViewById(R.id.department);
         score_query=(LinearLayout)view.findViewById(R.id.score_query);
-        //level_query=(LinearLayout)view.findViewById(R.id.level_query);
+        level_query=(LinearLayout)view.findViewById(R.id.level_query);
         faied_query=(LinearLayout)view.findViewById(R.id.failed_query);
         exit=(LinearLayout)view.findViewById(R.id.exit);
         load_view=(RelativeLayout)view.findViewById(R.id.loading);
@@ -99,7 +106,7 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
 
         login_view.setOnClickListener(this);
         score_query.setOnClickListener(this);
-        //level_query.setOnClickListener(this);
+        level_query.setOnClickListener(this);
         faied_query.setOnClickListener(this);
         exit.setOnClickListener(this);
     }
@@ -148,6 +155,30 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
                         intent.setClass(getContext(), ScoreFailedActivity.class);
                         startActivity(intent);
                     }
+                    break;
+                case  R.id.level_query:
+                    intentFour=new Intent();
+                    intentFour.setClass(getContext(), FourLevelActivity.class);
+                    VolleyUtil.initialize(getContext());
+                    Request request = new GetObjectRequest(HttpLinkHeader.FOURLEVELINIT, new ResponseListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            Message message=Message.obtain();
+                            message.what=6;
+                            myHandler.sendMessage(message);
+                        }
+
+                        @Override
+                        public void onResponse(Object o) {
+                            Bundle bundle=new Bundle();
+                            String result=JsonHandle.getFourLevelScoreLabel((String)o);
+                            bundle.putString("result",result);
+                            intentFour.putExtras(bundle);
+                            startActivity(intentFour);
+                        }
+                    }) ;
+                    VolleyUtil.getInstance().add(request);
+
                     break;
                 case  R.id.exit:
                     if(!isLogin)
@@ -346,6 +377,10 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
             else  if(msg.what==5)
             {
                 Toast.makeText(getContext(),"网络超时",Toast.LENGTH_SHORT).show();
+            }
+            else  if(msg.what==6)
+            {
+                Toast.makeText(getContext(),"请求出错",Toast.LENGTH_SHORT).show();
             }
         }
     }

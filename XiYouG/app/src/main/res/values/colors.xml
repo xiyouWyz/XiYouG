@@ -166,4 +166,8 @@
     <color name="setLogo_border">#1FA394</color>
     <color name="setLogo_back">#00ffffff</color>
     <color name="setLogo_text_back">#fff</color>
+
+    <color name="fourLevel_title">#fff</color>
+    <color name="fourLevel_title_back">#36B19F</color>
+    <color name="fourLevel_label">#1FA294</color>
 </resources>

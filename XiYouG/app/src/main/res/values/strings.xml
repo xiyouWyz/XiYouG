@@ -145,7 +145,30 @@
         \n\t\t点击课表右下角绿色按钮即可导入课表,课表一经导入即会一直存在。
         \n\tb.更新课表:
         \n\t\t更新课表，只需重新按绿色按钮导入即可更新</string>
+     <string name="question_item4">
+        4.为什么要反复登陆？
+        \n\ta.图书馆账号和课表，成绩账号不同;
+        \n\tb.课表导入后会一直存在,就算程序退出后,下次打开程序不需登陆即可看课表,一学期只需导入一次，十分方便
+    </string>
     <string name="setLogo_takePhoto">拍照</string>
     <string name="setLogo_album">相册</string>
     <string name="setLogo_cancel">取消</string>
+
+
+    <string name="fourLevel_title">四六级成绩</string>
+    <string name="fourLevel_label">全国大学英语四、六级考试成绩查询结果</string>
+    <string name="fourLevel_nameLabel">姓名 </string>
+    <string name="fourLevel_schoolLabel">学校 </string>
+    <string name="fourLevel_typeLabel">考试类别 </string>
+    <string name="fourLevel_accountLabel">准考证号 </string>
+    <string name="fourLevel_timeLabel">考试时间 </string>
+    <string name="fourLevel_totalLabel">总分 </string>
+    <string name="fourLevel_listenLabel">听力 </string>
+    <string name="fourLevel_readLabel">阅读 </string>
+    <string name="fourLevel_writeLabel">写作与翻译 </string>
+    <string name="fourLevel_account_hint">准考证号</string>
+    <string name="fourLevel_password_hint">姓名</string>
+    <string name="fourLevel_divide_word">:</string>
+
+
 </resources>

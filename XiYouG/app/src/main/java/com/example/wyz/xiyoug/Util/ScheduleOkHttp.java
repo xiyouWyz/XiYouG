@@ -2,6 +2,7 @@ package com.example.wyz.xiyoug.Util;
 
 import android.util.Log;
 
+import com.example.wyz.xiyoug.Activity.FourLevelActivity;
 import com.example.wyz.xiyoug.Model.ScoreModel;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.OkHttpClient;
@@ -213,5 +214,27 @@ public class ScheduleOkHttp {
             return lines.toString();
         }
         return  null;
+    }
+    public  static String getFourLevelScore(String url,String session) throws IOException {
+        Request request=new Request.Builder()
+                .url(url)
+                .addHeader("Referer","http://www.chsi.com.cn/cet/")
+                .addHeader("Cookie",session)
+                .build();
+        okHttpClient.setFollowSslRedirects(false);
+        okHttpClient.setFollowRedirects(false);
+        Response response=okHttpClient.newCall(request).execute();
+        if(response.isSuccessful())
+        {
+            BufferedReader bufferedReader=new BufferedReader( response.body().charStream());
+            StringBuffer stringBuffer=new StringBuffer();
+            String line;
+            while (((line=bufferedReader.readLine())!=null))
+            {
+                stringBuffer.append(line);
+            }
+            return stringBuffer.toString();
+        }
+        return  "";
     }
 }

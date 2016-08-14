@@ -33,4 +33,10 @@ public class HttpLinkHeader {
     public final static String SCORE="http://222.24.19.201/xscjcx.aspx";
 
     public  final  static  String LABWEBSITE="https://www.xiyoumobile.com/";
+    public  final  static  String SCHOOLWEBSITE="http://www.xiyou.edu.cn/";
+    public  final  static  String SCOREWEBSITE="http://jyc.xupt.edu.cn/";
+    public  final  static  String LIBWEBSITE="http://www.lib.xiyou.edu.cn/";
+
+    public  final static  String  FOURLEVEL="http://www.chsi.com.cn/cet/query";
+    public  final  static  String FOURLEVELINIT="http://www.chsi.com.cn/cet/";
 }

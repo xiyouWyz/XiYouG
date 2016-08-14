@@ -24,6 +24,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wyz.xiyoug.Activity.BookDetailActivity;
+import com.example.wyz.xiyoug.Activity.LibWebSiteActivity;
+
+import com.example.wyz.xiyoug.Activity.SchoolWebSiteActivity;
+import com.example.wyz.xiyoug.Activity.ScoreWebSiteActivity;
 import com.example.wyz.xiyoug.Model.Book_Rank;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.R;
@@ -299,20 +303,26 @@ public class HomeFragment extends Fragment {
         @Override
 
         public void onClick(View view) {
+
+            Intent intent=null;
             switch (index) {
                 case 0:
-                    url = "http://www.xiyou.edu.cn/";
+                    intent = new Intent();
+                    intent.setClass(getContext(), SchoolWebSiteActivity.class);
+                    getContext().startActivity(intent);
                     break;
                 case 1:
-                    url = "http://jyc.xupt.edu.cn/";
+                    intent = new Intent();
+                    intent.setClass(getContext(), ScoreWebSiteActivity.class);
+                    getContext().startActivity(intent);
                     break;
                 case 2:
-                    url = "http://www.lib.xiyou.edu.cn/";
+                    intent = new Intent();
+                    intent.setClass(getContext(), LibWebSiteActivity.class);
+                    getContext().startActivity(intent);
                     break;
             }
-            Uri uri = Uri.parse(url);
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            getContext().startActivity(intent);
+
         }
     }
 

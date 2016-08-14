@@ -4,7 +4,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/applogo"
         android:supportsRtl="true"
         android:label="西邮控"
         android:theme="@style/AppTheme">
@@ -32,6 +32,10 @@
         <activity android:name=".Activity.ScoreFailedActivity"  android:label="" android:screenOrientation="portrait"/>
         <activity android:name=".Activity.LabWebSiteActivity" android:label=""  android:screenOrientation="portrait"/>
         <activity android:name=".Activity.QuestionActivity" android:label="" android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.LibWebSiteActivity"  android:label="" android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.ScoreWebSiteActivity"  android:label="" android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.SchoolWebSiteActivity"  android:label="" android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.FourLevelActivity"  android:label="" android:screenOrientation="portrait"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>

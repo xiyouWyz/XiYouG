@@ -168,44 +168,7 @@
                 android:layout_height="@dimen/my_col_divide"
                 android:background="@color/my_col_divide"
                 />
-         <!--   <LinearLayout
-                android:id="@+id/level_query"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/my_col_shape"
-                >
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
-                    >
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="四六级查询"
 
-                        android:textSize="@dimen/my_col"
-                        />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text=">"
-
-                        android:textSize="@dimen/my_col_arrow"
-                        android:textColor="@color/my_col_arrow"
-                        android:gravity="right"
-                        android:layout_marginEnd="10dp"
-                        />
-                </LinearLayout>
-            </LinearLayout>
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/my_col_divide"
-                android:background="@color/my_col_divide"
-                />-->
             <LinearLayout
                 android:id="@+id/failed_query"
                 android:layout_width="match_parent"
@@ -243,6 +206,44 @@
                 android:layout_height="@dimen/my_col_divide"
                 android:background="@color/my_col_divide"
                 />
+               <LinearLayout
+               android:id="@+id/level_query"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:background="@drawable/my_col_shape"
+               >
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:layout_marginStart="20dp"
+                   android:layout_marginEnd="20dp"
+                   android:layout_marginTop="15dp"
+                   android:layout_marginBottom="15dp"
+                   >
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="match_parent"
+                       android:text="四六级查询"
+
+                       android:textSize="@dimen/my_col"
+                       />
+                   <TextView
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:text=">"
+
+                       android:textSize="@dimen/my_col_arrow"
+                       android:textColor="@color/my_col_arrow"
+                       android:gravity="right"
+                       android:layout_marginEnd="10dp"
+                       />
+               </LinearLayout>
+           </LinearLayout>
+           <ImageView
+               android:layout_width="match_parent"
+               android:layout_height="@dimen/my_col_divide"
+               android:background="@color/my_col_divide"
+               />
             <LinearLayout
                 android:id="@+id/exit"
                 android:layout_width="match_parent"

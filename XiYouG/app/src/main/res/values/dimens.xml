@@ -79,4 +79,8 @@
     <dimen name="circle_image_border">2dp</dimen>
 
     <dimen name="setLogo_word">15sp</dimen>
+
+    <dimen name="fourLevel_title">16sp</dimen>
+    <dimen name="fourLevel_content">14sp</dimen>
+    <dimen name="fourLevel_label">18sp</dimen>
 </resources>

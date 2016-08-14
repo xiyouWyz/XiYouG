@@ -2,6 +2,7 @@ package com.example.wyz.xiyoug.Util;
 
 import android.util.Log;
 
+import com.example.wyz.xiyoug.Model.FourLevelModel;
 import com.example.wyz.xiyoug.Model.ScoreFailedModel;
 import com.example.wyz.xiyoug.Model.ScoreModel;
 
@@ -9,6 +10,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.TextNode;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,11 +96,27 @@ public class JsonHandle {
                 String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
                 time.add(schedule);
             }
+            else if(textNodes.size()==6){
+
+                String schedule_name = textNodes.get(0).text();
+                String schedule_teacher = textNodes.get(1).text();
+                String schedule_room = textNodes.get(2).text();
+                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                time.add(schedule);
+            }
             else if(textNodes.size()==8){
 
                 String schedule_name = textNodes.get(0).text();
                 String schedule_teacher = textNodes.get(2).text();
                 String schedule_room = textNodes.get(3).text();
+                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                time.add(schedule);
+            }
+            else if(textNodes.size()==9){
+
+                String schedule_name = textNodes.get(0).text();
+                String schedule_teacher = textNodes.get(1).text();
+                String schedule_room = textNodes.get(2).text();
                 String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
                 time.add(schedule);
             }
@@ -146,11 +164,27 @@ public class JsonHandle {
                 String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
                 time.add(schedule);
             }
+            else if(textNodes.size()==6){
+
+                String schedule_name = textNodes.get(0).text();
+                String schedule_teacher = textNodes.get(1).text();
+                String schedule_room = textNodes.get(2).text();
+                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                time.add(schedule);
+            }
             else if(textNodes.size()==8){
 
                 String schedule_name = textNodes.get(0).text();
                 String schedule_teacher = textNodes.get(2).text();
                 String schedule_room = textNodes.get(3).text();
+                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                time.add(schedule);
+            }
+            else if(textNodes.size()==9){
+
+                String schedule_name = textNodes.get(0).text();
+                String schedule_teacher = textNodes.get(1).text();
+                String schedule_room = textNodes.get(2).text();
                 String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
                 time.add(schedule);
             }
@@ -331,5 +365,47 @@ public class JsonHandle {
             }
         }
         return  lists;
+    }
+    public static FourLevelModel getFourLevelScore(String content)
+    {
+        Document document= Jsoup.parse(content);
+        Elements elements= document.body().getElementsByClass("cetTable");
+
+        Element body=(Element) elements.get(0).childNodes().get(1);
+        String name=body.childNodes().get(0).childNodes().get(3).childNodes().get(0).toString();
+        String school=body.childNodes().get(2).childNodes().get(3).childNodes().get(0).toString();
+        String type=body.childNodes().get(4).childNodes().get(3).childNodes().get(0).toString();
+        String account=body.childNodes().get(6).childNodes().get(3).childNodes().get(0).toString();
+        String time=body.childNodes().get(8).childNodes().get(3).childNodes().get(0).toString();
+
+        String total_grade=body.childNodes().get(10).childNodes().get(3).childNodes().get(1).childNodes().get(0).toString();
+        String listen_grade=body.childNodes().get(10).childNodes().get(3).childNodes().get(5).toString();
+        String read_grade=body.childNodes().get(10).childNodes().get(3).childNodes().get(8).toString();
+        String write_grade=body.childNodes().get(10).childNodes().get(3).childNodes().get(11).toString();
+        FourLevelModel fourLevelModel=new FourLevelModel.Builder()
+                .name(name)
+                .school(school)
+                .type(type)
+                .account(account)
+                .time(time)
+                .total_grade(total_grade)
+                .listen_grade(listen_grade)
+                .read_grade(read_grade)
+                .write_grade(write_grade)
+                .builder();
+
+        return  fourLevelModel;
+    }
+    public static String getFourLevelScoreLabel(String content)
+    {
+        Document document= Jsoup.parse(content);
+        Element div= document.body().getElementById("leftH");
+        String result=div.child(1).text();
+        return  getFourLevelLabel(result);
+    }
+    private  static  String getFourLevelLabel(String content)
+    {
+        String[] a=content.split("。");
+        return  a[0];
     }
 }
