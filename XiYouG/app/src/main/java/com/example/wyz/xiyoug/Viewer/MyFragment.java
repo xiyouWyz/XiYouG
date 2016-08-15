@@ -221,34 +221,35 @@ public class MyFragment extends Fragment {
                             Toast.makeText(getContext(),"请先登录",Toast.LENGTH_SHORT).show();
                         }
                         break;
-                    case R.id.my_exit:
-                        if(isLogin)
-                        {
-                            isLogin=false;
-                            if(!User.getInstance().getId().equals(""))
-                            {
-                                User.Clear();
-                            }
-                            studyNumber_view.setText("点击登录");
-                            name_view.setText("");
-                            major_view.setText("");
-                            debt_view.setText("");
-                            studyNumber="点击登录";
-                            major="";
-                            name="";
-                            debt="";
-                            SESSIONID="";
-                            login_layout.setVisibility(View.INVISIBLE);
-                            notLogin_layout.setVisibility(View.VISIBLE);
-
-                        }
-                        else
-                        {
-                            Toast.makeText(getContext(),"请先登录",Toast.LENGTH_SHORT).show();
-                        }
                 }
             }
+            if(view.getId()==R.id.my_exit)
+            {
+                if(isLogin)
+                {
+                    isLogin=false;
+                    if(!User.getInstance().getId().equals(""))
+                    {
+                        User.Clear();
+                    }
+                    studyNumber_view.setText("点击登录");
+                    name_view.setText("");
+                    major_view.setText("");
+                    debt_view.setText("");
+                    studyNumber="点击登录";
+                    major="";
+                    name="";
+                    debt="";
+                    SESSIONID="";
+                    login_layout.setVisibility(View.INVISIBLE);
+                    notLogin_layout.setVisibility(View.VISIBLE);
 
+                }
+                else
+                {
+                    Toast.makeText(getContext(),"请先登录",Toast.LENGTH_SHORT).show();
+                }
+            }
         }
     }
 
@@ -279,15 +280,14 @@ public class MyFragment extends Fragment {
                         }
                         else
                         {
+                            new MyAnimation(getContext(),"胖萌为您努力登录中...",R.drawable.loading,load_view);
+                            loginWindow.dismiss();
+                            load_view.setVisibility(View.VISIBLE);
+                            content.setVisibility(View.INVISIBLE);
                             List<BasicNameValuePair> basicNameValuePairs=new ArrayList<>();
                             basicNameValuePairs.add(new BasicNameValuePair("username",account));
                             basicNameValuePairs.add(new BasicNameValuePair("password",password));
                             login_url= OkHttpUtil.attachHttpGetParams(HttpLinkHeader.LOGIN,basicNameValuePairs);
-                            loginWindow.dismiss();
-                            new MyAnimation(getContext(),"胖萌为您努力登录中...",R.drawable.loading,load_view);
-                            load_view.setVisibility(View.VISIBLE);
-                            content.setVisibility(View.INVISIBLE);
-
                             myThread=new MyThread();
                             new Thread(myThread).start();
                         }
@@ -358,9 +358,15 @@ public class MyFragment extends Fragment {
             if(msg.what==0)
             {
                 Toast.makeText(getContext(),"账号错误，密码错误或账户不存在",Toast.LENGTH_SHORT).show();
+                load_view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
             }
             else if(msg.what==1)
             {
+                login_layout.setVisibility(View.VISIBLE);
+                notLogin_layout.setVisibility(View.INVISIBLE);
+                load_view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
                 Bundle bundle=msg.getData();
                 studyNumber=bundle.getString("ID");
                 name=bundle.getString("Name");
@@ -374,11 +380,9 @@ public class MyFragment extends Fragment {
 
                 User.getInstance(studyNumber,name,major,debt);
                 isLogin=true;
-                login_layout.setVisibility(View.VISIBLE);
-                notLogin_layout.setVisibility(View.INVISIBLE);
+
                 loginWindow.dismiss();
-                load_view.setVisibility(View.INVISIBLE);
-                content.setVisibility(View.VISIBLE);
+
             }
             else if(msg.what==2)
             {

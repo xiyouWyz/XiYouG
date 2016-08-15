@@ -180,28 +180,6 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
                     VolleyUtil.getInstance().add(request);
 
                     break;
-                case  R.id.exit:
-                    if(!isLogin)
-                    {
-                        Toast.makeText(getContext(),"未登录",Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    {
-                        isLogin=false;
-                        if(!ScoreUser.getInstance().getId().equals(""))
-                        {
-                            ScoreUser.Clear();
-                        }
-                        alreadyLogin_view.setVisibility(View.INVISIBLE);
-                        notLogin_view.setVisibility(View.VISIBLE);
-                        studyNumber_view.setText("");
-                        name_view.setText("");
-                        college_view.setText("");
-                        department_view.setText("");
-                        //loginWindow.showAtLocation(view,Gravity.CENTER,0,0);
-
-                    }
-                    break;
                 case  R.id.login:
 
                      if(!isLogin)
@@ -214,6 +192,29 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
                         loginWindow.showAtLocation(view, Gravity.CENTER,0,0);
                     }
                     break;
+            }
+        }
+        if(view.getId()==R.id.exit)
+        {
+            if(!isLogin)
+            {
+                Toast.makeText(getContext(),"未登录",Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                isLogin=false;
+                if(!ScoreUser.getInstance().getId().equals(""))
+                {
+                    ScoreUser.Clear();
+                }
+                alreadyLogin_view.setVisibility(View.INVISIBLE);
+                notLogin_view.setVisibility(View.VISIBLE);
+                studyNumber_view.setText("");
+                name_view.setText("");
+                college_view.setText("");
+                department_view.setText("");
+                //loginWindow.showAtLocation(view,Gravity.CENTER,0,0);
+
             }
         }
 
@@ -277,34 +278,44 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
 
                 String main_url= OkHttpUtil.attachHttpGetParam(HttpLinkHeader.XIYOU_Main,"xh",account);
                 String info=ScheduleOkHttp.getGetInfoFromServer(main_url,sessionId);
-                name= JsonHandle.getName(info);
-                Message message=Message.obtain();
-                message.what=1;
-                myHandler.sendMessage(message);
+                boolean isJudge=JsonHandle.getIsJudge(info);
+                if (!isJudge)
+                {
+                    Message message=Message.obtain();
+                    message.what=7;
+                    myHandler.sendMessage(message);
+                }
+                else
+                {
+                    name= JsonHandle.getName(info);
+                    Message message=Message.obtain();
+                    message.what=1;
+                    myHandler.sendMessage(message);
 
-                List<BasicNameValuePair> basicNameValuePairs=new ArrayList<>();
-                basicNameValuePairs.add(new BasicNameValuePair("xh",account));
-                basicNameValuePairs.add(new BasicNameValuePair("xm",name));
-                basicNameValuePairs.add(new BasicNameValuePair("gnmkdm","N121605"));
-                score_url=OkHttpUtil.attachHttpGetParams(HttpLinkHeader.SCORE,basicNameValuePairs);
-                try {
-                    score_html = ScheduleOkHttp.getGetScore(score_url,sessionId);
-                    score_userInfo=JsonHandle.getScoreUserInfo(score_html);
-                    Log.d(TAG,score_userInfo.toString());
+                    List<BasicNameValuePair> basicNameValuePairs=new ArrayList<>();
+                    basicNameValuePairs.add(new BasicNameValuePair("xh",account));
+                    basicNameValuePairs.add(new BasicNameValuePair("xm",name));
+                    basicNameValuePairs.add(new BasicNameValuePair("gnmkdm","N121605"));
+                    score_url=OkHttpUtil.attachHttpGetParams(HttpLinkHeader.SCORE,basicNameValuePairs);
+                    try {
+                        score_html = ScheduleOkHttp.getGetScore(score_url,sessionId);
+                        score_userInfo=JsonHandle.getScoreUserInfo(score_html);
+                        Log.d(TAG,score_userInfo.toString());
 
-                    Message message1=Message.obtain();
-                    Bundle bundle=new Bundle();
-                    SerializableList serializableList=new SerializableList();
-                    serializableList.setStringList(score_userInfo);
-                    bundle.putSerializable("userinfo",serializableList);
-                    message1.setData(bundle);
-                    message1.what=3;
-                    myHandler.sendMessage(message1);
-                } catch (Exception e) {
-                    Log.d(TAG,e.toString());
-                    Message message1=Message.obtain();
-                    message1.what=2;
-                    myHandler.sendMessage(message1);
+                        Message message1=Message.obtain();
+                        Bundle bundle=new Bundle();
+                        SerializableList serializableList=new SerializableList();
+                        serializableList.setStringList(score_userInfo);
+                        bundle.putSerializable("userinfo",serializableList);
+                        message1.setData(bundle);
+                        message1.what=3;
+                        myHandler.sendMessage(message1);
+                    } catch (Exception e) {
+                        Log.d(TAG,e.toString());
+                        Message message1=Message.obtain();
+                        message1.what=2;
+                        myHandler.sendMessage(message1);
+                    }
                 }
             }
             catch (ConnectException e)
@@ -381,6 +392,12 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
             else  if(msg.what==6)
             {
                 Toast.makeText(getContext(),"请求出错",Toast.LENGTH_SHORT).show();
+            }
+            else if(msg.what==7)
+            {
+                Toast.makeText(getContext(),"请先在学校官网中进行教师评价，方可查询成绩",Toast.LENGTH_SHORT).show();
+                load_view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
             }
         }
     }

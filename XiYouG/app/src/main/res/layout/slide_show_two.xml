@@ -2,17 +2,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/slide_show_two"
+    android:background="@drawable/slide_show_three"
     >
     <TextView
-
+        android:alpha="0.7"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:text="@string/slide_show_two"
-        android:textColor="#000"
+        android:textColor="@color/slide_show_word"
+        android:textSize="@dimen/slide_show_word"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="2dp"
+
         android:gravity="center_vertical"
+        android:layout_marginStart="15dp"
+        android:layout_marginBottom="2dp"
         />
     <LinearLayout
 
@@ -22,8 +25,9 @@
         android:layout_height="20dp"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginBottom="2dp"
+        android:layout_marginEnd="10dp"
 
 
         >

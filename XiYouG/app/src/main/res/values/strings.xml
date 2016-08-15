@@ -10,9 +10,9 @@
     <string name="Main_my">我的</string>
     <string name="Main_info">消息</string>
     <string name="home_title">西邮控</string>
-    <string name="slide_show_one"></string>
-    <string name="slide_show_two"></string>
-    <string name="slide_show_three"></string>
+    <string name="slide_show_one">西安邮电大学</string>
+    <string name="slide_show_two">西安邮电大学教务处</string>
+    <string name="slide_show_three">西安邮电大学图书馆</string>
     <string name="rank_collection">收藏排行榜</string>
     <string name="rank_borrow">借阅排行榜</string>
     <string name="rank_look">查看排行榜</string>
@@ -150,6 +150,10 @@
         \n\ta.图书馆账号和课表，成绩账号不同;
         \n\tb.课表导入后会一直存在,就算程序退出后,下次打开程序不需登陆即可看课表,一学期只需导入一次，十分方便
     </string>
+       <string name="question_item5">
+        4.点击头像的拍照和图书查询的扫一扫程序会崩？
+        \n\ta.该两项功能需要相机权限,可能没有权限，我们需要在设置里面对该应用允许相机权限即可
+    </string>
     <string name="setLogo_takePhoto">拍照</string>
     <string name="setLogo_album">相册</string>
     <string name="setLogo_cancel">取消</string>
@@ -166,8 +170,8 @@
     <string name="fourLevel_listenLabel">听力 </string>
     <string name="fourLevel_readLabel">阅读 </string>
     <string name="fourLevel_writeLabel">写作与翻译 </string>
-    <string name="fourLevel_account_hint">准考证号</string>
-    <string name="fourLevel_password_hint">姓名</string>
+    <string name="fourLevel_account_hint">请输入15位准考证号</string>
+    <string name="fourLevel_password_hint">姓名超过3个字，可只输入前3个</string>
     <string name="fourLevel_divide_word">:</string>
 
 

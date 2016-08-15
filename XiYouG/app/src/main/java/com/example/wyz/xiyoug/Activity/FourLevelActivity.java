@@ -32,6 +32,8 @@ import com.example.wyz.xiyoug.VolleyUtil.GetObjectRequest;
 import com.example.wyz.xiyoug.VolleyUtil.ResponseListener;
 import com.example.wyz.xiyoug.VolleyUtil.VolleyUtil;
 import org.apache.http.message.BasicNameValuePair;
+
+import java.nio.charset.MalformedInputException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -202,28 +204,44 @@ public class FourLevelActivity extends AppCompatActivity {
             switch (msg.what)
             {
                 case 1:
-                    FourLevelModel fourLevelModel= JsonHandle.getFourLevelScore(msg.getData().getString("result"));
-                    name.setText(fourLevelModel.name);
-                    school.setText(fourLevelModel.school);
-                    type.setText(fourLevelModel.type);
-                    account.setText(fourLevelModel.account);
-                    time.setText(fourLevelModel.time);
-                    total_grade.setText(fourLevelModel.total_grade);
-                    String listen="听力 :"+fourLevelModel.listen_grade;
-                    String read="阅读 :"+fourLevelModel.read_grade;
-                    String write="写作与翻译 :"+fourLevelModel.write_grade;
-                    listen_grade.setText(listen);
-                    read_grade.setText(read);
-                    write_grade.setText(write);
-                    load_view.setVisibility(View.INVISIBLE);
-                    login_content.setVisibility(View.INVISIBLE);
-                    main_content.setVisibility(View.VISIBLE);
+                    FourLevelModel fourLevelModel= null;
+                    try {
+                        fourLevelModel = JsonHandle.getFourLevelScore(msg.getData().getString("result"));
+                        name.setText(fourLevelModel.name);
+                        school.setText(fourLevelModel.school);
+                        type.setText(fourLevelModel.type);
+                        account.setText(fourLevelModel.account);
+                        time.setText(fourLevelModel.time);
+                        total_grade.setText(fourLevelModel.total_grade);
+                        String listen="听力 :"+fourLevelModel.listen_grade;
+                        String read="阅读 :"+fourLevelModel.read_grade;
+                        String write="写作与翻译 :"+fourLevelModel.write_grade;
+                        listen_grade.setText(listen);
+                        read_grade.setText(read);
+                        write_grade.setText(write);
+                        load_view.setVisibility(View.INVISIBLE);
+                        login_content.setVisibility(View.INVISIBLE);
+                        main_content.setVisibility(View.VISIBLE);
+                    } catch (Exception e) {
+                        Log.d(TAG,e.toString());
+                        Toast.makeText(FourLevelActivity.this,"请求出错,请检查账号和密码",Toast.LENGTH_SHORT).show();
+                        load_view.setVisibility(View.INVISIBLE);
+                        login_content.setVisibility(View.VISIBLE);
+                        main_content.setVisibility(View.INVISIBLE);
+                    }
+
                     break;
                 case  2:
                     Toast.makeText(FourLevelActivity.this,"网络超时",Toast.LENGTH_SHORT).show();
+                    load_view.setVisibility(View.INVISIBLE);
+                    login_content.setVisibility(View.VISIBLE);
+                    main_content.setVisibility(View.INVISIBLE);
                     break;
                 case  3:
                     Toast.makeText(FourLevelActivity.this,"请求出错",Toast.LENGTH_SHORT).show();
+                    load_view.setVisibility(View.INVISIBLE);
+                    login_content.setVisibility(View.VISIBLE);
+                    main_content.setVisibility(View.INVISIBLE);
                     break;
             }
         }

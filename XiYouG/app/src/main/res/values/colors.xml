@@ -7,13 +7,14 @@
     <color name="main_theme">#36B19F</color>
     <color name="main_word">#fff</color>
     <color name="slideMenu_theme">#1FA294</color>
+    <color name="slide_show_word">#fff</color>
     <color name="whiteWords">#fff</color>
     <color name="blackWords">#000</color>
     <color name="pressBottom">#229B91</color>
     <color name="normalBottom">#fff</color>
     <color name="splitLine">#59C4B6</color>
     <color name="rank_text">#36B19F</color>
-    <color name="rank_text_press">#229B91</color>
+    <color name="rank_text_press">#666</color>
     <color name="rank_listView_back">#D6F1ED</color>
     <color name="rank_below_divide">#229B91</color>
     <color name="plistView_itemBackground">#EBF8F6</color>

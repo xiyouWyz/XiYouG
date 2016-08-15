@@ -278,6 +278,12 @@ public class ScheduleFragment  extends Fragment{
             {
                 Toast.makeText(getContext(),"网络超时",Toast.LENGTH_SHORT).show();
             }
+            else if(msg.what==5)
+            {
+                Toast.makeText(getContext(),"请先在学校官网中进行教师评价，方可查询成绩",Toast.LENGTH_SHORT).show();
+                load_view.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
+            }
 
 
 
@@ -293,36 +299,45 @@ public class ScheduleFragment  extends Fragment{
                 sessionId=ScheduleOkHttp.postGetSessionFromServer(HttpLinkHeader.XIYOU_Login,account,password);
                 String main_url=OkHttpUtil.attachHttpGetParam(HttpLinkHeader.XIYOU_Main,"xh",account);
                 String info=ScheduleOkHttp.getGetInfoFromServer(main_url,sessionId);
-                name= JsonHandle.getName(info);
-                Message message=Message.obtain();
-                message.what=1;
-                myHandler.sendMessage(message);
-
-                List<BasicNameValuePair> basicNameValuePairs=new ArrayList<>();
-                basicNameValuePairs.add(new BasicNameValuePair("xh",account));
-                basicNameValuePairs.add(new BasicNameValuePair("xm",name));
-                basicNameValuePairs.add(new BasicNameValuePair("gnmkdm","N121603"));
-                schedule_url=OkHttpUtil.attachHttpGetParams(HttpLinkHeader.Schedule_KB,basicNameValuePairs);
-                try {
-                    schedule = ScheduleOkHttp.getGetSchedule(schedule_url,sessionId);
-                    semester_title=JsonHandle.getSemesterTitleSchedule(schedule);
-                    SaveFile.saveSchedule(getContext(),schedule);
-                    Map<String,List<String>> listMap=JsonHandle.getSchedule(schedule);
-                    Message message1=new Message();
-                    Bundle bundle=new Bundle();
-                    SerializableMap serializableMap=new SerializableMap();
-                    serializableMap.setMap(listMap);
-                    bundle.putSerializable("schedule",serializableMap);
-                    message1.what=3;
-                    message1.setData(bundle);
-                    myHandler.sendMessage(message1);
-                } catch (Exception e) {
-                    Log.d(TAG,e.toString());
-                    Message message1=new Message();
-                    message1.what=2;
-                    myHandler.sendMessage(message1);
+                boolean isJudge=JsonHandle.getIsJudge(info);
+                if (!isJudge)
+                {
+                    Message message=Message.obtain();
+                    message.what=5;
+                    myHandler.sendMessage(message);
                 }
+                else
+                {
+                    name= JsonHandle.getName(info);
+                    Message message=Message.obtain();
+                    message.what=1;
+                    myHandler.sendMessage(message);
 
+                    List<BasicNameValuePair> basicNameValuePairs=new ArrayList<>();
+                    basicNameValuePairs.add(new BasicNameValuePair("xh",account));
+                    basicNameValuePairs.add(new BasicNameValuePair("xm",name));
+                    basicNameValuePairs.add(new BasicNameValuePair("gnmkdm","N121603"));
+                    schedule_url=OkHttpUtil.attachHttpGetParams(HttpLinkHeader.Schedule_KB,basicNameValuePairs);
+                    try {
+                        schedule = ScheduleOkHttp.getGetSchedule(schedule_url,sessionId);
+                        semester_title=JsonHandle.getSemesterTitleSchedule(schedule);
+                        SaveFile.saveSchedule(getContext(),schedule);
+                        Map<String,List<String>> listMap=JsonHandle.getSchedule(schedule);
+                        Message message1=new Message();
+                        Bundle bundle=new Bundle();
+                        SerializableMap serializableMap=new SerializableMap();
+                        serializableMap.setMap(listMap);
+                        bundle.putSerializable("schedule",serializableMap);
+                        message1.what=3;
+                        message1.setData(bundle);
+                        myHandler.sendMessage(message1);
+                    } catch (Exception e) {
+                        Log.d(TAG,e.toString());
+                        Message message1=new Message();
+                        message1.what=2;
+                        myHandler.sendMessage(message1);
+                    }
+                }
             }
             catch (ConnectException e)
             {

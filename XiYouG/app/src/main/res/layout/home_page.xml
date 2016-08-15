@@ -21,7 +21,7 @@
                 android:id="@+id/slideshow"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:background="@drawable/slide_show_three"
+                android:background="@drawable/slide_show_one"
                 android:layout_below="@id/title" />
 
             <LinearLayout
@@ -51,14 +51,16 @@
                         android:padding="5dp">
 
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:id="@+id/col_img"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_centerInParent="true"
                             android:background="@drawable/rank_collection"
                              />
                     </RelativeLayout>
 
                     <TextView
+
                         android:id="@+id/rank_collection_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -86,8 +88,9 @@
                         android:padding="5dp">
 
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:id="@+id/bor_img"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_centerInParent="true"
                             android:background="@drawable/rank_borrow"
                             />
@@ -119,8 +122,9 @@
                         android:padding="5dp">
 
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:id="@+id/look_img"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_centerInParent="true"
                             android:background="@drawable/rank_look"
                               />

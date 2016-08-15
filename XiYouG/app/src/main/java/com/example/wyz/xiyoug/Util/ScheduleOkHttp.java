@@ -215,7 +215,7 @@ public class ScheduleOkHttp {
         }
         return  null;
     }
-    public  static String getFourLevelScore(String url,String session) throws IOException {
+    public  static String getFourLevelScore(String url,String session) throws Exception {
         Request request=new Request.Builder()
                 .url(url)
                 .addHeader("Referer","http://www.chsi.com.cn/cet/")

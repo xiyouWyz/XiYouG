@@ -2,10 +2,12 @@ package com.example.wyz.xiyoug.Viewer;
 
 
 import android.content.Intent;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -62,7 +65,9 @@ public class HomeFragment extends Fragment {
     //三个排行榜
     private LinearLayout rank_collection, rank_borrow, rank_look;
     //三个排行榜圆形视图
-    private RelativeLayout rank_collection_img, rank_borrow_img, rank_look_img;
+    private ImageView rank_collection_img, rank_borrow_img, rank_look_img;
+
+    private TextView rank_collection_text,rank_borrow_text,rank_look_text;
 
     //排行榜数据显示listview
     private ListView pullListView;
@@ -137,16 +142,22 @@ public class HomeFragment extends Fragment {
         rank_collection = (LinearLayout) view.findViewById(R.id.rank_collection_btn);
         rank_borrow = (LinearLayout) view.findViewById(R.id.rank_borrow_btn);
         rank_look = (LinearLayout) view.findViewById(R.id.rank_look_btn);
-        rank_collection_img = (RelativeLayout) view.findViewById(R.id.rank_collection_img);
-        rank_borrow_img = (RelativeLayout) view.findViewById(R.id.rank_borrow_img);
-        rank_look_img = (RelativeLayout) view.findViewById(R.id.rank_look_img);
+        rank_collection_img = (ImageView) view.findViewById(R.id.col_img);
+        rank_borrow_img = (ImageView) view.findViewById(R.id.bor_img);
+        rank_look_img = (ImageView) view.findViewById(R.id.look_img);
+        rank_collection_text=(TextView)view.findViewById(R.id.rank_collection_text);
+        rank_borrow_text=(TextView)view.findViewById(R.id.rank_borrow_text);
+        rank_look_text=(TextView)view.findViewById(R.id.rank_look_text);
 
         rank_collection.setOnClickListener(new MyRankOnClickListener(0));
         rank_borrow.setOnClickListener(new MyRankOnClickListener(1));
         rank_look.setOnClickListener(new MyRankOnClickListener(2));
-        /*rank_collection_img.setOnClickListener(new MyRankOnClickListener(0));
-        rank_borrow_img.setOnClickListener(new MyRankOnClickListener(1));
-        rank_look_img.setOnClickListener(new MyRankOnClickListener(2));*/
+        rank_collection_text.setTextColor(getResources().getColor(R.color.rank_text_press));
+        rank_borrow_text.setTextColor(getResources().getColor(R.color.rank_text));
+        rank_look_text.setTextColor(getResources().getColor(R.color.rank_text));
+        rank_collection_img.setImageResource(R.drawable.rank_collection_hl);
+        rank_borrow_img.setImageResource(R.drawable.rank_borrow);
+        rank_look_img.setImageResource(R.drawable.rank_look);
 
         pullListView = (ListView) view.findViewById(R.id.plv_data);
         pullListView.setOverScrollMode(View.OVER_SCROLL_NEVER);
@@ -405,15 +416,22 @@ public class HomeFragment extends Fragment {
     private void Rank_Click(int index) {
 
         TextView rank_collection_text, rank_borrow_text, rank_look_text;
+        ImageView col_img,bor_img,look_img;
         rank_collection_text = (TextView) view.findViewById(R.id.rank_collection_text);
         rank_borrow_text = (TextView) view.findViewById(R.id.rank_borrow_text);
         rank_look_text = (TextView) view.findViewById(R.id.rank_look_text);
+        col_img=(ImageView)view.findViewById(R.id.col_img);
+        bor_img=(ImageView)view.findViewById(R.id.bor_img);
+        look_img=(ImageView)view.findViewById(R.id.look_img);
         swipeRefreshLayout.setRefreshing(false);
         switch (index) {
             case 0:
                 rank_collection_text.setTextColor(getResources().getColor(R.color.rank_text_press));
                 rank_borrow_text.setTextColor(getResources().getColor(R.color.rank_text));
                 rank_look_text.setTextColor(getResources().getColor(R.color.rank_text));
+                col_img.setImageResource(R.drawable.rank_collection_hl);
+                bor_img.setImageResource(R.drawable.rank_borrow);
+                look_img.setImageResource(R.drawable.rank_look);
                 if (book_col_ranks.size() == 0) {
                     String colRankInfo = ReadFile.readColRank(getContext());
                     if (colRankInfo != null) {
@@ -444,6 +462,9 @@ public class HomeFragment extends Fragment {
                 rank_collection_text.setTextColor(getResources().getColor(R.color.rank_text));
                 rank_borrow_text.setTextColor(getResources().getColor(R.color.rank_text_press));
                 rank_look_text.setTextColor(getResources().getColor(R.color.rank_text));
+                col_img.setImageResource(R.drawable.rank_collection);
+                bor_img.setImageResource(R.drawable.rank_borrow_hl);
+                look_img.setImageResource(R.drawable.rank_look);
                 if (book_bor_ranks.size() == 0) {
                     String borRankInfo = ReadFile.readBorRank(getContext());
                     if (borRankInfo != null) {
@@ -473,6 +494,9 @@ public class HomeFragment extends Fragment {
                 rank_collection_text.setTextColor(getResources().getColor(R.color.rank_text));
                 rank_borrow_text.setTextColor(getResources().getColor(R.color.rank_text));
                 rank_look_text.setTextColor(getResources().getColor(R.color.rank_text_press));
+                col_img.setImageResource(R.drawable.rank_collection);
+                bor_img.setImageResource(R.drawable.rank_borrow);
+                look_img.setImageResource(R.drawable.rank_look_hl);
                 if (book_look_ranks.size() == 0) {
                     String lookRankInfo = ReadFile.readLookRank(getContext());
                     if (lookRankInfo != null) {

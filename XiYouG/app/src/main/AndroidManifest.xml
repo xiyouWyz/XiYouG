@@ -17,25 +17,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.InfoDetail_Activity" android:label=""  android:screenOrientation="portrait" />
-        <activity android:name=".Activity.MyBorrowActivity" android:label=""   android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.MyCollectionActivity" android:label=""   android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.MyHistoryBorActivity" android:label=""   android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.BookSearchActivity" android:label=""   android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.BookDetailActivity"  android:label="" android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.ScoreActivity"  android:label=""  android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.InfoDetail_Activity" android:label=""  android:screenOrientation="portrait"  android:launchMode="singleTop"/>
+        <activity android:name=".Activity.MyBorrowActivity" android:label=""   android:screenOrientation="portrait" android:launchMode="singleTop"/>
+        <activity android:name=".Activity.MyCollectionActivity" android:label=""   android:screenOrientation="portrait" android:launchMode="singleTop"/>
+        <activity android:name=".Activity.MyHistoryBorActivity" android:label=""   android:screenOrientation="portrait" android:launchMode="singleTop"/>
+        <activity android:name=".Activity.BookSearchActivity" android:label=""   android:screenOrientation="portrait" android:launchMode="singleTop"/>
+        <activity android:name=".Activity.BookDetailActivity"  android:label="" android:screenOrientation="portrait" android:launchMode="singleTop"/>
+        <activity android:name=".Activity.ScoreActivity"  android:label=""  android:screenOrientation="portrait" android:launchMode="singleTop"/>
         <activity android:name=".Activity.ScanActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBarFullScreen"
             android:screenOrientation="portrait"
+            android:launchMode="singleTop"
             />
-        <activity android:name=".Activity.ScoreFailedActivity"  android:label="" android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.LabWebSiteActivity" android:label=""  android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.QuestionActivity" android:label="" android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.LibWebSiteActivity"  android:label="" android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.ScoreWebSiteActivity"  android:label="" android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.SchoolWebSiteActivity"  android:label="" android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.FourLevelActivity"  android:label="" android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.ScoreFailedActivity"  android:label="" android:screenOrientation="portrait" android:launchMode="singleTop"/>
+        <activity android:name=".Activity.LabWebSiteActivity" android:label=""  android:screenOrientation="portrait" android:launchMode="singleTop"/>
+        <activity android:name=".Activity.QuestionActivity" android:label="" android:screenOrientation="portrait" android:launchMode="singleTop"/>
+        <activity android:name=".Activity.LibWebSiteActivity"  android:label="" android:screenOrientation="portrait" android:launchMode="singleTop"/>
+        <activity android:name=".Activity.ScoreWebSiteActivity"  android:label="" android:screenOrientation="portrait" android:launchMode="singleTop"/>
+        <activity android:name=".Activity.SchoolWebSiteActivity"  android:label="" android:screenOrientation="portrait" android:launchMode="singleTop"/>
+        <activity android:name=".Activity.FourLevelActivity"  android:label="" android:screenOrientation="portrait" android:launchMode="singleTop"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>

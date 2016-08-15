@@ -273,6 +273,7 @@ public class BookDetailActivity  extends AppCompatActivity{
                 bundle.putString("url",url);
                 intent.putExtras(bundle);
                 intent.setClass(BookDetailActivity.this,BookDetailActivity.class);
+                finish();
                 startActivity(intent);
             }
 

@@ -30,7 +30,22 @@ public class JsonHandle {
         Log.d("name",name) ;
         return  name;
     }
-
+    public  static  boolean getIsJudge(String content)
+    {
+        Document document=Jsoup.parse(content);
+        Element ul=document.getElementsByClass("nav").get(0);
+        for(int i=0;i<ul.children().size();i++)
+        {
+            if(ul.child(i).text().contains("教学质量评价"))
+            {
+                if(ul.child(i).children().size()==2)
+                {
+                    return true;
+                }
+            }
+        }
+        return  false;
+    }
     public  static  int getIndex(String s,char ch)
     {
         char chs[]=s.toCharArray();
@@ -80,6 +95,13 @@ public class JsonHandle {
             {
                 time.add("");
             }
+            else if(textNodes.size()==2){
+
+                String schedule_name = textNodes.get(0).text();
+                String schedule_teacher = textNodes.get(1).text();
+                String schedule = schedule_name +"\n"+"@"+ schedule_teacher+"\n";
+                time.add(schedule);
+            }
             else if(textNodes.size()==3){
 
                 String schedule_name = textNodes.get(0).text();
@@ -130,6 +152,14 @@ public class JsonHandle {
             }
             else if(textNodes.size()==16){
 
+                String schedule_name = textNodes.get(0).text();
+                String schedule_teacher = textNodes.get(2).text();
+                String schedule_room = textNodes.get(3).text();
+                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                time.add(schedule);
+            }
+            else
+            {
                 String schedule_name = textNodes.get(0).text();
                 String schedule_teacher = textNodes.get(2).text();
                 String schedule_room = textNodes.get(3).text();
@@ -148,6 +178,13 @@ public class JsonHandle {
             {
                 time.add("");
             }
+            else if(textNodes.size()==2){
+
+                String schedule_name = textNodes.get(0).text();
+                String schedule_teacher = textNodes.get(1).text();
+                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n";
+                time.add(schedule);
+            }
             else if(textNodes.size()==3){
 
                 String schedule_name = textNodes.get(0).text();
@@ -198,6 +235,14 @@ public class JsonHandle {
             }
             else if(textNodes.size()==16){
 
+                String schedule_name = textNodes.get(0).text();
+                String schedule_teacher = textNodes.get(2).text();
+                String schedule_room = textNodes.get(3).text();
+                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                time.add(schedule);
+            }
+            else
+            {
                 String schedule_name = textNodes.get(0).text();
                 String schedule_teacher = textNodes.get(2).text();
                 String schedule_room = textNodes.get(3).text();
@@ -366,7 +411,7 @@ public class JsonHandle {
         }
         return  lists;
     }
-    public static FourLevelModel getFourLevelScore(String content)
+    public static FourLevelModel getFourLevelScore(String content) throws  Exception
     {
         Document document= Jsoup.parse(content);
         Elements elements= document.body().getElementsByClass("cetTable");
