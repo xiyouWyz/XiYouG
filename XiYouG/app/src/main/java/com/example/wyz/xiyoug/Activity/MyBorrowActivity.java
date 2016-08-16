@@ -230,6 +230,7 @@ public class MyBorrowActivity  extends AppCompatActivity
             }
             else
             {
+                Toast.makeText(MyBorrowActivity.this,"功能尚未开启",Toast.LENGTH_SHORT).show();
                 List<BasicNameValuePair> basicNameValuePairs=new ArrayList<BasicNameValuePair>();
                 renew_barCode=book_borrows.get(index).getBarcode();
                 renew_department_id=book_borrows.get(index).getDepartment_id();

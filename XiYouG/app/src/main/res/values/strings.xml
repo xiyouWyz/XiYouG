@@ -151,8 +151,12 @@
         \n\tb.课表导入后会一直存在,就算程序退出后,下次打开程序不需登陆即可看课表,一学期只需导入一次，十分方便
     </string>
        <string name="question_item5">
-        4.点击头像的拍照和图书查询的扫一扫程序会崩？
+        5.点击头像的拍照和图书查询的扫一扫程序会崩？
         \n\ta.该两项功能需要相机权限,可能没有权限，我们需要在设置里面对该应用允许相机权限即可
+    </string>
+     <string name="question_item6">
+        6.该应用的主界面是哪个？
+        \n\ta.该应用每次显示的首界面是图书馆界面，通过侧滑栏的选项切换应用。
     </string>
     <string name="setLogo_takePhoto">拍照</string>
     <string name="setLogo_album">相册</string>

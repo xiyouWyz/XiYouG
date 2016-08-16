@@ -38,8 +38,11 @@ public class JsonHandle {
         {
             if(ul.child(i).text().contains("教学质量评价"))
             {
-                if(ul.child(i).children().size()==2)
+                Log.d(TAG,ul.child(i).children().get(1).childNodes().size()+"");
+                Log.d(TAG,ul.child(i).children().get(1).children().size()+"");
+                if(ul.child(i).children().get(1).childNodes().size()==2)
                 {
+
                     return true;
                 }
             }

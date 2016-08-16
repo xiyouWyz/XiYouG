@@ -215,8 +215,6 @@ public class HomeFragment extends Fragment {
                 }, 2000);
             }
         });
-
-
     }
 
     private void setupListView(List<Book_Rank> ranks) {

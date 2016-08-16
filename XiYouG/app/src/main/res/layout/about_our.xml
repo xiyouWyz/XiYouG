@@ -19,7 +19,7 @@
                 android:id="@+id/logo"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@mipmap/ic_launcher"
+                android:background="@mipmap/applogo"
                 />
             <TextView
                 android:layout_marginTop="3dp"

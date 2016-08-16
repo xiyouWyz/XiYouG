@@ -23,12 +23,14 @@
     </android.support.v7.widget.Toolbar>
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:background="@color/question_back"
+        android:layout_height="match_parent"
+        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="@color/question_back"
+
             >
             <LinearLayout
                 android:layout_width="match_parent"
@@ -91,6 +93,19 @@
                 <TextView
                     android:padding="10dp"
                     android:text="@string/question_item5"
+                    android:layout_width="match_parent"
+                    android:textSize="@dimen/question_item1"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/question_item_shape"
+                >
+                <TextView
+                    android:padding="10dp"
+                    android:text="@string/question_item6"
                     android:layout_width="match_parent"
                     android:textSize="@dimen/question_item1"
                     android:layout_height="wrap_content" />
