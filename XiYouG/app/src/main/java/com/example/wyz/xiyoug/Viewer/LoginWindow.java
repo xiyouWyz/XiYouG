@@ -23,7 +23,7 @@ public class LoginWindow extends PopupWindow{
     private CheckBox isRemember;
     private Button loginBtn;
     private TextView close_textView;
-
+    private TextView intro_textView;
     public LoginWindow(Context context,View.OnClickListener loginOnClick ,String account,String password,boolean remember,int type) {
         super(context);
         switch (type)
@@ -55,8 +55,10 @@ public class LoginWindow extends PopupWindow{
         }
         loginBtn=(Button)loginView.findViewById(R.id.login_btn);
         close_textView=(TextView) loginView.findViewById(R.id.close) ;
+        intro_textView=(TextView)loginView.findViewById(R.id.introduction);
         loginBtn.setOnClickListener(loginOnClick);
         close_textView.setOnClickListener(loginOnClick);
+        intro_textView.setOnClickListener(loginOnClick);
         DisplayMetrics displayMetrics=context.getResources().getDisplayMetrics();
         this.setContentView(loginView);
         this.setWidth((int)(displayMetrics.widthPixels*0.8));

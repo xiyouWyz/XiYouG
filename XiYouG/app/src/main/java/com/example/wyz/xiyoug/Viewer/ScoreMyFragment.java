@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.example.wyz.xiyoug.Activity.FourLevelActivity;
+import com.example.wyz.xiyoug.Activity.QuestionActivity;
 import com.example.wyz.xiyoug.Activity.ScoreActivity;
 import com.example.wyz.xiyoug.Activity.ScoreFailedActivity;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
@@ -255,6 +256,11 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
                         }
                         break;
                     }
+                    break;
+                case R.id.introduction:
+                    Intent intent=new Intent();
+                    intent.setClass(getContext(), QuestionActivity.class);
+                    startActivity(intent);
                     break;
                 case R.id.close:
                     loginWindow.dismiss();

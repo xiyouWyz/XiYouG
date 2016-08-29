@@ -51,7 +51,7 @@
     <color name="login_btn_back_press">#36B19F</color>
     <color name="login_view_back">#fff</color>
     <color name="login_close">#59C4B6</color>
-    
+    <color name="login_introduction">#59C4B6</color>
     <color name="my_bor_title">#fff</color>
     <color name="my_bor_title_back">#36B19F</color>
     <color name="my_bor_listView_back">#D6F1ED</color>

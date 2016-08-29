@@ -1,5 +1,7 @@
 package com.example.wyz.xiyoug.Activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -41,6 +43,7 @@ import java.util.List;
  * Created by Wyz on 2016/8/14.
  */
 public class FourLevelActivity extends AppCompatActivity {
+
     private EditText account_view;
     private  EditText name_view;
     private Button login_view;
@@ -64,6 +67,9 @@ public class FourLevelActivity extends AppCompatActivity {
     public   static   String SESSION_ID;
     private Toolbar toolbar;
     private  TextView label_view;
+    private SharedPreferences pref;
+    private  SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,6 +116,12 @@ public class FourLevelActivity extends AppCompatActivity {
         listen_grade=(TextView) findViewById(R.id.listen_grade);
         read_grade=(TextView) findViewById(R.id.read_grade);
         write_grade=(TextView) findViewById(R.id.write_grade);
+
+        pref=FourLevelActivity.this.getSharedPreferences("four_level_info", Context.MODE_PRIVATE);
+        String account=pref.getString("zkzh","");
+        String name=pref.getString("xm","");
+        account_view.setText(account);
+        name_view.setText(name);
         login_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -134,6 +146,7 @@ public class FourLevelActivity extends AppCompatActivity {
                     }
                     else
                     {
+
                         List<BasicNameValuePair> basicNameValuePairs=new ArrayList<>();
                         basicNameValuePairs.add(new BasicNameValuePair("zkzh",id));
                         basicNameValuePairs.add(new BasicNameValuePair("xm",password));
@@ -157,6 +170,10 @@ public class FourLevelActivity extends AppCompatActivity {
 
                             @Override
                             public void onResponse(Object o) {
+                                editor=pref.edit();
+                                editor.putString("zkzh",account_view.getText().toString());
+                                editor.putString("xm",name_view.getText().toString());
+                                editor.apply();
                                 myThread=new MyThread();
                                 new  Thread(myThread).start();
                             }

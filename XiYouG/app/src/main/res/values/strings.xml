@@ -30,10 +30,11 @@
     <string name="book_detail_info">书籍资料</string>
     <string name="book_detail_bor">流通情况</string>
     <string name="login_library_title">西邮图书馆</string>
-    <string name="login_account_hint">用户名</string>
+    <string name="login_account_hint">图书馆账号</string>
     <string name="login_password_hint">密码</string>
     <string name="login_btn">登录</string>
     <string name="login_close">关闭</string>
+    <string name="login_introduction">点击查看账号说明</string>
 
     <string name="my_bor_title">我的借阅</string>
     <string name="my_bor_already">已借图书: </string>
@@ -122,7 +123,7 @@
 
     <string name="about_our_app_name">西邮控</string>
     <string name="about_our_version_label">当前版本号:</string>
-    <string name="about_our_version">1.0</string>
+    <string name="about_our_version">2.0</string>
     <string name="about_our_update">版本更新</string>
     <string name="about_our_question">常见问题</string>
     <string name="about_our_feedback">问题反馈</string>
@@ -138,25 +139,31 @@
         \n\t\tb.15级以前学生账号为：大写S+自己的学号，初始密码为123456;
         \n\tB.课表和成绩的账号和密码为自己的教务处账号和密码</string>
    <string name="question_item2">
-      2.点击侧滑栏的头像可以设置自己喜欢的头像哦</string>
+      3.点击侧滑栏的头像可以设置自己喜欢的头像哦</string>
+      <string name="question_item8">
+      2.通过左边的侧滑栏可以选择图书馆，成绩，课表等界面</string>
     <string name="question_item3">
-        3.如何使用课表功能？
+        4.如何使用课表功能？
         \n\ta.导入课表:
         \n\t\t点击课表右下角绿色按钮即可导入课表,课表一经导入即会一直存在。
         \n\tb.更新课表:
         \n\t\t更新课表，只需重新按绿色按钮导入即可更新</string>
      <string name="question_item4">
-        4.为什么要反复登陆？
+        5.为什么要反复登陆？
         \n\ta.图书馆账号和课表，成绩账号不同;
         \n\tb.课表导入后会一直存在,就算程序退出后,下次打开程序不需登陆即可看课表,一学期只需导入一次，十分方便
     </string>
        <string name="question_item5">
-        5.点击头像的拍照和图书查询的扫一扫程序会崩？
+        6.点击头像的拍照和图书查询的扫一扫程序会崩？
         \n\ta.该两项功能需要相机权限,可能没有权限，我们需要在设置里面对该应用允许相机权限即可
     </string>
      <string name="question_item6">
-        6.该应用的主界面是哪个？
+        7.该应用的主界面是哪个？
         \n\ta.该应用每次显示的首界面是图书馆界面，通过侧滑栏的选项切换应用。
+    </string>
+      <string name="question_item7">
+        8.为什么自己的课表有多个版本？
+        \n\ta.课表是从教务处实时获取的，所以如果自己的课表发生变化，请在教务处查看，如果app上最新的课表和教务处一致说明程序正确。
     </string>
     <string name="setLogo_takePhoto">拍照</string>
     <string name="setLogo_album">相册</string>

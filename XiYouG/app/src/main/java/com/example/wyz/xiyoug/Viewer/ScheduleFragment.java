@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.wyz.xiyoug.Activity.QuestionActivity;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.Util.AnnotateUtils;
@@ -387,6 +388,11 @@ public class ScheduleFragment  extends Fragment{
                         myThread=new MyThread();
                         new Thread(myThread).start();
                     }
+                    break;
+                case R.id.introduction:
+                    Intent intent=new Intent();
+                    intent.setClass(getContext(), QuestionActivity.class);
+                    startActivity(intent);
                     break;
                 case R.id.close:
                     loginWindow.dismiss();

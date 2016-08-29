@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.wyz.xiyoug.Activity.QuestionActivity;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.Model.User;
 import com.example.wyz.xiyoug.Activity.MyBorrowActivity;
@@ -78,7 +79,6 @@ public class MyFragment extends Fragment {
         setupViewComponent();
         return  view;
     }
-
     /*@Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -292,6 +292,11 @@ public class MyFragment extends Fragment {
                             new Thread(myThread).start();
                         }
                     }
+                    break;
+                case R.id.introduction:
+                    Intent intent=new Intent();
+                    intent.setClass(getContext(), QuestionActivity.class);
+                    startActivity(intent);
                     break;
                 case R.id.close:
                     loginWindow.dismiss();

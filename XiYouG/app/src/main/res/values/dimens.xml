@@ -24,6 +24,7 @@
     <dimen name="login_password">16sp</dimen>
     <dimen name="login_btn">16sp</dimen>
     <dimen name="login_close">15sp</dimen>
+    <dimen name="login_introduction">17sp</dimen>
 
     <dimen name="my_bor_title">16sp</dimen>
     <dimen name="my_bor_info">15sp</dimen>

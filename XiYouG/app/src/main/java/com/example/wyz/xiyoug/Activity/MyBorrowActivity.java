@@ -230,7 +230,7 @@ public class MyBorrowActivity  extends AppCompatActivity
             }
             else
             {
-                Toast.makeText(MyBorrowActivity.this,"功能尚未开启",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MyBorrowActivity.this,"功能尚未开启",Toast.LENGTH_SHORT).show();
                 List<BasicNameValuePair> basicNameValuePairs=new ArrayList<BasicNameValuePair>();
                 renew_barCode=book_borrows.get(index).getBarcode();
                 renew_department_id=book_borrows.get(index).getDepartment_id();
@@ -240,8 +240,8 @@ public class MyBorrowActivity  extends AppCompatActivity
                 basicNameValuePairs.add(new BasicNameValuePair("department_id",renew_department_id));
                 basicNameValuePairs.add(new BasicNameValuePair("library_id",renew_library_id));
                 renew_url=OkHttpUtil.attachHttpGetParams(HttpLinkHeader.BOOK_RENEW,basicNameValuePairs);
-          /*  myRenewThread =new MyRenewThread();
-            new Thread(myRenewThread).start();*/
+                myRenewThread =new MyRenewThread();
+                new Thread(myRenewThread).start();
             }
 
         }
@@ -333,6 +333,7 @@ public class MyBorrowActivity  extends AppCompatActivity
     }
     private  void UpDataRenew()
     {
+        int account=0;
         for(int i=0;i<book_borrows.size();i++)
         {
             if(book_borrows.get(i).getBarcode().equals(renew_barCode)
@@ -340,9 +341,13 @@ public class MyBorrowActivity  extends AppCompatActivity
                     &&book_borrows.get(i).getLibrary_id().equals(renew_library_id) )
             {
                 book_borrows.get(i).setCanRenew(false);
-                break;
+            }
+            if(!book_borrows.get(i).getCanRenew())
+            {
+                account+=1;
             }
         }
+        continue_view.setText(String.valueOf(account));
     }
     private  void DealWithBorResult(String bor_result)
     {
@@ -419,8 +424,12 @@ public class MyBorrowActivity  extends AppCompatActivity
             if(result==true)
             {
                 Toast.makeText(MyBorrowActivity.this,"续借成功",Toast.LENGTH_SHORT).show();
-                UpDataRenew();
-                myAdapter.notifyDataSetChanged();
+               /* UpDataRenew();
+                myAdapter.notifyDataSetChanged();*/
+                Intent intent=new Intent();
+                intent.setClass(MyBorrowActivity.this,MyBorrowActivity.class);
+                finish();
+                startActivity(intent);
             }
             else
             {

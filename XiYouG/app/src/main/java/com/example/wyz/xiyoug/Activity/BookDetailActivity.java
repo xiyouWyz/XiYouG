@@ -312,6 +312,7 @@ public class BookDetailActivity  extends AppCompatActivity{
             }
         }
     }
+
     private class MyHandler extends Handler
     {
         @Override
