@@ -39,4 +39,6 @@ public class HttpLinkHeader {
 
     public  final static  String  FOURLEVEL="http://www.chsi.com.cn/cet/query";
     public  final  static  String FOURLEVELINIT="http://www.chsi.com.cn/cet/";
+
+    public  final  static String CLASSROOM="http://jwkq.xupt.edu.cn:8080/";
 }

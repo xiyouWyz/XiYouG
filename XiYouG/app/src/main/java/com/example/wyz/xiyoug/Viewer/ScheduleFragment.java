@@ -138,6 +138,7 @@ public class ScheduleFragment  extends Fragment{
         semester=(TextView)view.findViewById(R.id.semester);
         AnnotateUtils.injectViews(ScheduleFragment.this);
         FloatingActionButton import_btn = (FloatingActionButton) view.findViewById(R.id.import_schedule);
+        FloatingActionButton update_btn = (FloatingActionButton) view.findViewById(R.id.update_schedule);
         import_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -160,6 +161,38 @@ public class ScheduleFragment  extends Fragment{
 
             }
         });
+        update_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!IsNetworkConnected.isNetworkConnected(getContext()))
+                {
+                    Message message=Message.obtain();
+                    message.what=4;
+                    myHandler.sendMessage(message);
+                }
+                else
+                {
+                    //pref= PreferenceManager.getDefaultSharedPreferences(getContext());
+                    pref=getContext().getSharedPreferences("schedule_info", Context.MODE_PRIVATE);
+                    boolean remember=pref.getBoolean("isRemember",false);
+                    String account=pref.getString("account","");
+                    String password=pref.getString("password","");
+                    if(account.equals("")||password.equals(""))
+                    {
+                        Toast.makeText(getContext(),"更新失败，请点击右方导入课表按钮",Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        new MyAnimation(getContext(),"胖萌正在努力为您更新...",R.drawable.loading,load_view);
+                        load_view.setVisibility(View.VISIBLE);
+                        content.setVisibility(View.INVISIBLE);
+                        myThread=new MyThread();
+                        new Thread(myThread).start();
+                    }
+                }
+            }
+        });
+
         content=(LinearLayout)view.findViewById(R.id.content);
         load_view=(RelativeLayout)view.findViewById(R.id.loading);
         load_view.setVisibility(View.INVISIBLE);
@@ -272,7 +305,7 @@ public class ScheduleFragment  extends Fragment{
                 }
                 load_view.setVisibility(View.INVISIBLE);
                 content.setVisibility(View.VISIBLE);
-
+                Toast.makeText(getContext(),"操作成功",Toast.LENGTH_SHORT).show();
                 setSchedule();
             }
             else if(msg.what==4)

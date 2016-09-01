@@ -3,6 +3,7 @@
     <string name="library_name">西邮图书馆</string>
     <string name="score_name">西邮成绩</string>
     <string name="schedule_name">西邮课程表</string>
+    <string name="classRoom_name">西邮考勤</string>
     <string name="our_name">关于</string>
     <string name="feedback_name">反馈</string>
     <string name="exit">退出登录</string>
@@ -97,6 +98,8 @@
     <string name="schedule_time6">3.25</string>
     <string name="schedule_time7">4.35</string>
     <string name="schedule_time8">5.30</string>
+    <string name="schedule_login">导入课表</string>
+    <string name="schedule_update">更新课表</string>
     <string name="schedule_import">点击右下角绿色按钮导入课表</string>
 
     <string name="schedule_login_account_hint">教务处账号</string>
@@ -185,5 +188,6 @@
     <string name="fourLevel_password_hint">姓名超过3个字，可只输入前3个</string>
     <string name="fourLevel_divide_word">:</string>
 
+    <string name="workCheck_word">首页正下方可查找空闲教室,右上方登录可查询考勤情况</string>
 
 </resources>

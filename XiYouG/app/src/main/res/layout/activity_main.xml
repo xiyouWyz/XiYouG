@@ -5,7 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
     <android.support.v7.widget.Toolbar
-
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -167,8 +166,36 @@
                         />
                 </RelativeLayout>
                 <RelativeLayout
-                    android:id="@+id/our"
+                    android:id="@+id/classRoom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/schedule"
+                    android:layout_alignLeft="@id/library"
+                    android:layout_marginTop="10dp"
+                    >
+                    <ImageView
+                        android:id="@+id/classRoom_logo"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/classroom"
+                        android:layout_centerVertical="true"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:text="@string/classRoom_name"
+                        android:layout_toRightOf="@id/classRoom_logo"
+                        android:layout_marginLeft="20dp"
+                        android:textColor="@color/whiteWords"
+                        android:textSize="@dimen/slideMenuItem"
+                        android:layout_centerVertical="true"
+                        android:layout_alignTop="@id/classRoom_logo"
+                        android:layout_alignBottom="@id/classRoom_logo"
+                        />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/our"
+                    android:layout_below="@id/classRoom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@id/library"

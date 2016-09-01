@@ -71,6 +71,7 @@
     <dimen name="schedule_my_no_login">16sp</dimen>
     <dimen name="schedule_my_import">16sp</dimen>
     <dimen name="schedule_my_exit">16sp</dimen>
+    <dimen name="schedule_login">12sp</dimen>
 
     <dimen name="score_title">16sp</dimen>
     <dimen name="score_not_pass">16sp</dimen>
@@ -85,4 +86,6 @@
     <dimen name="fourLevel_content">14sp</dimen>
     <dimen name="fourLevel_label">18sp</dimen>
     <dimen name="slide_show_word">12sp</dimen>
+
+    <dimen name="className_title">16sp</dimen>
 </resources>

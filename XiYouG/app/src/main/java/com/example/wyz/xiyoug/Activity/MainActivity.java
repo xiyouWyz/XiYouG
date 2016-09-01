@@ -28,6 +28,7 @@ import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.Util.CircleImageView;
 import com.example.wyz.xiyoug.Util.IsNetworkConnected;
 import com.example.wyz.xiyoug.Viewer.AboutOurFragment;
+import com.example.wyz.xiyoug.Viewer.ClassRoomFragment;
 import com.example.wyz.xiyoug.Viewer.LibraryMainFragment;
 import com.example.wyz.xiyoug.Viewer.ScheduleFragment;
 import com.example.wyz.xiyoug.Viewer.ScoreMyFragment;
@@ -52,12 +53,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RelativeLayout library_view;
     private RelativeLayout score_view;
     private RelativeLayout schedule_view;
+    private RelativeLayout classRoom_view;
     private RelativeLayout our_view;
     private RelativeLayout feedback_view;
     private Fragment scheduleFragment;
     private Fragment libraryFragment;
     private Fragment scoreFragment;
+    private  Fragment classRoomFragment;
     private Fragment about_ourFragment;
+
     private FragmentManager fm;
     private CircleImageView circleImageView;
     private  Menu  menu;
@@ -159,9 +163,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         library_view = (RelativeLayout) findViewById(R.id.library);
         score_view = (RelativeLayout) findViewById(R.id.score);
         schedule_view=(RelativeLayout)findViewById(R.id.schedule);
+        classRoom_view=(RelativeLayout)findViewById(R.id.classRoom);
         our_view = (RelativeLayout) findViewById(R.id.our);
         feedback_view = (RelativeLayout) findViewById(R.id.feedback);
         setLogo_layout=(LinearLayout)findViewById(R.id.setLogo);
+
 
         menuLayout=(LinearLayout)findViewById(R.id.menuLayout);
 
@@ -171,6 +177,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         library_view.setOnClickListener(this);
         score_view.setOnClickListener(this);
         schedule_view.setOnClickListener(this);
+        classRoom_view.setOnClickListener(this);
         our_view.setOnClickListener(this);
         feedback_view.setOnClickListener(this);
 
@@ -222,6 +229,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 menu.getItem(0).setVisible(false);
                 setFragmentSelect(R.id.schedule);
                 dlMain.closeDrawers();
+                break;
+            case  R.id.classRoom:
+               menu.getItem(0).setVisible(false);
+                setFragmentSelect(R.id.classRoom);
+                dlMain.closeDrawers();
+               /* Intent intent=new Intent();
+                intent.setClass(MainActivity.this,ClassRoomActivity.class);
+                startActivity(intent);*/
                 break;
             case  R.id.our:
                 setFragmentSelect(R.id.our);
@@ -296,6 +311,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     transaction.show(scoreFragment);
                 }
                 break;
+            case R.id.classRoom:
+                if(classRoomFragment==null)
+                {
+                    classRoomFragment=new ClassRoomFragment();
+                    transaction.add(R.id.dl_container,classRoomFragment);
+                }
+                else
+                {
+                    transaction.show(classRoomFragment);
+                }
+                break;
             case  R.id.our:
                 if(about_ourFragment==null)
                 {
@@ -306,6 +332,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 {
                     transaction.show(about_ourFragment);
                 }
+                break;
         }
         transaction.commitAllowingStateLoss();
     }
@@ -322,6 +349,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(scoreFragment!=null)
         {
             transaction.hide(scoreFragment);
+        }
+        if(classRoomFragment!=null)
+        {
+            transaction.hide(classRoomFragment);
         }
         if(about_ourFragment!=null)
         {

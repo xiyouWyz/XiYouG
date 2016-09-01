@@ -456,4 +456,12 @@ public class JsonHandle {
         String[] a=content.split("。");
         return  a[0];
     }
+    public   static  String getClassRoomHtml(String content)
+    {
+        Document document= Jsoup.parse(content);
+        Elements div= document.body().getElementsByClass("panel-wrap");
+
+        String result=div.get(2).html();
+        return  result;
+    }
 }

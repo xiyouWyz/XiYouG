@@ -9,6 +9,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -26,6 +29,7 @@ public class AboutOurFragment extends Fragment  implements View.OnClickListener{
     private LinearLayout question_layout;
     private LinearLayout feedback_layout;
     private LinearLayout our_layout;
+    private WebView webView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -39,6 +43,18 @@ public class AboutOurFragment extends Fragment  implements View.OnClickListener{
         question_layout=(LinearLayout)view.findViewById(R.id.question);
         feedback_layout=(LinearLayout)view.findViewById(R.id.feedback);
         our_layout=(LinearLayout)view.findViewById(R.id.our);
+        webView=(WebView)view.findViewById(R.id.our_webView);
+        String html="<html><head><meta charset=\"utf-8\"></ head><body><a href=\"http://jiayudong.cn/Library/\">web图书馆</ a></ body></ html>";
+        webView.getSettings().setDefaultTextEncodingName("utf-8");
+        //支持javascript
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setBackgroundColor(getResources().getColor(R.color.my_background));
+        //自适应屏幕
+       /* webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        webView.getSettings().setLoadWithOverviewMode(true);*/
+
+        webView.loadDataWithBaseURL(null,html,"text/html","utf-8",null);
+
         update_layout.setOnClickListener(this);
         question_layout.setOnClickListener(this);
         feedback_layout.setOnClickListener(this);

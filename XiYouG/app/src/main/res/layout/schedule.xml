@@ -342,7 +342,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:layout_weight="1"
+                     android:layout_weight="1"
                     android:orientation="horizontal"
                     >
 
@@ -474,8 +474,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:orientation="horizontal"
                     android:layout_weight="1"
+                    android:orientation="horizontal"
                     >
 
                     <TextView
@@ -539,6 +539,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
+
                     android:orientation="horizontal"
                     android:layout_weight="1"
                     >
@@ -642,16 +643,50 @@
                         android:textSize="@dimen/schedule_around_day"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
-                    <android.support.design.widget.FloatingActionButton
-
-                        android:id="@+id/import_schedule"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         android:layout_gravity="bottom|end"
-                        android:layout_margin="10dp"
-                        app:backgroundTint="@color/schedule_import"
-                        app:rippleColor="@color/schedule_import_press"
-                        android:src="@drawable/add" />
+                        >
+                        <android.support.design.widget.FloatingActionButton
+                            android:id="@+id/update_schedule"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            app:backgroundTint="@color/schedule_import"
+                            app:rippleColor="@color/schedule_import_press"
+                            android:src="@drawable/update" />
+                       <!-- <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/schedule_update"
+                            android:textColor="@color/schedule_login"
+                            android:layout_marginTop="2dp"
+                            android:gravity="center"
+                            />-->
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="bottom|end"
+                        >
+                        <android.support.design.widget.FloatingActionButton
+                            android:id="@+id/import_schedule"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            app:backgroundTint="@color/schedule_import"
+                            app:rippleColor="@color/schedule_import_press"
+                            android:src="@drawable/add" />
+                       <!-- <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/schedule_login"
+                            android:textColor="@color/schedule_login"
+                            android:layout_marginTop="2dp"
+                            android:gravity="center"
+                            />-->
+                    </LinearLayout>
                 </LinearLayout>
 
 
