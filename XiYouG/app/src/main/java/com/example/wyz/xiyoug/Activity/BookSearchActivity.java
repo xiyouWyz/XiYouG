@@ -1,12 +1,17 @@
 package com.example.wyz.xiyoug.Activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompatSideChannelService;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -43,6 +48,7 @@ import java.util.List;
  * Created by Wyz on 2016/7/25.
  */
 public class BookSearchActivity extends AppCompatActivity  implements SearchView.OnQueryTextListener{
+    final  static  int MY_PERMISSIONS_REQUEST_CAMER=1;
     private Toolbar toolbar;
     private SearchView searchView;
     private ListView listView;
@@ -81,8 +87,16 @@ public class BookSearchActivity extends AppCompatActivity  implements SearchView
                 }
                 else
                 {
-                    Intent intent2 = new Intent(BookSearchActivity.this,ScanActivity.class);
-                    startActivityForResult(intent2, ACTIVITY_RESULT_SCAN,null);
+                    if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)!=PackageManager.PERMISSION_GRANTED)
+                    {
+                        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},MY_PERMISSIONS_REQUEST_CAMER);
+                    }
+                    else
+                    {
+                        Intent intent2 = new Intent(BookSearchActivity.this,ScanActivity.class);
+                        startActivityForResult(intent2, ACTIVITY_RESULT_SCAN,null);
+                    }
+
                 }
                 break;
             }
@@ -93,6 +107,25 @@ public class BookSearchActivity extends AppCompatActivity  implements SearchView
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+    {
+
+        if (requestCode == MY_PERMISSIONS_REQUEST_CAMER)
+        {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                Intent intent2 = new Intent(BookSearchActivity.this,ScanActivity.class);
+                startActivityForResult(intent2, ACTIVITY_RESULT_SCAN,null);
+            } else
+            {
+                // Permission Denied
+                Toast.makeText(BookSearchActivity.this, "获取权限失败", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 /*    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -1,14 +1,18 @@
 package com.example.wyz.xiyoug.Activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -44,7 +48,8 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-
+    private static final int MY_PERMISSIONS_REQUEST_CAMER= 1;
+    private static final int MY_PERMISSIONS_REQUEST_WRITE_STORAGE= 2;
     private Toolbar toolbar;
     private DrawerLayout dlMain;
     private ActionBarDrawerToggle drawerToggle;
@@ -69,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private  Uri imageUri;
     private   static  final  int TAKE_PHOTO=1;
     private  static  final  int CROP_PHOTO=2;
+    private  static  final  int SHOW_PHOTO=3;
     private  LinearLayout setLogo_layout;
     private   SetLogoChoice setLogoChoice;
     private final  String ALBUM_PATH=Environment.getExternalStorageDirectory().getPath()+"/logo";
@@ -191,7 +197,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         File outputImage=new File(ALBUM_PATH,"/logo.png/");
         try
         {
-            if(outputImage.exists())
+            //检查权限
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                //没有权限
+                circleImageView.setImageResource(R.drawable.logo);
+            }
+             else if(outputImage.exists())
             {
                 Bitmap bitmap=BitmapFactory.decodeFile(ALBUM_ALL_PATH);
                 circleImageView.setImageBitmap(bitmap);
@@ -261,16 +272,64 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             switch (view.getId())
             {
                 case R.id.take_photo:
-                    take_photo();
+                    //检查权限
+                    if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        //没有权限，请求开启权限
+                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMER);
+                    }
+                    //具有权限
+                    else {
+                        take_photo();
+                    }
                     break;
                 case  R.id.album:
-                    select_album();
+                    //检查读写权限
+                    if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED&&
+                            ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        //没有权限，请求开启权限
+                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_WRITE_STORAGE);
+                    }
+                    //具有权限
+                    else {
+                        select_album();
+                    }
+
                     break;
                 case R.id.cancel:
                     setLogoChoice.dismiss();
                     break;
             }
         }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+    {
+
+        if (requestCode == MY_PERMISSIONS_REQUEST_CAMER)
+        {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                take_photo();
+            } else
+            {
+                // Permission Denied
+                Toast.makeText(MainActivity.this, "获取权限失败", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
+        else  if (requestCode == MY_PERMISSIONS_REQUEST_WRITE_STORAGE)
+        {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                select_album();
+            } else
+            {
+                // Permission Denied
+                Toast.makeText(MainActivity.this, "获取权限失败", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
     private  void setFragmentSelect(int i)
     {
@@ -413,6 +472,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         intent.putExtra("scale",true);
         intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
         startActivityForResult(intent, CROP_PHOTO);
+
     }
 
     @Override
@@ -429,6 +489,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     startActivityForResult(intent,CROP_PHOTO);
                 }
                 break;
+            case  SHOW_PHOTO:
+                if(resultCode==RESULT_OK) {
+                    try {
+                        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+                        saveBitmap(bitmap);
+                        circleImageView.setImageBitmap(bitmap);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                }
             case  CROP_PHOTO:
                 if(resultCode==RESULT_OK)
                 {

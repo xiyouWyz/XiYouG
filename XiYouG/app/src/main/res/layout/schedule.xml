@@ -645,9 +645,11 @@
                         android:layout_height="match_parent" />
                     <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:layout_gravity="bottom|end"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center_vertical"
                         >
                         <android.support.design.widget.FloatingActionButton
                             android:id="@+id/update_schedule"
@@ -656,20 +658,21 @@
                             app:backgroundTint="@color/schedule_import"
                             app:rippleColor="@color/schedule_import_press"
                             android:src="@drawable/update" />
-                       <!-- <TextView
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/schedule_update"
                             android:textColor="@color/schedule_login"
                             android:layout_marginTop="2dp"
                             android:gravity="center"
-                            />-->
+                            />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:layout_gravity="bottom|end"
+                        android:gravity="center_vertical"
+                        android:layout_marginEnd="8dp"
                         >
                         <android.support.design.widget.FloatingActionButton
                             android:id="@+id/import_schedule"
@@ -678,14 +681,14 @@
                             app:backgroundTint="@color/schedule_import"
                             app:rippleColor="@color/schedule_import_press"
                             android:src="@drawable/add" />
-                       <!-- <TextView
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/schedule_login"
                             android:textColor="@color/schedule_login"
                             android:layout_marginTop="2dp"
                             android:gravity="center"
-                            />-->
+                            />
                     </LinearLayout>
                 </LinearLayout>
 

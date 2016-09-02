@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.wyz.xiyoug.Activity.LabWebSiteActivity;
 import com.example.wyz.xiyoug.Activity.QuestionActivity;
+import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.Util.IsNetworkConnected;
 
@@ -54,7 +55,16 @@ public class AboutOurFragment extends Fragment  implements View.OnClickListener{
         webView.getSettings().setLoadWithOverviewMode(true);*/
 
         webView.loadDataWithBaseURL(null,html,"text/html","utf-8",null);
-
+        webView.setWebViewClient(new WebViewClient()
+        {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                Uri uri = Uri.parse(url); //url为你要链接的地址
+                Intent intent =new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+                return true;
+            }
+        });
         update_layout.setOnClickListener(this);
         question_layout.setOnClickListener(this);
         feedback_layout.setOnClickListener(this);

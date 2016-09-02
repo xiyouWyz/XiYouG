@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -38,7 +39,17 @@ public class LabWebSiteActivity extends AppCompatActivity {
         }
         else
         {
-            webView.loadUrl(HttpLinkHeader.LABWEBSITE);
+            //支持javascript
+            webView.getSettings().setJavaScriptEnabled(true);
+            // 设置可以支持缩放
+            webView.getSettings().setSupportZoom(true);
+            // 设置出现缩放工具
+            webView.getSettings().setBuiltInZoomControls(true);
+            //扩大比例的缩放
+            webView.getSettings().setUseWideViewPort(true);
+            //自适应屏幕
+            webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+            webView.getSettings().setLoadWithOverviewMode(true);
             webView.setWebViewClient(new WebViewClient()
             {
                 @Override
@@ -47,6 +58,7 @@ public class LabWebSiteActivity extends AppCompatActivity {
                     return true;
                 }
             });
+            webView.loadUrl(HttpLinkHeader.LABWEBSITE);
         }
 
 
