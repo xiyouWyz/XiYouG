@@ -1,6 +1,8 @@
 package com.example.wyz.xiyoug.Viewer;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.wyz.xiyoug.Activity.QuestionActivity;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
+import com.example.wyz.xiyoug.Model.ScoreUser;
 import com.example.wyz.xiyoug.Model.User;
 import com.example.wyz.xiyoug.Activity.MyBorrowActivity;
 import com.example.wyz.xiyoug.Activity.MyCollectionActivity;
@@ -146,7 +149,7 @@ public class MyFragment extends Fragment {
                         boolean remember=pref.getBoolean("isRemember",false);
                         String account=pref.getString("account","");
                         String password=pref.getString("password","");
-                        loginWindow=new LoginWindow(getContext(),new MyLoginOnClickListener(),account,password,remember,0);
+                        loginWindow=new LoginWindow(getContext(),new MyLoginOnClickListener(),account,password,remember,0,"");
                         loginWindow.showAtLocation(view,Gravity.CENTER,0,0);
                     }
                 }
@@ -227,22 +230,36 @@ public class MyFragment extends Fragment {
             {
                 if(isLogin)
                 {
-                    isLogin=false;
-                    if(!User.getInstance().getId().equals(""))
-                    {
-                        User.Clear();
-                    }
-                    studyNumber_view.setText("点击登录");
-                    name_view.setText("");
-                    major_view.setText("");
-                    debt_view.setText("");
-                    studyNumber="点击登录";
-                    major="";
-                    name="";
-                    debt="";
-                    SESSIONID="";
-                    login_layout.setVisibility(View.INVISIBLE);
-                    notLogin_layout.setVisibility(View.VISIBLE);
+                    final AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
+                    builder.setTitle("确定退出登录？") ;
+                    builder.setPositiveButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    });
+                    builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            isLogin=false;
+                            if(!User.getInstance().getId().equals(""))
+                            {
+                                User.Clear();
+                            }
+                            studyNumber_view.setText("点击登录");
+                            name_view.setText("");
+                            major_view.setText("");
+                            debt_view.setText("");
+                            studyNumber="点击登录";
+                            major="";
+                            name="";
+                            debt="";
+                            SESSIONID="";
+                            login_layout.setVisibility(View.INVISIBLE);
+                            notLogin_layout.setVisibility(View.VISIBLE);
+                        }
+                    });
+                    builder.show();
+
 
                 }
                 else
@@ -270,6 +287,7 @@ public class MyFragment extends Fragment {
                         account=loginWindow.getAccount();
                         password=loginWindow.getPassword();
                         isRemember=loginWindow.getRemember();
+
                         if(account.equals(""))
                         {
                             Toast.makeText(getContext(),"用户名不能为空",Toast.LENGTH_SHORT).show();

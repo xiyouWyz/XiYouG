@@ -3,12 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:layout_gravity="center_vertical"
+    android:gravity="center_vertical"
     >
 
         <EditText
             android:id="@+id/account"
             android:textSize="@dimen/login_account"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="40dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:hint="@string/schedule_login_account_hint"
@@ -20,6 +22,7 @@
             android:textColor="@color/login_account"
             />
         <EditText
+
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -32,6 +35,40 @@
             android:textColor="@color/login_account"
             android:inputType="textPassword"
             />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            >
+                <EditText
+                    android:id="@+id/valiCode"
+                    android:textSize="@dimen/login_account"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="20dp"
+                    android:hint="@string/schedule_login_valiCode_hint"
+                    android:background="@drawable/login_account_shape"
+                    android:textColorHint="@color/login_account_hint"
+                    android:textColor="@color/login_account"
+
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="20dp"
+                    android:padding="10dp"
+                    android:layout_gravity="left"
+                    android:layout_weight="1"
+                    />
+                <!--<WebView
+                    android:id="@+id/valiCodeWebView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    />-->
+                <ImageView
+                    android:id="@+id/valiCodeImg"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="20dp"
+                    />
+        </LinearLayout>
         <CheckBox
             android:id="@+id/remember"
             android:layout_width="wrap_content"
@@ -54,8 +91,6 @@
         <TextView
             android:id="@+id/introduction"
             android:layout_gravity="center"
-
-            android:layout_marginBottom="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/login_introduction"
@@ -65,7 +100,7 @@
         <TextView
             android:id="@+id/close"
             android:layout_gravity="right"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="10dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
             android:layout_width="wrap_content"

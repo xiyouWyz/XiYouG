@@ -1,5 +1,7 @@
 package com.example.wyz.xiyoug.VolleyUtil;
 
+import android.util.Log;
+
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -13,6 +15,7 @@ import java.io.UnsupportedEncodingException;
  */
 public  class GetObjectRequest<T> extends Request<T> {
 
+    private  final String  TAG="GetObjectRequest";
     private  ResponseListener responseListener;
 
     public GetObjectRequest(String url, ResponseListener listener) {
@@ -42,6 +45,7 @@ public  class GetObjectRequest<T> extends Request<T> {
                 }
             }
             FourLevelActivity.SESSION_ID=session;
+            Log.d(TAG,session);
             result=(T)string;
             return  Response.success(result, HttpHeaderParser.parseCacheHeaders(networkResponse));
         } catch (UnsupportedEncodingException e) {

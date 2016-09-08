@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,6 +23,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
 import com.example.wyz.xiyoug.Activity.QuestionActivity;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.R;
@@ -33,14 +37,25 @@ import com.example.wyz.xiyoug.Util.ReadFile;
 import com.example.wyz.xiyoug.Util.SaveFile;
 import com.example.wyz.xiyoug.Util.ScheduleOkHttp;
 import com.example.wyz.xiyoug.Util.SerializableMap;
+import com.example.wyz.xiyoug.VolleyUtil.GetObjectRequest;
+import com.example.wyz.xiyoug.VolleyUtil.ResponseListener;
+import com.example.wyz.xiyoug.VolleyUtil.VolleyUtil;
+import com.squareup.okhttp.OkHttpClient;
 
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Wyz on 2016/7/31.
@@ -121,10 +136,12 @@ public class ScheduleFragment  extends Fragment{
     private  String schedule;
     public static String sessionId="";
     private  static   String schedule_url;
-    private   static String account="",password="";
+    private   static String account="",password="",valiCode="";
     private   static String name="";
     private static boolean isRemember=false;
     private  static  String semester_title;
+    private  static  boolean remember;
+    private  static  String filePath;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -133,7 +150,20 @@ public class ScheduleFragment  extends Fragment{
         initSchedule();
         return  view;
     }
-
+    public class GetCheckCodeThread implements  Runnable
+    {
+        @Override
+        public void run() {
+            try {
+                filePath=ScheduleOkHttp.GetRequestCheckCodeByOkHttp(HttpLinkHeader.CHECKCODE_URL);
+                Message message=Message.obtain();
+                message.what=6;
+                myHandler.sendMessage(message);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
     private void setupViewComponent() {
         semester=(TextView)view.findViewById(R.id.semester);
         AnnotateUtils.injectViews(ScheduleFragment.this);
@@ -152,11 +182,12 @@ public class ScheduleFragment  extends Fragment{
                 {
                     //pref= PreferenceManager.getDefaultSharedPreferences(getContext());
                     pref=getContext().getSharedPreferences("schedule_info", Context.MODE_PRIVATE);
-                    boolean remember=pref.getBoolean("isRemember",false);
-                    String account=pref.getString("account","");
-                    String password=pref.getString("password","");
-                    loginWindow=new LoginWindow(getContext(),new MyLoginOnClickListener(),account,password,remember,1);
-                    loginWindow.showAtLocation(view, Gravity.CENTER,0,0);
+                    remember=pref.getBoolean("isRemember",false);
+                    account=pref.getString("account","");
+                    password=pref.getString("password","");
+                    GetCheckCodeThread thread=new GetCheckCodeThread();
+                    new Thread(thread).start();
+
                 }
 
             }
@@ -164,7 +195,7 @@ public class ScheduleFragment  extends Fragment{
         update_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!IsNetworkConnected.isNetworkConnected(getContext()))
+            /*    if(!IsNetworkConnected.isNetworkConnected(getContext()))
                 {
                     Message message=Message.obtain();
                     message.what=4;
@@ -188,8 +219,27 @@ public class ScheduleFragment  extends Fragment{
                         content.setVisibility(View.INVISIBLE);
                         myThread=new MyThread();
                         new Thread(myThread).start();
+
                     }
+                }*/
+                if(!IsNetworkConnected.isNetworkConnected(getContext()))
+                {
+                    Message message=Message.obtain();
+                    message.what=4;
+                    myHandler.sendMessage(message);
                 }
+                else
+                {
+                    //pref= PreferenceManager.getDefaultSharedPreferences(getContext());
+                    pref=getContext().getSharedPreferences("schedule_info", Context.MODE_PRIVATE);
+                    remember=true;
+                    account=pref.getString("account","");
+                    password=pref.getString("password","");
+                    GetCheckCodeThread thread=new GetCheckCodeThread();
+                    new Thread(thread).start();
+
+                }
+
             }
         });
 
@@ -217,6 +267,7 @@ public class ScheduleFragment  extends Fragment{
         day5_three_view=(TextView)view.findViewById(R.id.day5_three);
         day5_four_view=(TextView)view.findViewById(R.id.day5_four);*/
     }
+
     private void initSchedule() {
             String schedule= ReadFile.readSchedule(getContext());
             if(!schedule.equals("scheduleInfo")&&!schedule.equals(""))
@@ -279,7 +330,8 @@ public class ScheduleFragment  extends Fragment{
                 Toast.makeText(getContext(),"账号错误，密码错误或账户不存在",Toast.LENGTH_SHORT).show();
                 load_view.setVisibility(View.INVISIBLE);
                 content.setVisibility(View.VISIBLE);
-                loginWindow.showAtLocation(view,Gravity.CENTER,0,0);
+                GetCheckCodeThread getCheckCodeThread=new GetCheckCodeThread();
+                new Thread(getCheckCodeThread).start();
             }
             else if(msg.what==1)
             {
@@ -295,7 +347,8 @@ public class ScheduleFragment  extends Fragment{
                 Toast.makeText(getContext(),"网络超时",Toast.LENGTH_SHORT).show();
                 load_view.setVisibility(View.INVISIBLE);
                 content.setVisibility(View.VISIBLE);
-                loginWindow.showAtLocation(view,Gravity.CENTER,0,0);
+                GetCheckCodeThread getCheckCodeThread=new GetCheckCodeThread();
+                new Thread(getCheckCodeThread).start();
             }
             else if(msg.what==3)
             {
@@ -318,21 +371,23 @@ public class ScheduleFragment  extends Fragment{
                 load_view.setVisibility(View.INVISIBLE);
                 content.setVisibility(View.VISIBLE);
             }
+            else  if(msg.what==6)
+            {
 
+                    loginWindow=new LoginWindow(getContext(),new MyLoginOnClickListener(),account,password,remember,1,filePath);
+                    loginWindow.showAtLocation(view, Gravity.CENTER,0,0);
 
-
-
+            }
 
         }
     }
+
     private class   MyThread implements Runnable
     {
         @Override
         public void run() {
             try {
-                sessionId=ScheduleOkHttp.postGetSessionFromServer(HttpLinkHeader.XIYOU_Login,account,password);
-                String main_url=OkHttpUtil.attachHttpGetParam(HttpLinkHeader.XIYOU_Main,"xh",account);
-                String info=ScheduleOkHttp.getGetInfoFromServer(main_url,sessionId);
+                String info=ScheduleOkHttp.PostRequestFormByOkHttp(account,password,valiCode,HttpLinkHeader.XIYOU_Login,ScheduleFragment.sessionId);
                 boolean isJudge=JsonHandle.getIsJudge(info);
                 if (!isJudge)
                 {
@@ -404,6 +459,7 @@ public class ScheduleFragment  extends Fragment{
                     account=loginWindow.getAccount();
                     password=loginWindow.getPassword();
                     isRemember=loginWindow.getRemember();
+                    valiCode=loginWindow.getvaliCode();
                     if(account.equals(""))
                     {
                         Toast.makeText(getContext(),"用户名不能为空",Toast.LENGTH_SHORT).show();
@@ -411,6 +467,10 @@ public class ScheduleFragment  extends Fragment{
                     else if(password.equals(""))
                     {
                         Toast.makeText(getContext(),"密码不能为空",Toast.LENGTH_SHORT).show();
+                    }
+                    else if(valiCode.equals(""))
+                    {
+                        Toast.makeText(getContext(),"验证码不能为空",Toast.LENGTH_SHORT).show();
                     }
                     else
                     {
@@ -420,8 +480,10 @@ public class ScheduleFragment  extends Fragment{
                         content.setVisibility(View.INVISIBLE);
                         myThread=new MyThread();
                         new Thread(myThread).start();
+
                     }
                     break;
+
                 case R.id.introduction:
                     Intent intent=new Intent();
                     intent.setClass(getContext(), QuestionActivity.class);

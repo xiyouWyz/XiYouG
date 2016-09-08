@@ -1,6 +1,9 @@
 package com.example.wyz.xiyoug.Viewer;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -63,19 +66,19 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
     private  boolean isLogin=false;
     private SharedPreferences pref;
     private  SharedPreferences.Editor editor;
-    private  String account="",password="";
+    private  String account="",password="",valiCode="";
     private boolean isRemember;
     private  LoginWindow loginWindow;
     private RelativeLayout load_view;
     private LinearLayout content;
     private  MyThread myThread;
     private  MyHandler myHandler=new MyHandler();
-    private  String sessionId;
     private  String score_url;
     private  String score_html;
     private  String name;
     private  List<String> score_userInfo;
     private  Intent intentFour;
+    private  String filePath;
 
 
 
@@ -135,7 +138,7 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
                         Bundle bundle=new Bundle();
                         bundle.putString("score_html",score_html);
                         bundle.putString("score_url",score_url);
-                        bundle.putString("sessionId",sessionId);
+                        bundle.putString("sessionId",ScheduleFragment.sessionId);
                         intent.putExtras(bundle);
                         intent.setClass(getContext(), ScoreActivity.class);
                         startActivity(intent);
@@ -189,8 +192,9 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
                         isRemember=pref.getBoolean("isRemember",false);
                         account=pref.getString("account","");
                         password=pref.getString("password","");
-                        loginWindow=new LoginWindow(getContext(),new MyLoginOnClickListener(),account,password,isRemember,1);
-                        loginWindow.showAtLocation(view, Gravity.CENTER,0,0);
+                        GetCheckCodeThread getCheckCodeThread=new GetCheckCodeThread();
+                        new Thread(getCheckCodeThread).start();
+
                     }
                     break;
             }
@@ -203,22 +207,50 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
             }
             else
             {
-                isLogin=false;
-                if(!ScoreUser.getInstance().getId().equals(""))
-                {
-                    ScoreUser.Clear();
-                }
-                alreadyLogin_view.setVisibility(View.INVISIBLE);
-                notLogin_view.setVisibility(View.VISIBLE);
-                studyNumber_view.setText("");
-                name_view.setText("");
-                college_view.setText("");
-                department_view.setText("");
+                final AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
+                builder.setTitle("确定退出登录？") ;
+                builder.setPositiveButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                });
+                builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        isLogin=false;
+                        if(!ScoreUser.getInstance().getId().equals(""))
+                        {
+                            ScoreUser.Clear();
+                        }
+                        alreadyLogin_view.setVisibility(View.INVISIBLE);
+                        notLogin_view.setVisibility(View.VISIBLE);
+                        studyNumber_view.setText("");
+                        name_view.setText("");
+                        college_view.setText("");
+                        department_view.setText("");
+                    }
+                });
+                builder.show();
+
                 //loginWindow.showAtLocation(view,Gravity.CENTER,0,0);
 
             }
         }
 
+    }
+    public class GetCheckCodeThread implements  Runnable
+    {
+        @Override
+        public void run() {
+            try {
+                filePath=ScheduleOkHttp.GetRequestCheckCodeByOkHttp(HttpLinkHeader.CHECKCODE_URL);
+                Message message=Message.obtain();
+                message.what=8;
+                myHandler.sendMessage(message);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
     private class MyLoginOnClickListener implements View.OnClickListener {
         @Override
@@ -237,6 +269,7 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
                         account=loginWindow.getAccount();
                         password=loginWindow.getPassword();
                         isRemember=loginWindow.getRemember();
+                        valiCode=loginWindow.getvaliCode();
                         if(account.equals(""))
                         {
                             Toast.makeText(getContext(),"用户名不能为空",Toast.LENGTH_SHORT).show();
@@ -244,6 +277,10 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
                         else if(password.equals(""))
                         {
                             Toast.makeText(getContext(),"密码不能为空",Toast.LENGTH_SHORT).show();
+                        }
+                        else if(valiCode.equals(""))
+                        {
+                            Toast.makeText(getContext(),"验证码不能为空",Toast.LENGTH_SHORT).show();
                         }
                         else
                         {
@@ -273,17 +310,12 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
         @Override
         public void run() {
             try {
-                if(ScheduleFragment.sessionId.equals(""))
-                {
-                    sessionId= ScheduleOkHttp.postGetSessionFromServer(HttpLinkHeader.XIYOU_Login,account,password);
-                }
-                else
-                {
-                    sessionId=ScheduleFragment.sessionId;
-                }
 
-                String main_url= OkHttpUtil.attachHttpGetParam(HttpLinkHeader.XIYOU_Main,"xh",account);
-                String info=ScheduleOkHttp.getGetInfoFromServer(main_url,sessionId);
+                String info=ScheduleOkHttp.PostRequestFormByOkHttp(account,password,valiCode,HttpLinkHeader.XIYOU_Login,ScheduleFragment.sessionId);
+
+
+                /*String main_url= OkHttpUtil.attachHttpGetParam(HttpLinkHeader.XIYOU_Main,"xh",account);
+                String info=ScheduleOkHttp.getGetInfoFromServer(main_url,sessionId);*/
                 boolean isJudge=JsonHandle.getIsJudge(info);
                 if (!isJudge)
                 {
@@ -304,7 +336,7 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
                     basicNameValuePairs.add(new BasicNameValuePair("gnmkdm","N121605"));
                     score_url=OkHttpUtil.attachHttpGetParams(HttpLinkHeader.SCORE,basicNameValuePairs);
                     try {
-                        score_html = ScheduleOkHttp.getGetScore(score_url,sessionId);
+                        score_html = ScheduleOkHttp.getGetScore(score_url,ScheduleFragment.sessionId);
                         score_userInfo=JsonHandle.getScoreUserInfo(score_html);
                         Log.d(TAG,score_userInfo.toString());
 
@@ -353,15 +385,17 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
         public void handleMessage(Message msg) {
             if(msg.what==0)
             {
-                loginWindow.showAtLocation(view,Gravity.CENTER,0,0);
                 Toast.makeText(getContext(),"账号错误，密码错误或账户不存在",Toast.LENGTH_SHORT).show();
+                GetCheckCodeThread getCheckCodeThread=new GetCheckCodeThread();
+                new Thread(getCheckCodeThread).start();
                 load_view.setVisibility(View.INVISIBLE);
                 content.setVisibility(View.VISIBLE);
             }
             if(msg.what==2)
             {
-                loginWindow.showAtLocation(view,Gravity.CENTER,0,0);
                 Toast.makeText(getContext(),"网络超时",Toast.LENGTH_SHORT).show();
+                GetCheckCodeThread getCheckCodeThread=new GetCheckCodeThread();
+                new Thread(getCheckCodeThread).start();
                 load_view.setVisibility(View.INVISIBLE);
                 content.setVisibility(View.VISIBLE);
             }
@@ -404,6 +438,10 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
                 Toast.makeText(getContext(),"请先在学校官网中进行教师评价，方可查询成绩",Toast.LENGTH_SHORT).show();
                 load_view.setVisibility(View.INVISIBLE);
                 content.setVisibility(View.VISIBLE);
+            }
+            else if(msg.what==8) {
+                loginWindow=new LoginWindow(getContext(),new MyLoginOnClickListener(),account,password,isRemember,1,filePath);
+                loginWindow.showAtLocation(view, Gravity.CENTER,0,0);
             }
         }
     }

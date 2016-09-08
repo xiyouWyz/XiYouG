@@ -189,6 +189,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         fm =getSupportFragmentManager();
+        //InitFragmentSelect();
         setFragmentSelect(R.id.library);
     }
     private void initLogoView() {
@@ -230,11 +231,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 menu.getItem(0).setVisible(true);
                 dlMain.closeDrawers();
                 break;
-
             case  R.id.score:
+                dlMain.closeDrawers();
                 setFragmentSelect(R.id.score);
                 menu.getItem(0).setVisible(false);
-                dlMain.closeDrawers();
+
                 break;
             case  R.id.schedule:
                 menu.getItem(0).setVisible(false);
@@ -384,6 +385,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case  R.id.our:
                 if(about_ourFragment==null)
                 {
+
                     about_ourFragment=new AboutOurFragment();
                     transaction.add(R.id.dl_container,about_ourFragment);
                 }

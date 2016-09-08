@@ -1,20 +1,29 @@
 package com.example.wyz.xiyoug.Util;
 
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.Message;
 import android.util.Log;
 
 import com.example.wyz.xiyoug.Activity.FourLevelActivity;
 import com.example.wyz.xiyoug.Model.ScoreModel;
+import com.example.wyz.xiyoug.Viewer.ScheduleFragment;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
+import com.yolanda.nohttp.RedirectHandler;
 
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.CookieHandler;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,13 +38,114 @@ import java.util.logging.StreamHandler;
 public class ScheduleOkHttp {
     private static   String TAG="MyOkHttp";
     public static int semesCount;
+    public static String rootPath = Environment.getExternalStorageDirectory() + "/";
     private static OkHttpClient okHttpClient=new OkHttpClient();
     static
     {
         okHttpClient.setConnectTimeout(30,TimeUnit.SECONDS);
     }
+    public static String GetRequestCheckCodeByOkHttp(final String checkCode_url) throws  Exception{
+            String session_Id;
+            okHttpClient.setFollowRedirects(false);
+            com.squareup.okhttp.Request request = new com.squareup.okhttp.Request.Builder()
+                    .url(checkCode_url)
+                    /*.addHeader("Cookie",SESSION_ID)*/
+                    .build();
 
-    public  static String postGetSessionFromServer(String url,String studyNumber,String password) throws IOException {
+            com.squareup.okhttp.Response response = okHttpClient.newCall(request).execute();
+            if(response.isSuccessful()) {
+                session_Id=response.headers().get("Set-Cookie");
+                char sessionId[]=session_Id.toCharArray();
+                for(int i=0;i<sessionId.length;i++)
+                {
+                    if(sessionId[i]==';')
+                    {
+                        session_Id=session_Id.substring(0,i);
+                        break;
+                    }
+                }
+                Log.d(TAG,session_Id);
+                File file = new File(rootPath + "/checkCode");
+                if(!file.exists()){
+                    file.mkdirs();
+                }
+                File file1 = new File(file.getPath() + "/checkCode.png");
+                if(file1.exists()){
+                    file1.delete();
+                }
+                InputStream is = response.body().byteStream();
+                OutputStream os = new FileOutputStream(file1);
+                byte [] b = new byte[1024];
+                int c;
+                while ((c = is.read(b)) > 0){
+                    os.write(b, 0, c);;
+                }
+                is.close();
+                os.close();
+
+                ScheduleFragment.sessionId=session_Id;
+                return  file1.getPath();
+            }
+        return  "";
+    }
+    public static   String PostRequestFormByOkHttp(final  String account ,final String password,final String valiCode,final  String login_url,final String session_Id)
+            throws IOException
+    {
+        RequestBody requestBody=new FormEncodingBuilder()
+                .add("__VIEWSTATE","dDwyODE2NTM0OTg7Oz5LUCaVfG1Oi+QaOSKH9UZrpjfn1w==")
+                .add("txtUserName",account)
+                .add("TextBox2",password)
+                .add("txtSecretCode",valiCode)
+                .add("RadioButtonList1","学生")
+                .add("Button1","")
+                .add("lbLanguage","")
+                .add("hidPdrs","")
+                .add("hidsc","")
+                .build();
+        okHttpClient.setFollowRedirects(false);
+        com.squareup.okhttp.Request request = new com.squareup.okhttp.Request.Builder()
+                .url(login_url)
+                .addHeader("Cookie",session_Id)
+                .addHeader("Referer","http://222.24.62.120/")
+                .post(requestBody)
+                .build();
+
+            com.squareup.okhttp.Response response = okHttpClient.newCall(request).execute();
+            if(response.code()==302) {
+                String redirect_url = response.headers().get("Location");
+                Log.d(TAG, redirect_url);
+                return GetRequestMainByOkHttp(redirect_url, session_Id);
+            }
+        return  "";
+    }
+    private  static   String GetRequestMainByOkHttp(final String redirect_url,final String session_Id)
+    {
+            Request request=new Request.Builder()
+                    .addHeader("Cookie",session_Id)
+                    .addHeader("Referer","http://222.24.62.120/")
+                    .addHeader("Origin","http://222.24.62.120")
+                    .url("http://222.24.62.120"+redirect_url)
+                    .build();
+            okHttpClient.setFollowRedirects(false);
+            try {
+                Response response=okHttpClient.newCall(request).execute();
+
+                BufferedReader bufferedReader=new BufferedReader( response.body().charStream());
+                StringBuffer stringBuffer=new StringBuffer();
+                String line;
+                while (((line=bufferedReader.readLine())!=null))
+                {
+                    stringBuffer.append(line);
+                }
+                String html=stringBuffer.toString();
+                Log.d(TAG,html);
+                return html;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        return  "";
+    }
+   /* public  static String postGetSessionFromServer(String url,String studyNumber,String password) throws IOException {
         RequestBody requestBody=new FormEncodingBuilder()
                 .add("__VIEWSTATE","dDwxMTE4MjQwNDc1Ozs+ombGLJflIyczODVOjorgMB6XZe8=")
                 .add("TextBox1",studyNumber)
@@ -64,6 +174,7 @@ public class ScheduleOkHttp {
         return  session;
     }
 
+
     public  static String getGetInfoFromServer(String url,String sessionID) throws IOException {
         Request request=new Request.Builder()
                 .url(url)
@@ -84,7 +195,12 @@ public class ScheduleOkHttp {
             return stringBuffer.toString();
         }
         return  null;
-    }
+    }*/
+
+
+
+
+
 
     public  static  String getGetScore(String url,String sessionID)throws  IOException{
         String result= getGetSchedule(url,sessionID);
@@ -237,4 +353,5 @@ public class ScheduleOkHttp {
         }
         return  "";
     }
+
 }
