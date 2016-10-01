@@ -48,6 +48,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -298,7 +299,7 @@ public class BookDetailActivity  extends AppCompatActivity{
         public void run() {
             try {
                 String book_result=OkHttpUtil.getStringFromServer(book_url);
-                Message message=new Message();
+                Message message=Message.obtain();
                 Bundle bundle=new Bundle();
                 bundle.putString("book_result",book_result);
                 message.setData(bundle);
@@ -367,7 +368,7 @@ public class BookDetailActivity  extends AppCompatActivity{
         public void run() {
             try {
                 String addColResult= OkHttpUtil.getStringFromServer(addColUrl);
-                Message message=new Message();
+                Message message=Message.obtain();
                 Bundle bundle=new Bundle();
                 bundle.putString("addColResult",addColResult);
                 message.setData(bundle);
@@ -586,8 +587,7 @@ public class BookDetailActivity  extends AppCompatActivity{
                 Toast.makeText(BookDetailActivity.this,"没有此书!",Toast.LENGTH_SHORT).show();
                 finish();
             }
-            else if(result)
-            {
+            else {
                 String detail=new JSONObject(book_result).getString("Detail");
                 if(detail.equals("NO_RECORD"))
                 {

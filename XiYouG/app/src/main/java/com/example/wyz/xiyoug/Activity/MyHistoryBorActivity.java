@@ -217,7 +217,7 @@ public class MyHistoryBorActivity extends AppCompatActivity {
     }
     private  void DealWithHisResult(String his_result)
     {
-        if(his_result!=null&!his_result.equals("")) {
+        if(his_result!=null&&!his_result.equals("")) {
             try {
                 boolean result = new JSONObject(his_result).getBoolean("Result");
                 if (result) {

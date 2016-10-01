@@ -64,6 +64,10 @@ public class SaveFile {
                 {
                     writer.close();
                 }
+                if(out!=null)
+                {
+                    out.close();
+                }
             }
             catch (Exception e)
             {

@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompatSideChannelService;
@@ -54,7 +55,7 @@ public class BookSearchActivity extends AppCompatActivity  implements SearchView
     private ListView listView;
     private List<Book_Search> book_searches;
     private  MyAdapter myAdapter;
-    private MyThread myThread=new MyThread();
+    private MyThread myThread;
     private MyHandler myHandler=new MyHandler();
     private  String url;
     private  final  String TAG="BookSearchActivity";
@@ -109,7 +110,7 @@ public class BookSearchActivity extends AppCompatActivity  implements SearchView
         return super.onOptionsItemSelected(item);
     }
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
     {
 
         if (requestCode == MY_PERMISSIONS_REQUEST_CAMER)
@@ -218,6 +219,7 @@ public class BookSearchActivity extends AppCompatActivity  implements SearchView
                 content.setVisibility(View.INVISIBLE);
                 new MyAnimation(BookSearchActivity.this, "胖萌正在为您努力加载....", R.drawable.loading, load_view);
 
+                myThread=new MyThread();
                 new Thread(myThread).start();
             }
             else
@@ -347,7 +349,7 @@ public class BookSearchActivity extends AppCompatActivity  implements SearchView
 
             try {
                 boolean result = new JSONObject(sea_result).getBoolean("Result");
-                Log.d(TAG, result + "");
+                Log.d(TAG,String.valueOf(result));
                 if (result) {
                     String detail = new JSONObject(sea_result).getString("Detail");
                     if (detail.equals("NO_RECORD")) {
@@ -373,7 +375,7 @@ public class BookSearchActivity extends AppCompatActivity  implements SearchView
                         } else {
                             setupListView();
                         }
-                        Message message = new Message();
+                        Message message = Message.obtain();
                         message.what = 2;
                         myHandler.sendMessage(message);
                     }

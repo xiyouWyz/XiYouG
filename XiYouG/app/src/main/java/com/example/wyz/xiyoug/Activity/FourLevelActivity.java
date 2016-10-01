@@ -135,7 +135,6 @@ public class FourLevelActivity extends AppCompatActivity {
                 {
                     id=account_view.getText().toString();
                     password=name_view.getText().toString();
-
                     if(id.equals(""))
                     {
                         Toast.makeText(FourLevelActivity.this,"准考证号不能为空",Toast.LENGTH_SHORT).show();
@@ -146,7 +145,6 @@ public class FourLevelActivity extends AppCompatActivity {
                     }
                     else
                     {
-
                         List<BasicNameValuePair> basicNameValuePairs=new ArrayList<>();
                         basicNameValuePairs.add(new BasicNameValuePair("zkzh",id));
                         basicNameValuePairs.add(new BasicNameValuePair("xm",password));
@@ -155,7 +153,6 @@ public class FourLevelActivity extends AppCompatActivity {
                         load_view.setVisibility(View.VISIBLE);
                         main_content.setVisibility(View.INVISIBLE);
                         login_content.setVisibility(View.INVISIBLE);
-
                         VolleyUtil.initialize(FourLevelActivity.this);
                         getObjectFromServer(url, new ResponseListener() {
                             @Override

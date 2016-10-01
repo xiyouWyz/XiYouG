@@ -89,8 +89,49 @@ public class JsonHandle {
         listMap.put("time4",time4);
         return  listMap;
     }
+    private static String  getScheduleByThree(String name,String week,String teacher )
+    {
+        StringBuilder schedule=new StringBuilder();
+        if(IsContainSignal(week)==1)
+        {
+            schedule.append(name).append("\n").append("@单周\n").append("@").append(teacher).append("\n");
+
+        }
+        else if (IsContainSignal(week)==2)
+        {
+            schedule.append(name).append("\n").append("@双周\n").append("@").append(teacher).append("\n");
+        }
+        else if (IsContainSignal(week)==0)
+        {
+            schedule.append(name).append("\n").append("@").append(teacher).append("\n");
+        }
+        return  schedule.toString();
+    }
+    private static  String getScheduleByFour(String name,String week,String teacher,String room)
+    {
+        StringBuilder schedule=new StringBuilder();
+        if(IsContainSignal(week)==1)
+        {
+            schedule.append(name).append("\n").append("@单周\n").append("@").append(teacher).append("\n").append("@").append(room).append("\n");
+        }
+        else if (IsContainSignal(week)==2)
+        {
+            schedule.append(name).append("\n").append("@双周\n").append("@").append(teacher).append("\n").append("@").append(room).append("\n");
+        }
+        else if (IsContainSignal(week)==0)
+        {
+            schedule.append(name).append("\n").append("@").append(teacher).append("\n").append("@").append(room).append("\n");
+        }
+        return  schedule.toString();
+    }
     private static List<String> getTime1Schedule(Element tr_time,List<String> time)
     {
+        String schedule_name;
+        String schedule_teacher;
+        String schedule_week;
+        String schedule_room;
+        String schedule;
+        StringBuilder stringBuilder=new StringBuilder();
         for(int i=2;i<7;i++)
         {
             List<TextNode> textNodes=tr_time.child(i).textNodes();
@@ -99,81 +140,85 @@ public class JsonHandle {
                 time.add("");
             }
             else if(textNodes.size()==2){
-
-                String schedule_name = textNodes.get(0).text();
-                String schedule_teacher = textNodes.get(1).text();
-                String schedule = schedule_name +"\n"+"@"+ schedule_teacher+"\n";
-                time.add(schedule);
+                 schedule_name = textNodes.get(0).text();
+                 schedule_teacher = textNodes.get(1).text();
+                 stringBuilder.append(schedule_name).append("\n@").append(schedule_teacher).append("\n");
+                 schedule=stringBuilder.toString();
+                 time.add(schedule);
             }
             else if(textNodes.size()==3){
-
-                String schedule_name = textNodes.get(0).text();
-                String schedule_teacher = textNodes.get(1).text();
-                String schedule_room = textNodes.get(2).text();
-                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                 schedule_name = textNodes.get(0).text();
+                 schedule_week = textNodes.get(1).text();
+                 schedule_teacher = textNodes.get(2).text();
+                schedule=getScheduleByThree(schedule_name,schedule_week,schedule_teacher);
                 time.add(schedule);
             }
             else if(textNodes.size()==4){
-
-                String schedule_name = textNodes.get(0).text();
-                String schedule_teacher = textNodes.get(2).text();
-                String schedule_room = textNodes.get(3).text();
-                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                 schedule_name = textNodes.get(0).text();
+                 schedule_week=textNodes.get(1).text();
+                 schedule_teacher = textNodes.get(2).text();
+                 schedule_room = textNodes.get(3).text();
+                schedule=getScheduleByFour(schedule_name,schedule_week,schedule_teacher,schedule_room);
                 time.add(schedule);
             }
             else if(textNodes.size()==6){
-
-                String schedule_name = textNodes.get(0).text();
-                String schedule_teacher = textNodes.get(1).text();
-                String schedule_room = textNodes.get(2).text();
-                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                 schedule_name = textNodes.get(0).text();
+                 schedule_teacher = textNodes.get(1).text();
+                 schedule_room = textNodes.get(2).text();
+                schedule=getScheduleByThree(schedule_name,schedule_teacher,schedule_room);
                 time.add(schedule);
             }
             else if(textNodes.size()==8){
-
-                String schedule_name = textNodes.get(0).text();
-                String schedule_teacher = textNodes.get(2).text();
-                String schedule_room = textNodes.get(3).text();
-                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                 schedule_name = textNodes.get(0).text();
+                 schedule_teacher = textNodes.get(2).text();
+                 schedule_room = textNodes.get(3).text();
+                 schedule_week=textNodes.get(1).text();
+                schedule=getScheduleByFour(schedule_name,schedule_week,schedule_teacher,schedule_room);
                 time.add(schedule);
             }
             else if(textNodes.size()==9){
-
-                String schedule_name = textNodes.get(0).text();
-                String schedule_teacher = textNodes.get(1).text();
-                String schedule_room = textNodes.get(2).text();
-                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                 schedule_name = textNodes.get(0).text();
+                 schedule_teacher = textNodes.get(1).text();
+                 schedule_room = textNodes.get(2).text();
+                schedule=getScheduleByThree(schedule_name,schedule_teacher,schedule_room);
                 time.add(schedule);
             }
             else if(textNodes.size()==12){
-
-                String schedule_name = textNodes.get(0).text();
-                String schedule_teacher = textNodes.get(2).text();
-                String schedule_room = textNodes.get(3).text();
-                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                 schedule_name = textNodes.get(0).text();
+                 schedule_teacher = textNodes.get(2).text();
+                 schedule_room = textNodes.get(3).text();
+                 schedule_week=textNodes.get(1).text();
+                schedule=getScheduleByFour(schedule_name,schedule_week,schedule_teacher,schedule_room);
                 time.add(schedule);
             }
             else if(textNodes.size()==16){
-
-                String schedule_name = textNodes.get(0).text();
-                String schedule_teacher = textNodes.get(2).text();
-                String schedule_room = textNodes.get(3).text();
-                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                 schedule_name = textNodes.get(0).text();
+                 schedule_teacher = textNodes.get(2).text();
+                 schedule_room = textNodes.get(3).text();
+                 schedule_week=textNodes.get(1).text();
+                schedule=getScheduleByFour(schedule_name,schedule_week,schedule_teacher,schedule_room);
                 time.add(schedule);
             }
             else
             {
-                String schedule_name = textNodes.get(0).text();
-                String schedule_teacher = textNodes.get(2).text();
-                String schedule_room = textNodes.get(3).text();
-                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
-                time.add(schedule);
+                 schedule_name = textNodes.get(0).text();
+                 schedule_teacher = textNodes.get(2).text();
+                 schedule_room = textNodes.get(3).text();
+                 stringBuilder.append(schedule_name).append("\n@").append(schedule_teacher).append("\n@").append(schedule_room).append("\n");
+                 schedule = stringBuilder.toString();
+                 time.add(schedule);
             }
         }
         return  time;
     }
     private static  List<String> getTime2Schedule(Element tr_time,List<String> time)
     {
+        String schedule_name;
+        String schedule_teacher;
+        String schedule_week;
+        String schedule_room;
+        String schedule;
+        StringBuilder stringBuilder=new StringBuilder();
         for(int i=1;i<6;i++)
         {
             List<TextNode> textNodes=tr_time.child(i).textNodes();
@@ -183,73 +228,75 @@ public class JsonHandle {
             }
             else if(textNodes.size()==2){
 
-                String schedule_name = textNodes.get(0).text();
-                String schedule_teacher = textNodes.get(1).text();
-                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n";
-                time.add(schedule);
+                 schedule_name = textNodes.get(0).text();
+                 schedule_teacher = textNodes.get(1).text();
+                 stringBuilder.append(schedule_name).append("\n@").append(schedule_teacher).append("\n");
+                 schedule = stringBuilder.toString();
+                 time.add(schedule);
             }
             else if(textNodes.size()==3){
-
-                String schedule_name = textNodes.get(0).text();
-                String schedule_teacher = textNodes.get(1).text();
-                String schedule_room = textNodes.get(2).text();
-                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                 schedule_name = textNodes.get(0).text();
+                 schedule_teacher = textNodes.get(1).text();
+                 schedule_room = textNodes.get(2).text();
+                schedule=getScheduleByThree(schedule_name,schedule_teacher,schedule_room);
                 time.add(schedule);
             }
             else if(textNodes.size()==4){
-
-                String schedule_name = textNodes.get(0).text();
-                String schedule_teacher = textNodes.get(2).text();
-                String schedule_room = textNodes.get(3).text();
-                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                 schedule_name = textNodes.get(0).text();
+                 schedule_teacher = textNodes.get(2).text();
+                 schedule_room = textNodes.get(3).text();
+                 schedule_week=textNodes.get(1).text();
+                schedule=getScheduleByFour(schedule_name,schedule_week,schedule_teacher,schedule_room);
                 time.add(schedule);
             }
             else if(textNodes.size()==6){
-
-                String schedule_name = textNodes.get(0).text();
-                String schedule_teacher = textNodes.get(1).text();
-                String schedule_room = textNodes.get(2).text();
-                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                 schedule_name = textNodes.get(0).text();
+                 schedule_teacher = textNodes.get(1).text();
+                 schedule_room = textNodes.get(2).text();
+                schedule=getScheduleByThree(schedule_name,schedule_teacher,schedule_room);
                 time.add(schedule);
             }
             else if(textNodes.size()==8){
-
-                String schedule_name = textNodes.get(0).text();
-                String schedule_teacher = textNodes.get(2).text();
-                String schedule_room = textNodes.get(3).text();
-                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                 schedule_name = textNodes.get(0).text();
+                 schedule_teacher = textNodes.get(2).text();
+                 schedule_room = textNodes.get(3).text();
+                 schedule_week=textNodes.get(1).text();
+                schedule=getScheduleByFour(schedule_name,schedule_week,schedule_teacher,schedule_room);
                 time.add(schedule);
             }
             else if(textNodes.size()==9){
 
-                String schedule_name = textNodes.get(0).text();
-                String schedule_teacher = textNodes.get(1).text();
-                String schedule_room = textNodes.get(2).text();
-                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                 schedule_name = textNodes.get(0).text();
+                 schedule_teacher = textNodes.get(1).text();
+                 schedule_room = textNodes.get(2).text();
+                schedule=getScheduleByThree(schedule_name,schedule_teacher,schedule_room);
                 time.add(schedule);
             }
             else if(textNodes.size()==12){
 
-                String schedule_name = textNodes.get(0).text();
-                String schedule_teacher = textNodes.get(2).text();
-                String schedule_room = textNodes.get(3).text();
-                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                 schedule_name = textNodes.get(0).text();
+                 schedule_teacher = textNodes.get(2).text();
+                 schedule_room = textNodes.get(3).text();
+                 schedule_week=textNodes.get(1).text();
+                schedule=getScheduleByFour(schedule_name,schedule_week,schedule_teacher,schedule_room);
                 time.add(schedule);
             }
             else if(textNodes.size()==16){
 
-                String schedule_name = textNodes.get(0).text();
-                String schedule_teacher = textNodes.get(2).text();
-                String schedule_room = textNodes.get(3).text();
-                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                 schedule_name = textNodes.get(0).text();
+                 schedule_teacher = textNodes.get(2).text();
+                 schedule_room = textNodes.get(3).text();
+                 schedule_week=textNodes.get(1).text();
+                schedule=getScheduleByFour(schedule_name,schedule_week,schedule_teacher,schedule_room);
                 time.add(schedule);
             }
             else
             {
-                String schedule_name = textNodes.get(0).text();
-                String schedule_teacher = textNodes.get(2).text();
-                String schedule_room = textNodes.get(3).text();
-                String schedule = schedule_name +"\n"+"@"+ schedule_teacher +"\n"+"@"+ schedule_room+"\n";
+                 schedule_name = textNodes.get(0).text();
+                 schedule_teacher = textNodes.get(2).text();
+                 schedule_room = textNodes.get(3).text();
+                 stringBuilder.append(schedule_name).append("\n@").append(schedule_teacher).append("\n@").append(schedule_room).append("\n");
+                 schedule = stringBuilder.toString();
                 time.add(schedule);
             }
         }
@@ -257,16 +304,16 @@ public class JsonHandle {
     }
     public  static  String getSemesterTitleSchedule(String schedule)
     {
-        String semester="";
+        StringBuilder stringBuilder=new StringBuilder();
         Document document= Jsoup.parse(schedule);
         Element tbody=document.body().getElementById("Table2").child(0);
         String year=tbody.getElementById("xnd").child(0).text();
-        semester+=year;
-        semester+=tbody.getElementById("Label2").text();
+        stringBuilder.append(year);
+        stringBuilder.append(tbody.getElementById("Label2").text());
         String sem=tbody.getElementById("xqd").child(0).text();
-        semester+=sem;
-        semester+=tbody.getElementById("Label1").text();
-        return  semester;
+        stringBuilder.append(sem);
+        stringBuilder.append(tbody.getElementById("Label1").text());
+        return  stringBuilder.toString();
     }
 
 
@@ -295,8 +342,7 @@ public class JsonHandle {
     public static String getViewState(String score_html) {
         Document document=Jsoup.parse(score_html);
         Element form=document.body().getElementById("Form1");
-        String result=form.select("input[name=__VIEWSTATE]").get(0).attr("value");
-        return  result;
+        return form.select("input[name=__VIEWSTATE]").get(0).attr("value");
     }
     public  static  List<String> getYearCount(String score_html)
     {
@@ -461,7 +507,21 @@ public class JsonHandle {
         Document document= Jsoup.parse(content);
         Elements div= document.body().getElementsByClass("panel-wrap");
 
-        String result=div.get(2).html();
-        return  result;
+        return div.get(2).html();
+    }
+    private   static  int  IsContainSignal(String s)
+    {
+        if(s.contains("单"))
+        {
+            return  1;
+        }
+        else if(s.contains("双"))
+        {
+            return  2;
+        }
+        else
+        {
+            return  0;
+        }
     }
 }

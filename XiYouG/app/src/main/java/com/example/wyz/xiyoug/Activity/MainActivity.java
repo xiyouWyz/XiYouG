@@ -61,11 +61,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RelativeLayout classRoom_view;
     private RelativeLayout our_view;
     private RelativeLayout feedback_view;
-    private Fragment scheduleFragment;
-    private Fragment libraryFragment;
-    private Fragment scoreFragment;
-    private  Fragment classRoomFragment;
-    private Fragment about_ourFragment;
+    private Fragment scheduleFragment=null;
+    private Fragment libraryFragment=null;
+    private Fragment scoreFragment=null;
+    private  Fragment classRoomFragment=null;
+    private Fragment about_ourFragment=null;
 
     private FragmentManager fm;
     private CircleImageView circleImageView;
@@ -207,6 +207,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             {
                 Bitmap bitmap=BitmapFactory.decodeFile(ALBUM_ALL_PATH);
                 circleImageView.setImageBitmap(bitmap);
+                bitmap.recycle();
             }
             else
             {
@@ -239,6 +240,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case  R.id.schedule:
                 menu.getItem(0).setVisible(false);
+
                 setFragmentSelect(R.id.schedule);
                 dlMain.closeDrawers();
                 break;
@@ -497,6 +499,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
                         saveBitmap(bitmap);
                         circleImageView.setImageBitmap(bitmap);
+                        bitmap.recycle();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -510,6 +513,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Bitmap bitmap= BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
                         saveBitmap(bitmap);
                         circleImageView.setImageBitmap(bitmap);
+                        bitmap.recycle();
                     }
                     catch (Exception e)
                     {
@@ -527,6 +531,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         else
                         {
                             circleImageView.setImageBitmap(bitmap);
+                            bitmap.recycle();
                         }
                     } catch (FileNotFoundException e) {
                         Log.d(TAG,e.toString());

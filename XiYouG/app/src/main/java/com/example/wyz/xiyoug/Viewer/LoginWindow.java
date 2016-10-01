@@ -138,7 +138,7 @@ public class LoginWindow extends PopupWindow{
         DisplayMetrics displayMetrics=context.getResources().getDisplayMetrics();
         this.setContentView(loginView);
         this.setWidth((int)(displayMetrics.widthPixels*0.8));
-        this.setHeight((int)(displayMetrics.heightPixels*0.6));
+        this.setHeight((int)(displayMetrics.heightPixels*0.7));
         this.setFocusable(true);
 
         this.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.login_view_shape));
@@ -154,6 +154,7 @@ public class LoginWindow extends PopupWindow{
                 case  1:
                     Bitmap bitmap=BitmapFactory.decodeFile(filepath);
                     valiCode_imgView.setImageBitmap(bitmap);
+                    bitmap.recycle();
             }
         }
     };

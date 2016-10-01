@@ -253,7 +253,7 @@ public class MyBorrowActivity  extends AppCompatActivity
             String url= OkHttpUtil.attachHttpGetParam(HttpLinkHeader.MY_BORROW,"session", MyFragment.SESSIONID);
             try {
                 String bor_result = OkHttpUtil.getStringFromServer(url);
-                Message message=new Message();
+                Message message=Message.obtain();
                 Bundle bundle=new Bundle();
                 bundle.putString("bor_result",bor_result);
                 message.what=1;
@@ -316,7 +316,7 @@ public class MyBorrowActivity  extends AppCompatActivity
         public void run() {
             try {
                 String renew_result=OkHttpUtil.getStringFromServer(renew_url);
-                Message message=new Message();
+                Message message=Message.obtain();
                 Bundle bundle=new Bundle();
                 bundle.putString("renew_result",renew_result);
                 message.setData(bundle);
@@ -421,7 +421,7 @@ public class MyBorrowActivity  extends AppCompatActivity
     {
         try {
             boolean result=new JSONObject(renew_result).getBoolean("Result");
-            if(result==true)
+            if(result)
             {
                 Toast.makeText(MyBorrowActivity.this,"续借成功",Toast.LENGTH_SHORT).show();
                /* UpDataRenew();

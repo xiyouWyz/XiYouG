@@ -49,22 +49,29 @@ public class ReadFile {
                 content.append(line);
             }
 
+
         }
         catch (Exception e)
         {
             Log.d(TAG,e.toString());
         }
         finally {
-            if(reader!=null) {
-                try
+            try
+            {
+                if(reader!=null)
                 {
                     reader.close();
                 }
-                catch (Exception e)
+                if (in!=null)
                 {
-                    Log.d(TAG,e.toString());
+                    in.close();
                 }
             }
+            catch (Exception e)
+            {
+                Log.d(TAG,e.toString());
+            }
+
         }
         return content.toString();
 

@@ -1,16 +1,20 @@
 package com.example.wyz.xiyoug.Viewer;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -51,6 +55,8 @@ import java.util.List;
  * Created by Wyz on 2016/8/4.
  */
 public class ScoreMyFragment extends Fragment implements View.OnClickListener{
+
+    private static final int MY_PERMISSIONS_REQUEST_WRITE_STORAGE= 2;
     private  View view;
     private  LinearLayout alreadyLogin_view;
     private  LinearLayout notLogin_view;
@@ -188,13 +194,21 @@ public class ScoreMyFragment extends Fragment implements View.OnClickListener{
 
                      if(!isLogin)
                     {
-                        pref=getContext().getSharedPreferences("score_info", Context.MODE_PRIVATE);
-                        isRemember=pref.getBoolean("isRemember",false);
-                        account=pref.getString("account","");
-                        password=pref.getString("password","");
-                        GetCheckCodeThread getCheckCodeThread=new GetCheckCodeThread();
-                        new Thread(getCheckCodeThread).start();
-
+                        //检查读写权限
+                        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED&&
+                                ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                            //没有权限，请求开启权限
+                            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_WRITE_STORAGE);
+                        }
+                        //具有权限
+                        else {
+                            pref = getContext().getSharedPreferences("score_info", Context.MODE_PRIVATE);
+                            isRemember = pref.getBoolean("isRemember", false);
+                            account = pref.getString("account", "");
+                            password = pref.getString("password", "");
+                            GetCheckCodeThread getCheckCodeThread = new GetCheckCodeThread();
+                            new Thread(getCheckCodeThread).start();
+                        }
                     }
                     break;
             }

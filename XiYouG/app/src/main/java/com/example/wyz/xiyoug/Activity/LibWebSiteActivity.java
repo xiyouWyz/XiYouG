@@ -17,8 +17,6 @@ import com.example.wyz.xiyoug.Util.IsNetworkConnected;
  * Created by Wyz on 2016/8/13.
  */
 public class LibWebSiteActivity  extends AppCompatActivity{
-    private Toolbar toolbar;
-    private WebView webView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,10 +25,10 @@ public class LibWebSiteActivity  extends AppCompatActivity{
     }
 
     private void setupViewComponent() {
-        toolbar=(Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        webView=(WebView)findViewById(R.id.webView);
+        WebView webView = (WebView) findViewById(R.id.webView);
         if(!IsNetworkConnected.isNetworkConnected(LibWebSiteActivity.this))
         {
             Toast.makeText(LibWebSiteActivity.this,"网络超时",Toast.LENGTH_SHORT).show();

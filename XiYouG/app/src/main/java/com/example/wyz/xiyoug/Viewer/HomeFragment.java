@@ -113,24 +113,17 @@ public class HomeFragment extends Fragment {
 
     private void getDataFromFile(int i) {
         String colRankInfo = ReadFile.readColRank(getContext());
-        if (colRankInfo != null) {
-            JSONArray jsonArray = null;
-            try {
-                jsonArray = new JSONObject(colRankInfo).getJSONArray("Detail");
-                book_col_ranks=jsonArrayToList(jsonArray,book_col_ranks);
-                setupListView(book_col_ranks);
-                Log.d(TAG,"从文件中加载数据");
-            } catch (JSONException e) {
-                Log.d(TAG, e.toString());
-                initData(i);
-            }
-
-        }
-        else
-        {
-            //adapter.notifyDataSetChanged();
+        JSONArray jsonArray = null;
+        try {
+            jsonArray = new JSONObject(colRankInfo).getJSONArray("Detail");
+            book_col_ranks=jsonArrayToList(jsonArray,book_col_ranks);
+            setupListView(book_col_ranks);
+            Log.d(TAG,"从文件中加载数据");
+        } catch (JSONException e) {
+            Log.d(TAG, e.toString());
             initData(i);
         }
+
     }
 
     private void initData(int index) {
@@ -616,7 +609,7 @@ public class HomeFragment extends Fragment {
             try {
                 String rank_result = OkHttpUtil.getStringFromServer(url);
                 Log.d("rank_Result", rank_result.toString());
-                Message msg = new Message();
+                Message msg = Message.obtain();
                 msg.what = 1;
                 Bundle bundle = new Bundle();
                 bundle.putString("rank_result", rank_result);

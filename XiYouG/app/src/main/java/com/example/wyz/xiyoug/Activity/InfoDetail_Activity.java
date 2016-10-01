@@ -61,11 +61,11 @@ public class InfoDetail_Activity extends AppCompatActivity{
         String type= bundle.getString("type");
         String format=bundle.getString("format");
         int id=bundle.getInt("id");
-        if(type.equals("news"))
+        if(type!=null&&type.equals("news"))
         {
             url= HttpLinkHeader.NEWS_DETAIL+id;
         }
-        else if(type.equals("announce"))
+        else if(type!=null&&type.equals("announce"))
         {
             url= HttpLinkHeader.NOTICES_DETAIL+id;
         }

@@ -1,9 +1,11 @@
 package com.example.wyz.xiyoug.Viewer;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -11,7 +13,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -53,6 +57,7 @@ import java.io.OutputStream;
 import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -61,6 +66,8 @@ import java.util.concurrent.TimeUnit;
  * Created by Wyz on 2016/7/31.
  */
 public class ScheduleFragment  extends Fragment{
+
+    private static final int MY_PERMISSIONS_REQUEST_WRITE_STORAGE= 2;
     public   View view;
     private  TextView semester;
 
@@ -135,13 +142,13 @@ public class ScheduleFragment  extends Fragment{
     private  final String TAG="ScheduleFragment";
     private  String schedule;
     public static String sessionId="";
-    private  static   String schedule_url;
-    private   static String account="",password="",valiCode="";
-    private   static String name="";
-    private static boolean isRemember=false;
-    private  static  String semester_title;
-    private  static  boolean remember;
-    private  static  String filePath;
+    private     String schedule_url;
+    private    String account="",password="",valiCode="";
+    private    String name="";
+    private  boolean isRemember=false;
+    private    String semester_title;
+    private    boolean remember;
+    private    String filePath;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -180,16 +187,23 @@ public class ScheduleFragment  extends Fragment{
                 }
                 else
                 {
-                    //pref= PreferenceManager.getDefaultSharedPreferences(getContext());
-                    pref=getContext().getSharedPreferences("schedule_info", Context.MODE_PRIVATE);
-                    remember=pref.getBoolean("isRemember",false);
-                    account=pref.getString("account","");
-                    password=pref.getString("password","");
-                    GetCheckCodeThread thread=new GetCheckCodeThread();
-                    new Thread(thread).start();
-
+                    //检查读写权限
+                    if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED&&
+                            ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        //没有权限，请求开启权限
+                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_WRITE_STORAGE);
+                    }
+                    //具有权限
+                    else {
+                        //pref= PreferenceManager.getDefaultSharedPreferences(getContext());
+                        pref=getContext().getSharedPreferences("schedule_info", Context.MODE_PRIVATE);
+                        remember=pref.getBoolean("isRemember",false);
+                        account=pref.getString("account","");
+                        password=pref.getString("password","");
+                        GetCheckCodeThread thread=new GetCheckCodeThread();
+                        new Thread(thread).start();
+                    }
                 }
-
             }
         });
         update_btn.setOnClickListener(new View.OnClickListener() {
@@ -230,14 +244,23 @@ public class ScheduleFragment  extends Fragment{
                 }
                 else
                 {
-                    //pref= PreferenceManager.getDefaultSharedPreferences(getContext());
-                    pref=getContext().getSharedPreferences("schedule_info", Context.MODE_PRIVATE);
-                    remember=true;
-                    account=pref.getString("account","");
-                    password=pref.getString("password","");
-                    GetCheckCodeThread thread=new GetCheckCodeThread();
-                    new Thread(thread).start();
-
+                    //检查读写权限
+                    if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED&&
+                            ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        //没有权限，请求开启权限
+                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_WRITE_STORAGE);
+                    }
+                    //具有权限
+                    else
+                    {
+                        //pref= PreferenceManager.getDefaultSharedPreferences(getContext());
+                        pref=getContext().getSharedPreferences("schedule_info", Context.MODE_PRIVATE);
+                        remember=true;
+                        account=pref.getString("account","");
+                        password=pref.getString("password","");
+                        GetCheckCodeThread thread=new GetCheckCodeThread();
+                        new Thread(thread).start();
+                    }
                 }
 
             }
@@ -269,18 +292,20 @@ public class ScheduleFragment  extends Fragment{
     }
 
     private void initSchedule() {
-            String schedule= ReadFile.readSchedule(getContext());
-            if(!schedule.equals("scheduleInfo")&&!schedule.equals(""))
-            {
-                new MyAnimation(getContext(),"胖萌正在努力为您加载...",R.drawable.loading,load_view);
-                load_view.setVisibility(View.VISIBLE);
-                content.setVisibility(View.INVISIBLE);
-                stringListMap=JsonHandle.getSchedule(schedule);
-                semester_title=JsonHandle.getSemesterTitleSchedule(schedule);
-                setSchedule();
-                content.setVisibility(View.VISIBLE);
-                load_view.setVisibility(View.INVISIBLE);
-            }
+            new Thread(){
+                @Override
+                public void run() {
+                    schedule= ReadFile.readSchedule(getContext());
+                    if(!schedule.equals("scheduleInfo")&&!schedule.equals("")) {
+                        stringListMap = JsonHandle.getSchedule(schedule);
+                        semester_title = JsonHandle.getSemesterTitleSchedule(schedule);
+                    }
+                    Message message=Message.obtain();
+                    message.what=7;
+                    myHandler.sendMessage(message);
+                }
+            }.start();
+
     }
     private void setSchedule() {
         semester.setText(semester_title);
@@ -294,6 +319,9 @@ public class ScheduleFragment  extends Fragment{
                 "time3","time3","time3","time3","time3",
                 "time4","time4","time4","time4","time4"
         ));
+
+
+
         List<Integer> days=new ArrayList<>(Arrays.asList(0,1,2,3,4,0,1,2,3,4,0,1,2,3,4,0,1,2,3,4));
         List<Integer> colors=new ArrayList<>(Arrays.asList(R.color.schedule_day1_one,R.color.schedule_day2_one,R.color.schedule_day3_one,R.color.schedule_day4_one,R.color.schedule_day5_one
             ,R.color.schedule_day1_two,R.color.schedule_day2_two,R.color.schedule_day3_two,R.color.schedule_day4_two,R.color.schedule_day5_two
@@ -305,9 +333,10 @@ public class ScheduleFragment  extends Fragment{
     private  void setScheduleOneData(List<TextView> textviews,List<String> times,List<Integer> day,List<Integer> color)
     {
         int i=0;
+        String str;
         for(i=0;i<textviews.size();i++)
         {
-            String str=stringListMap.get(times.get(i)).get(day.get(i));
+            str=stringListMap.get(times.get(i)).get(day.get(i));
             if(str.equals(""))
             {
                 textviews.get(i).setBackgroundColor(getResources().getColor(R.color.schedule_none));
@@ -340,7 +369,6 @@ public class ScheduleFragment  extends Fragment{
                 editor.putString("password",password);
                 editor.putBoolean("isRemember",isRemember);
                 editor.apply();
-
             }
              else if(msg.what==2)
             {
@@ -376,6 +404,20 @@ public class ScheduleFragment  extends Fragment{
 
                     loginWindow=new LoginWindow(getContext(),new MyLoginOnClickListener(),account,password,remember,1,filePath);
                     loginWindow.showAtLocation(view, Gravity.CENTER,0,0);
+
+            }
+            else  if(msg.what==7)
+            {
+                if(!schedule.equals("scheduleInfo")&&!schedule.equals("")) {
+                    new MyAnimation(getContext(),"胖萌正在努力为您加载...",R.drawable.loading,load_view);
+                    load_view.setVisibility(View.VISIBLE);
+                    content.setVisibility(View.INVISIBLE);
+
+                    setSchedule();
+                    content.setVisibility(View.VISIBLE);
+                    load_view.setVisibility(View.INVISIBLE);
+                }
+
 
             }
 
