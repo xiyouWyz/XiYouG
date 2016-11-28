@@ -1,5 +1,6 @@
 package com.example.wyz.xiyoug.Activity;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.Nullable;
@@ -69,6 +70,7 @@ public class LabWebSiteActivity extends AppCompatActivity {
         if(item.getItemId()==android.R.id.home)
         {
             finish();
+
         }
         return super.onOptionsItemSelected(item);
     }

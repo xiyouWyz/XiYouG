@@ -140,11 +140,11 @@
                 </LinearLayout>
 
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/rank_below_divide"
-                ></View>
+                android:background="@color/rank_below_divide" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
