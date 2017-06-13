@@ -2,26 +2,20 @@ package com.example.wyz.xiyoug.Viewer;
 
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.wyz.xiyoug.R;
-import com.example.wyz.xiyoug.Util.IsNetworkConnected;
-import com.example.wyz.xiyoug.Util.JsonHandle;
-import com.example.wyz.xiyoug.Util.NoHttpUtil;
 import com.yolanda.nohttp.NoHttp;
-
-import java.util.Date;
 
 /**
  * Created by Wyz on 2016/8/31.
@@ -30,20 +24,30 @@ public class ClassRoomFragment extends Fragment {
      View view;
     private TextView title_textView;
     private WebView webView;
-    private  MyThread myThread;
-
+    //private  MyThread myThread;
+    private FrameLayout mFrameLayout;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.class_room,container,false);
         NoHttp.init(getActivity().getApplication());
         setupViewComponent1();
+        System.out.println(android.os.HandlerThread.currentThread().getName());
+        System.out.println(android.os.HandlerThread.currentThread().getId());
+        System.out.println(android.os.Process.myPid());
         //setupViewComponent();
         return view;
     }
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("ClassRoomFragment", "onPause");
+    }
     private void setupViewComponent1() {
-        webView=(WebView)view.findViewById(R.id.webView);
+        mFrameLayout=(FrameLayout)view.findViewById(R.id.frameLayout);
+        webView=new WebView(getActivity().getApplicationContext());
+        mFrameLayout.addView(webView);
+        //webView=(WebView)view.findViewById(R.id.webView);
         //支持javascript
         webView.getSettings().setJavaScriptEnabled(true);
         // 设置可以支持缩放
@@ -66,6 +70,13 @@ public class ClassRoomFragment extends Fragment {
         webView.loadUrl("http://jwkq.xupt.edu.cn:8080/");
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        webView.removeAllViews();
+        webView.destroy();
+    }
+/*
     private void setupViewComponent() {
 
         title_textView=(TextView)view.findViewById(R.id.title);
@@ -101,7 +112,7 @@ public class ClassRoomFragment extends Fragment {
     {
         @Override
         public void run() {
-            String result_all=NoHttpUtil.GetClassRoom();
+            String result_all=NoHttpUtil.GetClassRoom(HttpLinkHeader.CLASSROOM);
             String result=JsonHandle.getClassRoomHtml(result_all);
             Message message=Message.obtain();
             Bundle bundle=new Bundle();
@@ -128,6 +139,6 @@ public class ClassRoomFragment extends Fragment {
             }
             super.handleMessage(msg);
         }
-    };
+    };*/
 
 }

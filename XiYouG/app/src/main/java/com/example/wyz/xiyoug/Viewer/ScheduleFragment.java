@@ -1,13 +1,10 @@
 package com.example.wyz.xiyoug.Viewer;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,14 +18,11 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.VolleyError;
 import com.example.wyz.xiyoug.Activity.QuestionActivity;
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
 import com.example.wyz.xiyoug.R;
@@ -41,26 +35,14 @@ import com.example.wyz.xiyoug.Util.ReadFile;
 import com.example.wyz.xiyoug.Util.SaveFile;
 import com.example.wyz.xiyoug.Util.ScheduleOkHttp;
 import com.example.wyz.xiyoug.Util.SerializableMap;
-import com.example.wyz.xiyoug.VolleyUtil.GetObjectRequest;
-import com.example.wyz.xiyoug.VolleyUtil.ResponseListener;
-import com.example.wyz.xiyoug.VolleyUtil.VolleyUtil;
-import com.squareup.okhttp.OkHttpClient;
 
 import org.apache.http.message.BasicNameValuePair;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Wyz on 2016/7/31.
@@ -156,6 +138,11 @@ public class ScheduleFragment  extends Fragment{
         setupViewComponent();
         initSchedule();
         return  view;
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("ScheduleFragment", "onPause");
     }
     public class GetCheckCodeThread implements  Runnable
     {

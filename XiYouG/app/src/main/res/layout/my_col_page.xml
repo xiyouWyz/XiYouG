@@ -36,12 +36,12 @@
             android:layout_height="match_parent"
             android:divider="@color/my_col_listView_divide"
             android:dividerHeight="5dp"
-            ></ListView>
+            />
     </LinearLayout>
     <include
         android:id="@+id/loading"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:layout_below="@id/toolbar"
-        layout="@layout/loading"></include>
+        layout="@layout/loading"/>
 </RelativeLayout>

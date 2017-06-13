@@ -30,16 +30,19 @@ import com.example.wyz.xiyoug.Model.ScoreModel;
 import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.RecyclerView.DividerItemDecoration;
 import com.example.wyz.xiyoug.RecyclerView.OnItemOnClickListenerInterface;
+import com.example.wyz.xiyoug.Util.BASE64;
 import com.example.wyz.xiyoug.Util.IsNetworkConnected;
 import com.example.wyz.xiyoug.Util.JsonHandle;
 import com.example.wyz.xiyoug.Util.MyAnimation;
 import com.example.wyz.xiyoug.Util.ScheduleOkHttp;
+import com.example.wyz.xiyoug.Util.XMLHandler;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Created by Wyz on 2016/8/4.
@@ -242,7 +245,10 @@ private  class SemesterScoreThread implements Runnable
     public void run() {
         try {
             String semester_html=ScheduleOkHttp.getPostSemesterScore(score_url,sessionId,viewState,college,semester);
+            viewState= JsonHandle.getViewState(semester_html);
             oneSemesterScore=JsonHandle.getSemesterScore(semester_html);
+            String usually_score=getUsuallyScore(viewState);
+            oneSemesterScore=XMLHandler.parse(usually_score,oneSemesterScore);
             Message message=Message.obtain();
             message.what=4;
             myHandler.sendMessage(message);
@@ -352,6 +358,9 @@ private class MyAdapter extends  RecyclerView.Adapter<MyAdapter.MyViewHolder>{
         myViewHolder.score_view.setText(oneSemesterScore.get(i).grade);
         myViewHolder.credit_view.setText(oneSemesterScore.get(i).credit);
         myViewHolder.couresNature_view.setText(oneSemesterScore.get(i).course_nature);
+        myViewHolder.pscj_view.setText(oneSemesterScore.get(i).pscj);
+        myViewHolder.qzcj_view.setText(oneSemesterScore.get(i).qzcj);
+        myViewHolder.qmcj_view.setText(oneSemesterScore.get(i).qmcj);
         myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -377,6 +386,9 @@ private class MyAdapter extends  RecyclerView.Adapter<MyAdapter.MyViewHolder>{
         private  TextView score_view;
         private  TextView credit_view;
         private  TextView couresNature_view;
+        private  TextView pscj_view;
+        private  TextView qzcj_view;
+        private  TextView qmcj_view;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -384,6 +396,10 @@ private class MyAdapter extends  RecyclerView.Adapter<MyAdapter.MyViewHolder>{
             score_view=(TextView)itemView.findViewById(R.id.score);
             credit_view=(TextView)itemView.findViewById(R.id.credit);
             couresNature_view=(TextView)itemView.findViewById(R.id.courseNature);
+            pscj_view=(TextView)itemView.findViewById(R.id.pscj);
+            qzcj_view=(TextView)itemView.findViewById(R.id.qzcj);
+            qmcj_view=(TextView)itemView.findViewById(R.id.qmcj);
+
         }
     }
     private OnItemOnClickListenerInterface.OnItemClickListener onItemClickListener;
@@ -397,6 +413,8 @@ private class MyAdapter extends  RecyclerView.Adapter<MyAdapter.MyViewHolder>{
     {
         try {
             viewState= JsonHandle.getViewState(score_html);
+            getUsuallyScore(viewState);
+
             List<String> year=JsonHandle.getYearCount(score_html);
             semesterCount=ScheduleOkHttp.getPostFirstScoreCount(score_url,sessionId,viewState,year,year.size()*2);
             semester_title=Resever(DealWithSemesterCount(semesterCount,year));
@@ -435,6 +453,33 @@ private class MyAdapter extends  RecyclerView.Adapter<MyAdapter.MyViewHolder>{
             result.add(lists.get(i));
         }
         return  result;
+    }
+
+    private String getUsuallyScore(String _VIEWSTATE){
+        String first_data=null;
+        try {
+            first_data = new String(BASE64.decryptBASE64(_VIEWSTATE));
+            Pattern p = Pattern.compile("b<(.*?)>;");
+            java.util.regex.Matcher m = p.matcher(first_data);
+            String end_data = "";// 保存平时成绩的
+
+            while (m.find()) {
+                end_data = m.group(1);
+            }
+            String _end_data = new String(BASE64.decryptBASE64(end_data), "utf-8");
+            _end_data = _end_data.substring(_end_data.indexOf("<?xml"),
+                    _end_data.indexOf("ram>"))
+                    + "ram>";
+            // 替换xml中不合法的字符
+            _end_data = _end_data.replace(
+                    _end_data.substring(_end_data.indexOf("<xs:schema"),
+                            _end_data.indexOf("<diffgr")), " ");
+            _end_data = _end_data.replace("utf-16", "UTF-8");
+            return  _end_data;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return  "";
     }
 
 }

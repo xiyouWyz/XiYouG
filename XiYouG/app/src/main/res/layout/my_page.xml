@@ -303,10 +303,10 @@
         </LinearLayout>
 
     </LinearLayout>
-    <include
+    <!--<include
         android:id="@+id/loading"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        layout="@layout/loading"/>
+        layout="@layout/loading"/>-->
 
 </RelativeLayout>

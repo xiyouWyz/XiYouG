@@ -15,7 +15,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activity.MainActivity" android:screenOrientation="portrait" android:label=""/>
-        <activity android:name=".Activity.InfoDetail_Activity" android:label=""  android:screenOrientation="portrait"  android:launchMode="singleTop"/>
         <activity android:name=".Activity.MyBorrowActivity" android:label=""   android:screenOrientation="portrait" android:launchMode="singleTop"/>
         <activity android:name=".Activity.MyCollectionActivity" android:label=""   android:screenOrientation="portrait" android:launchMode="singleTop"/>
         <activity android:name=".Activity.MyHistoryBorActivity" android:label=""   android:screenOrientation="portrait" android:launchMode="singleTop"/>
@@ -29,13 +28,15 @@
             android:launchMode="singleTop"
             />
         <activity android:name=".Activity.ScoreFailedActivity"  android:label="" android:screenOrientation="portrait" android:launchMode="singleTop"/>
-        <activity android:name=".Activity.LabWebSiteActivity" android:label=""  android:screenOrientation="portrait" android:launchMode="singleTop"/>
         <activity android:name=".Activity.QuestionActivity" android:label="" android:screenOrientation="portrait" android:launchMode="singleTop"/>
-        <activity android:name=".Activity.LibWebSiteActivity"  android:label="" android:screenOrientation="portrait" android:launchMode="singleTop"/>
-        <activity android:name=".Activity.ScoreWebSiteActivity"  android:label="" android:screenOrientation="portrait" android:launchMode="singleTop"/>
-        <activity android:name=".Activity.SchoolWebSiteActivity"  android:label="" android:screenOrientation="portrait" android:launchMode="singleTop"/>
         <activity android:name=".Activity.FourLevelActivity"  android:label="" android:screenOrientation="portrait" android:launchMode="singleTop"/>
-        <activity android:name=".Activity.ClassRoomActivity" android:label=""  android:launchMode="singleTop"/>
+
+        <activity android:name=".Activity.InfoDetail_Activity"  android:process=":process.infoDetail" android:label=""  android:screenOrientation="portrait"  android:launchMode="singleTop"/>
+        <activity android:name=".Activity.LibWebSiteActivity"  android:process=":process.lib" android:label="" android:screenOrientation="portrait" android:launchMode="singleTop"/>
+        <activity android:name=".Activity.ScoreWebSiteActivity" android:process=":process.score"  android:label="" android:screenOrientation="portrait" android:launchMode="singleTop"/>
+        <activity android:name=".Activity.SchoolWebSiteActivity" android:process=":process.school" android:label="" android:screenOrientation="portrait" android:launchMode="singleTop"/>
+        <activity android:name=".Activity.ClassRoomActivity"  android:process=":process.classroom" android:label=""  android:launchMode="singleTop"/>
+        <activity android:name=".Activity.LabWebSiteActivity" android:process=":process.lab" android:label=""  android:screenOrientation="portrait" android:launchMode="singleTop"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>

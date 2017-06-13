@@ -449,9 +449,9 @@
 
     </LinearLayout>
 
-    <include android:id="@+id/loading"
+  <!--  <include android:id="@+id/loading"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:layout_below="@id/toolbar"
-        layout="@layout/loading"/>
+        layout="@layout/loading"/>-->
 </RelativeLayout>

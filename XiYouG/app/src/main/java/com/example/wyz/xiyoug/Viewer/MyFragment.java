@@ -9,26 +9,23 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresPermission;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.wyz.xiyoug.Activity.QuestionActivity;
-import com.example.wyz.xiyoug.Model.HttpLinkHeader;
-import com.example.wyz.xiyoug.Model.ScoreUser;
-import com.example.wyz.xiyoug.Model.User;
 import com.example.wyz.xiyoug.Activity.MyBorrowActivity;
 import com.example.wyz.xiyoug.Activity.MyCollectionActivity;
 import com.example.wyz.xiyoug.Activity.MyHistoryBorActivity;
+import com.example.wyz.xiyoug.Activity.QuestionActivity;
+import com.example.wyz.xiyoug.Model.HttpLinkHeader;
+import com.example.wyz.xiyoug.Model.User;
 import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.Util.IsNetworkConnected;
 import com.example.wyz.xiyoug.Util.MyAnimation;
@@ -78,9 +75,48 @@ public class MyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         view=inflater.inflate(R.layout.my_page,container,false);
-        Log.d(TAG,"MyFragment碎片正在加载");
+        Log.d(TAG,"MyFragment+onCreateView");
+        Log.d("Fragment","MyFragment加载");
         setupViewComponent();
         return  view;
+    }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(TAG,"MyFragment+onCreate");
+
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.d(TAG,"MyFragment+onAttach");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG,"MyFragment+onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG,"MyFragment+onResume");
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.d(TAG,"MyFragment+onActivityCreated");
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        Log.d(TAG,"MyFragment+setUserVisibleHint");
+        Log.d(TAG,"MyFragment+setUserVisibleHint     "+isVisibleToUser);
     }
     /*@Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

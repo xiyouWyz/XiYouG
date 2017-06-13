@@ -1,13 +1,11 @@
 package com.example.wyz.xiyoug.Viewer;
 
 
+import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
@@ -22,13 +20,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wyz.xiyoug.Activity.BookDetailActivity;
 import com.example.wyz.xiyoug.Activity.LibWebSiteActivity;
-
 import com.example.wyz.xiyoug.Activity.SchoolWebSiteActivity;
 import com.example.wyz.xiyoug.Activity.ScoreWebSiteActivity;
 import com.example.wyz.xiyoug.Model.Book_Rank;
@@ -100,15 +96,55 @@ public class HomeFragment extends Fragment {
 
     private  View itemView;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.home_page, container, false);
         InitSlideViewPager();
-
+        Log.d("Fragment","HomeFragment加载");
+        Log.d(TAG,"HomeFragment+onCreateView");
         //initData(0);
         setupViewCompent();
         getDataFromFile(0);
         return view;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(TAG,"HomeFragment+onCreate");
+
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.d(TAG,"HomeFragment+onAttach");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG,"HomeFragment+onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG,"HomeFragment+onResume");
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.d(TAG,"HomeFragment+onActivityCreated");
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        Log.d(TAG,"HomeFragment+setUserVisibleHint");
+        Log.d(TAG,"HomeFragment+setUserVisibleHint   "+isVisibleToUser);
     }
 
     private void getDataFromFile(int i) {
@@ -597,17 +633,18 @@ public class HomeFragment extends Fragment {
 
             switch (index) {
                 case 0:
-                    url = HttpLinkHeader.Rank_COL;
+                    url = HttpLinkHeader.Rank_BOR;
                     break;
                 case 1:
                     url = HttpLinkHeader.Rank_BOR;
                     break;
                 case 2:
-                    url = HttpLinkHeader.Rank_LOOK;
+                    url = HttpLinkHeader.Rank_BOR;
                     break;
             }
             try {
                 String rank_result = OkHttpUtil.getStringFromServer(url);
+                //String rank_result= NoHttpUtil.GetClassRoom(url);
                 Log.d("rank_Result", rank_result.toString());
                 Message msg = Message.obtain();
                 msg.what = 1;

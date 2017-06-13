@@ -1,11 +1,8 @@
 package com.example.wyz.xiyoug.Util;
 
-import android.os.Bundle;
 import android.os.Environment;
-import android.os.Message;
 import android.util.Log;
 
-import com.example.wyz.xiyoug.Activity.FourLevelActivity;
 import com.example.wyz.xiyoug.Model.ScoreModel;
 import com.example.wyz.xiyoug.Viewer.ScheduleFragment;
 import com.squareup.okhttp.FormEncodingBuilder;
@@ -13,10 +10,6 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
-import com.yolanda.nohttp.RedirectHandler;
-
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.message.BasicNameValuePair;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -24,18 +17,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.CookieHandler;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.StreamHandler;
 
 /**
  * Created by Wyz on 2016/7/31.
  */
 public class ScheduleOkHttp {
+
     private static   String TAG="MyOkHttp";
     public static int semesCount;
     public static String rootPath = Environment.getExternalStorageDirectory() + "/";

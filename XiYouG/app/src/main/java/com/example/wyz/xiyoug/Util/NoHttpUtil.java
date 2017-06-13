@@ -11,13 +11,19 @@ import com.yolanda.nohttp.Response;
  */
 public class NoHttpUtil {
 
-    public static   String GetClassRoom()
+    public static   String GetClassRoom(String url)
     {
-        Request request=NoHttp.createStringRequest(HttpLinkHeader.CLASSROOM, RequestMethod.GET);
-        Response response=NoHttp.startRequestSync(request);
-        if(response.isSucceed())
-        {
-             return  response.toString();
+        try{
+            Request request=NoHttp.createStringRequest(url, RequestMethod.GET);
+            Response response=NoHttp.startRequestSync(request);
+
+            if(response.isSucceed())
+            {
+                return  response.toString();
+            }
+
+        }catch (Exception ex){
+            ex.printStackTrace();
         }
         return  "";
     }

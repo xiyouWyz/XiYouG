@@ -177,7 +177,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                ></android.support.v7.widget.RecyclerView>
+                />
         </LinearLayout>
     </LinearLayout>
 
@@ -186,5 +186,5 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:layout_below="@id/toolbar"
-        layout="@layout/loading"></include>
+        layout="@layout/loading"/>
 </RelativeLayout>

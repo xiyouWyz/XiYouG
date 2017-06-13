@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -38,6 +39,7 @@ public class InfoDetail_Activity extends AppCompatActivity{
     private  TextView pubDateLabel_view;
     private ImageView backView;
     private WebView webView;
+    private FrameLayout mFrameLayout;
     private  MyThread myThread;
     private  MyHandler myHandler=new MyHandler();
     String url;
@@ -54,6 +56,9 @@ public class InfoDetail_Activity extends AppCompatActivity{
         setContentView(R.layout.info_details_page);
         setupViewComponent();
         getData();
+        System.out.println(android.os.HandlerThread.currentThread().getName());
+        System.out.println(android.os.HandlerThread.currentThread().getId());
+        System.out.println(android.os.Process.myPid());
     }
 
     private void getData() {
@@ -91,7 +96,10 @@ public class InfoDetail_Activity extends AppCompatActivity{
         title_view=(TextView) findViewById(R.id.title);
         publisher_view=(TextView) findViewById(R.id.publisher);
         date_view=(TextView) findViewById(R.id.date);
-        webView=(WebView) findViewById(R.id.webView);
+        mFrameLayout=(FrameLayout)findViewById(R.id.frameLayout);
+        webView=new WebView(getApplicationContext());
+        mFrameLayout.addView(webView);
+        //webView=(WebView) findViewById(R.id.webView);
         pubLabel_view=(TextView)findViewById(R.id.pubLabel);
         pubDateLabel_view=(TextView)findViewById(R.id.pubDateLabel);
         view=(RelativeLayout) findViewById(R.id.loading);
@@ -198,4 +206,21 @@ public class InfoDetail_Activity extends AppCompatActivity{
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        deStoryWebView();
+        //android.os.Process.killProcess(android.os.Process.myPid());
+        System.exit(0);
+        super.onDestroy();
+
+    }
+
+    private  void deStoryWebView(){
+        if(webView!=null){
+            webView.pauseTimers();
+            webView.removeAllViews();
+            webView.destroy();
+            webView=null;
+        }
+    }
 }

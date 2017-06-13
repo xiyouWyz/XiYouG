@@ -3,6 +3,37 @@
   <component name="ChangeListManager">
     <list default="true" id="b89293a1-e10b-48e5-82fe-8714abe06490" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/.idea/gradle.xml" afterPath="$PROJECT_DIR$/XiYouG/.idea/gradle.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/.idea/misc.xml" afterPath="$PROJECT_DIR$/XiYouG/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/build.gradle" afterPath="$PROJECT_DIR$/XiYouG/app/build.gradle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Activity/BookDetailActivity.java" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Activity/BookDetailActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Activity/BookSearchActivity.java" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Activity/BookSearchActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Activity/ClassRoomActivity.java" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Activity/ClassRoomActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Activity/InfoDetail_Activity.java" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Activity/InfoDetail_Activity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Activity/LabWebSiteActivity.java" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Activity/LabWebSiteActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Activity/LibWebSiteActivity.java" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Activity/LibWebSiteActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Activity/MainActivity.java" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Activity/MainActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Activity/SchoolWebSiteActivity.java" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Activity/SchoolWebSiteActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Activity/ScoreActivity.java" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Activity/ScoreActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Activity/ScoreWebSiteActivity.java" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Activity/ScoreWebSiteActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Model/ScoreModel.java" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Model/ScoreModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Util/JsonHandle.java" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Util/JsonHandle.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Util/NoHttpUtil.java" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Util/NoHttpUtil.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Util/OkHttpUtil.java" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Util/OkHttpUtil.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Viewer/ClassRoomFragment.java" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Viewer/ClassRoomFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Viewer/HomeFragment.java" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Viewer/HomeFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Viewer/InfoFragment.java" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Viewer/InfoFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Viewer/MyFragment.java" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Viewer/MyFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/res/layout/class_room.xml" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/res/layout/class_room.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/res/layout/info_details_page.xml" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/res/layout/info_details_page.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/res/layout/labwebsite.xml" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/res/layout/labwebsite.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/res/layout/libwebsite.xml" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/res/layout/libwebsite.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/res/layout/my_bor_page.xml" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/res/layout/my_bor_page.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/res/layout/my_col_page.xml" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/res/layout/my_col_page.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/res/layout/schoolwebsite.xml" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/res/layout/schoolwebsite.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/res/layout/score_recyclerview_item.xml" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/res/layout/score_recyclerview_item.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XiYouG/app/src/main/res/layout/scorewebsite.xml" afterPath="$PROJECT_DIR$/XiYouG/app/src/main/res/layout/scorewebsite.xml" />
     </list>
     <ignored path="XiYouG.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,22 +64,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="gradle-wrapper.properties" pinned="false" current-in-tab="true">
+      <file leaf-file-name="gradle-wrapper.properties" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/XiYouG/gradle/wrapper/gradle-wrapper.properties">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.13513513">
-              <caret line="3" column="26" selection-start-line="3" selection-start-column="26" selection-end-line="3" selection-end-column="26" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="OkHttpUtil.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="OkHttpUtil.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Util/OkHttpUtil.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="19" column="16" selection-start-line="19" selection-start-column="16" selection-end-line="19" selection-end-column="16" />
-              <folding />
+            <state vertical-scroll-proportion="0.15107913">
+              <caret line="22" column="21" selection-start-line="22" selection-start-column="21" selection-end-line="22" selection-end-column="21" />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -112,8 +145,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-233" />
-    <option name="y" value="257" />
+    <option name="x" value="40" />
+    <option name="y" value="124" />
     <option name="width" value="1382" />
     <option name="height" value="744" />
   </component>
@@ -148,8 +181,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches">
+      <pane id="PackagesPane">
         <subPane />
       </pane>
       <pane id="ProjectPane">
@@ -410,12 +442,13 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane">
-        <subPane />
-      </pane>
       <pane id="AndroidView">
         <subPane />
       </pane>
+      <pane id="Scratches">
+        <subPane />
+      </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -424,7 +457,7 @@
     <property name="android.project.structure.last.selected" value="SDK Location" />
     <property name="android.project.structure.proportion" value="0.15" />
     <property name="android.sdk.path" value="E:/Java/AndroidSdk" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/XiYouG" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunManager">
     <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
@@ -688,8 +721,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-233" y="257" width="1382" height="744" extended-state="0" />
-    <editor active="true" />
+    <frame x="40" y="124" width="1382" height="744" extended-state="0" />
+    <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.49702382" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -700,7 +733,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.49702382" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17633928" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17633928" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -758,7 +791,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="18" column="7" selection-start-line="18" selection-start-column="7" selection-end-line="18" selection-end-column="7" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1104,19 +1139,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Util/OkHttpUtil.java">
+    <entry file="file://$PROJECT_DIR$/XiYouG/gradle/wrapper/gradle-wrapper.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="19" column="16" selection-start-line="19" selection-start-column="16" selection-end-line="19" selection-end-column="16" />
+          <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/XiYouG/gradle/wrapper/gradle-wrapper.properties">
+    <entry file="file://$PROJECT_DIR$/XiYouG/app/src/main/java/com/example/wyz/xiyoug/Util/OkHttpUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.13513513">
-          <caret line="3" column="26" selection-start-line="3" selection-start-column="26" selection-end-line="3" selection-end-column="26" />
-          <folding />
+        <state vertical-scroll-proportion="0.15107913">
+          <caret line="22" column="21" selection-start-line="22" selection-start-column="21" selection-end-line="22" selection-end-column="21" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

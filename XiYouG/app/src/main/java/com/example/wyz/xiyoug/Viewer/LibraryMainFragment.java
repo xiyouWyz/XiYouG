@@ -1,13 +1,11 @@
 package com.example.wyz.xiyoug.Viewer;
 
-import android.content.Intent;
-import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +15,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.wyz.xiyoug.R;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.example.wyz.xiyoug.R;
 
 /**
  * Created by Wyz on 2016/7/20.
@@ -59,6 +57,13 @@ public class LibraryMainFragment extends Fragment {
         viewPager.setCurrentItem(0);
         return view;
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("LibraryMainFragment", "onPause");
+   }
+
     private void InitViewPager() {
         fragmentList = new ArrayList<android.support.v4.app.Fragment>();
         homeFragment = new HomeFragment();

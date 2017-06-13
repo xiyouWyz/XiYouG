@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout   xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="100dp"
+    android:layout_height="120dp"
     android:layout_width="match_parent"
     android:gravity="center_vertical"
     >
@@ -40,10 +40,11 @@
             android:gravity="center_vertical"
             android:text="@string/score_item_failed_score"
             android:textSize="@dimen/rank_listView_word"
+            android:textColor="@color/plistView_itemText"
             android:layout_alignLeft="@id/score_name"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
-            android:textColor="@color/plistView_itemText"
+
             android:layout_below="@id/score_name"
             />
         <TextView
@@ -52,6 +53,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:text="80"
+
             android:textSize="@dimen/rank_listView_word"
             android:layout_alignLeft="@id/rank_item_count_img"
             android:layout_marginLeft="5dp"
@@ -66,7 +68,7 @@
             android:gravity="center_vertical"
             android:text="@string/score_item_credit"
             android:textSize="@dimen/rank_listView_word"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="80dp"
             android:layout_toRightOf="@id/score"
             android:textColor="@color/plistView_itemText"
             android:layout_alignTop="@id/scoreLabel"
@@ -87,11 +89,14 @@
         <TextView
             android:id="@+id/courseNatureLabel"
             android:text="@string/score_item_courseNature"
-            android:layout_alignStart="@id/scoreLabel"
-            android:layout_below="@id/scoreLabel"
+
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
+            android:layout_below="@id/scoreLabel"
             android:layout_marginTop="5dp"
+            android:layout_alignStart="@id/scoreLabel"
             />
         <TextView
             android:id="@+id/courseNature"
@@ -103,8 +108,80 @@
             android:layout_alignTop="@id/courseNatureLabel"
 
             />
+        <TextView
+            android:id="@+id/qzcjLable"
+            android:text="期中成绩:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+           android:layout_alignTop="@id/courseNatureLabel"
+            android:layout_marginStart="50dp"
+            android:layout_toRightOf="@id/courseNature"
+            android:textSize="@dimen/rank_listView_word"
+            android:textColor="@color/plistView_itemText"
+            />
+
+        <TextView
+            android:id="@+id/qzcj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="34"
+            android:layout_marginStart="5dp"
+            android:layout_alignTop="@id/qzcjLable"
+            android:layout_toRightOf="@id/qzcjLable"
+            android:textSize="@dimen/rank_listView_word"
+            android:textColor="@color/plistView_itemText"
+            />
+        <TextView
+            android:id="@+id/pscjLable"
+            android:text="平时成绩:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/courseNatureLabel"
+            android:layout_alignLeft="@id/courseNatureLabel"
+            android:layout_marginTop="5dp"
+            android:textSize="@dimen/rank_listView_word"
+            android:textColor="@color/plistView_itemText"
+            />
+        <TextView
+            android:id="@+id/pscj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="34"
+            android:layout_alignRight="@id/courseNature"
+            android:layout_marginStart="5dp"
+            android:layout_toRightOf="@id/pscjLable"
+            android:layout_alignTop="@id/pscjLable"
+            android:textSize="@dimen/rank_listView_word"
+            android:textColor="@color/plistView_itemText"
+
+            />
 
 
+        <TextView
+            android:id="@+id/qmcjLable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="期末成绩:"
+            android:layout_marginStart="50dp"
+            android:layout_toRightOf="@id/pscj"
+            android:layout_alignTop="@id/pscj"
+
+            android:textSize="@dimen/rank_listView_word"
+            android:textColor="@color/plistView_itemText"
+
+            />
+        <TextView
+            android:id="@+id/qmcj"
+            android:text="34"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/qmcjLable"
+            android:layout_toRightOf="@id/qmcjLable"
+            android:layout_marginStart="5dp"
+            android:textSize="@dimen/rank_listView_word"
+            android:textColor="@color/plistView_itemText"
+
+            />
 
     </RelativeLayout>
 

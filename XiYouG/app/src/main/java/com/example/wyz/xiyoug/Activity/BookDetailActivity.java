@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -48,7 +47,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -90,6 +88,7 @@ public class BookDetailActivity  extends AppCompatActivity{
     private  String addColUrl;
     private  boolean isLoad=false;
     private int pressCount=0;
+    MyAnimation myAnimation;
 
 
     @Override
@@ -101,6 +100,10 @@ public class BookDetailActivity  extends AppCompatActivity{
         setContentView(R.layout.book_detail_page);
         setupViewComponent();
         getData();
+        System.out.println(android.os.HandlerThread.currentThread().getName());
+        System.out.println(android.os.HandlerThread.currentThread().getId());
+        System.out.println(android.os.Process.myPid());
+
        // setFragement();
     }
 
@@ -237,7 +240,8 @@ public class BookDetailActivity  extends AppCompatActivity{
 
         load_view=(RelativeLayout)findViewById(R.id.loading);
         content=(LinearLayout) findViewById(R.id.content);
-        new MyAnimation(BookDetailActivity.this,"胖萌正在为您努力加载....", R.drawable.loading,load_view);
+        myAnimation=new MyAnimation(BookDetailActivity.this,"胖萌正在为您努力加载....", R.drawable.loading,load_view);
+
 
     }
     private void setCirculRecyclerViewData() {
@@ -356,6 +360,8 @@ public class BookDetailActivity  extends AppCompatActivity{
             }
             else if(msg.what==5)
             {
+
+                //myAnimation.clearAnimation();
                 load_view.setVisibility(View.INVISIBLE);
                 content.setVisibility(View.VISIBLE);
             }

@@ -4,23 +4,29 @@ import android.app.AlertDialog;
 import android.app.Notification;
 import android.os.Bundle;
 
+import java.util.StringTokenizer;
+
 /**
  * Created by Wyz on 2016/8/5.
  */
 public class ScoreModel {
-    public   String title;
-    public  String college;
-    public  String semester;
-    public  String course_code;
-    public  String course_name;
-    public  String course_nature;
-    public  String course_attribute;
-    public  String credit;
-    public  String grade_point;
-    public  String grade;
-    public  String minor_mark;
-    public  String repair_code;
-    public  String restudy_code;
+    public   String title;              //2016-2017学年第1学期学习成绩
+    public  String college;             //学年
+    public  String semester;            //1
+    public  String course_code;         //JS100140，课程代码
+    public  String course_name;         //编译原理，课程名称
+    public  String course_nature;       //必修课，课程性质
+    public  String course_attribute;       //“”，课程归属
+    public  String credit;              //4.0，学分
+    public  String grade_point;         //1.30，绩点
+    public  String grade;               //63，成绩
+    public  String minor_mark;          //0，辅修标记
+    public  String repair_code;         //补考成绩
+    public  String restudy_code;        //重修成绩
+
+    public  String qzcj;                //期中成绩
+    public  String qmcj;                //期末成绩
+    public  String pscj;                //平时成绩
 
     public  ScoreModel(Builder builder)
     {
@@ -37,6 +43,9 @@ public class ScoreModel {
         this.minor_mark=builder.minor_mark;
         this.repair_code=builder.repair_code;
         this.restudy_code=builder.restudy_code;
+        this.pscj=builder.pscj;
+        this.qzcj=builder.qzcj;
+        this.qmcj=builder.qmcj;
     }
     public  static  class  Builder
     {
@@ -53,6 +62,9 @@ public class ScoreModel {
         private  String minor_mark;
         private  String repair_code;
         private  String restudy_code;
+        private  String qzcj="";                //期中成绩
+        private  String qmcj="";                //期末成绩
+        private  String pscj="";                //平时成绩
         public  Builder title(String title)
         {
             this.title=title;
@@ -117,11 +129,27 @@ public class ScoreModel {
             this.restudy_code=restudy_code;
             return  this;
         }
+        public  Builder qzcj(String qzcj)
+        {
+            this.qzcj=qzcj;
+            return  this;
+        }
+        public  Builder qmcj(String qmcj)
+        {
+            this.qmcj=qmcj;
+            return  this;
+        }
+        public  Builder pscj(String pscj)
+        {
+            this.pscj=pscj;
+            return  this;
+        }
 
         public ScoreModel build()
         {
             return new ScoreModel(this);
         }
+
     }
 
 }

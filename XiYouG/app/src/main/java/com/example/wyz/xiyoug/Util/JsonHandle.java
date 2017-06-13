@@ -26,6 +26,7 @@ public class JsonHandle {
     {
         Document document=Jsoup.parse(content);
         String name= document.body().getElementById("xhxm").text();
+
         name=name.substring(0,getIndex(name,'同'));
         Log.d("name",name) ;
         return  name;
@@ -34,6 +35,7 @@ public class JsonHandle {
     {
         Document document=Jsoup.parse(content);
         Element ul=document.getElementsByClass("nav").get(0);
+
         for(int i=0;i<ul.children().size();i++)
         {
             if(ul.child(i).text().contains("教学质量评价"))

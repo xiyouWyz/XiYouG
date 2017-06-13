@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
@@ -16,9 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.LoginFilter;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -28,6 +27,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
 import com.example.wyz.xiyoug.R;
 import com.example.wyz.xiyoug.Util.CircleImageView;
 import com.example.wyz.xiyoug.Util.IsNetworkConnected;
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private  Menu  menu;
     private  final String TAG="MainActivity";
     private  Uri imageUri;
-    private   static  final  int TAKE_PHOTO=1;
+    private  static  final  int TAKE_PHOTO=1;
     private  static  final  int CROP_PHOTO=2;
     private  static  final  int SHOW_PHOTO=3;
     private  LinearLayout setLogo_layout;
@@ -86,10 +86,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initView();
         initLogoView();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main,menu);
+
         this.menu=menu;
+        this.menu.getItem(0).setVisible(false);
         return true;
     }
 
@@ -190,7 +193,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         fm =getSupportFragmentManager();
         //InitFragmentSelect();
-        setFragmentSelect(R.id.library);
+        setFragmentSelect(R.id.score);
+        dlMain.openDrawer(Gravity.LEFT);
+
+
     }
     private void initLogoView() {
         circleImageView=(CircleImageView)findViewById(R.id.logo);
@@ -334,6 +340,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+    /*
     private  void setFragmentSelect(int i)
     {
         FragmentTransaction transaction=fm.beginTransaction();
@@ -398,6 +405,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
         transaction.commitAllowingStateLoss();
+    }*/
+    private  void setFragmentSelect(int i)
+    {
+        FragmentTransaction transaction=fm.beginTransaction();
+        switch (i)
+        {
+            case R.id.library:
+                libraryFragment=new LibraryMainFragment();
+
+                transaction.replace(R.id.dl_container,libraryFragment);
+                break;
+            case R.id.schedule:
+                scheduleFragment=new ScheduleFragment();
+                transaction.replace(R.id.dl_container,scheduleFragment);
+                break;
+            case  R.id.score:
+                scoreFragment=new ScoreMyFragment();
+                transaction.replace(R.id.dl_container,scoreFragment);
+                break;
+            case R.id.classRoom:
+                classRoomFragment=new ClassRoomFragment();
+                transaction.replace(R.id.dl_container,classRoomFragment);
+                break;
+            case  R.id.our:
+                about_ourFragment=new AboutOurFragment();
+                transaction.replace(R.id.dl_container,about_ourFragment);
+                break;
+        }
+
+        transaction.commitAllowingStateLoss();
+
     }
     private  void hideFragments(FragmentTransaction transaction)
     {

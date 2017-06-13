@@ -1,8 +1,6 @@
 package com.example.wyz.xiyoug.Activity;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +8,7 @@ import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.example.wyz.xiyoug.Model.HttpLinkHeader;
@@ -22,18 +21,25 @@ import com.example.wyz.xiyoug.Util.IsNetworkConnected;
 public class LabWebSiteActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private WebView webView;
+    private FrameLayout mFrameLayout;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.labwebsite);
         setupViewComponent();
+        System.out.println(android.os.HandlerThread.currentThread().getName());
+        System.out.println(android.os.HandlerThread.currentThread().getId());
+        System.out.println(android.os.Process.myPid());
     }
 
     private void setupViewComponent() {
         toolbar=(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        webView=(WebView)findViewById(R.id.webView);
+        mFrameLayout=(FrameLayout)findViewById(R.id.frameLayout);
+        webView=new WebView(getApplicationContext());
+        mFrameLayout.addView(webView);
+        //webView=(WebView)findViewById(R.id.webView);
         if(!IsNetworkConnected.isNetworkConnected(LabWebSiteActivity.this))
         {
             Toast.makeText(LabWebSiteActivity.this,"网络超时",Toast.LENGTH_SHORT).show();
@@ -73,5 +79,21 @@ public class LabWebSiteActivity extends AppCompatActivity {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    protected void onDestroy() {
+        deStoryWebView();
+        android.os.Process.killProcess(android.os.Process.myPid());
+        super.onDestroy();
+
+    }
+
+    private  void deStoryWebView(){
+        if(webView!=null){
+            webView.pauseTimers();
+            webView.removeAllViews();
+            webView.destroy();
+            webView=null;
+        }
     }
 }
